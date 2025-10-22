@@ -1,0 +1,98 @@
+/* Стили для страницы лайкнутых объявлений */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.main-content {
+    padding-top: 0; /* Убираем padding-top, так как margin-top уже есть в style.css */
+}
+
+.liked-ads {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.liked-ads h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #333;
+    text-align: center;
+}
+
+.liked-ads-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 0;
+}
+
+.ad-card {
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.ad-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ad-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.ad-card-content {
+    padding: 15px;
+}
+
+.ad-card h3 {
+    margin: 10px 0;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+}
+
+.ad-card p {
+    font-family: 'Roboto', sans-serif;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.like-btn {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.like-btn:hover {
+    background-color: #ff5252;
+}

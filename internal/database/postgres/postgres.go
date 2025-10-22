@@ -1,0 +1,287 @@
+package postgres
+
+import (
+	"cmd/obyavigo/main.go/internal/config"
+	"cmd/obyavigo/main.go/internal/models"
+	"context"
+	"database/sql"
+	"fmt"
+	"strings"
+	"time"
+
+	"github.com/google/uuid"
+)
+
+type Postgres struct {
+	psql *sql.DB
+	q    map[string]string
+}
+
+func Connect(cfg *config.Config, q map[string]string) (*Postgres, error) {
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		cfg.Database.Postgres.Host,
+		cfg.Database.Postgres.Port,
+		cfg.Database.Postgres.User,
+		cfg.Database.Postgres.Password,
+		cfg.Database.Postgres.DBName,
+	)
+	psql, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		return nil, fmt.Errorf("postgres connection failed: %w", err)
+	}
+	return &Postgres{
+		psql: psql,
+		q:    q,
+	}, nil
+}
+
+func (p *Postgres) Ping() error {
+	if err := p.psql.Ping(); err != nil {
+		return fmt.Errorf("postgres connection error: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) GetUserPreviewData(id *uuid.UUID) (string, error) {
+	query, ok := p.q["GetUserPreviewData"]
+	if !ok {
+		return "", fmt.Errorf("request 'GetUserPreviewData' not found")
+	}
+
+	var username string
+	err := p.psql.QueryRow(query, id).Scan(&username)
+	if err != nil {
+		return "", fmt.Errorf("error while executing get user previes data request")
+	}
+
+	return username, nil
+}
+
+func (p *Postgres) CreateNewUser(u *models.User) (*uuid.UUID, error) {
+	query, ok := p.q["CreateNewUser"]
+	if !ok {
+		return nil, fmt.Errorf("request 'CreateNewUser' not found")
+	}
+	var id uuid.UUID
+	err := p.psql.QueryRow(query,
+		u.Username,
+		u.Email,
+		u.PasswordHash,
+		u.Role,
+		u.Status,
+		u.PhoneNumber,
+		u.RegistrationDate,
+		u.LastLogin,
+		u.ProfilePictureID,
+		u.Bio,
+		u.Settings,
+	).Scan(&id)
+
+	if err != nil {
+		return nil, fmt.Errorf("error while executing create user request: %w", err)
+	}
+	return &id, nil
+}
+
+func (p *Postgres) CheckEmail(email string) (bool, error) {
+	query, ok := p.q["CheckEmail"]
+	if !ok {
+		return false, fmt.Errorf("request 'CheckEmail' not found")
+	}
+
+	var exists bool
+	err := p.psql.QueryRow(query, email).Scan(&exists)
+	if err != nil {
+		return false, fmt.Errorf("error while executing check email request: %w", err)
+	}
+
+	return exists, nil
+}
+
+func (p *Postgres) CreateEmailConfirmation(id *uuid.UUID, token string) error {
+	query, ok := p.q["CreateEmailConfirmation"]
+	if !ok {
+		return fmt.Errorf("request 'CheckEmail' not found")
+	}
+
+	err := p.psql.QueryRow(query, id, token).Err()
+	if err != nil {
+		return fmt.Errorf("error while executing create email confirmation request: %w", err)
+	}
+
+	return nil
+}
+
+func (p *Postgres) IsConfirmationExpired(token string) (bool, error) {
+	query, ok := p.q["IsConfirmationExpired"]
+	if !ok {
+		return false, fmt.Errorf("request 'IsConfirmationExpired' not found")
+	}
+	var exTime time.Time
+	var confirmed bool
+	err := p.psql.QueryRow(query, token).Scan(&exTime, &confirmed)
+	if err != nil {
+		return false, fmt.Errorf("error while calling the request to get the expiration date of the registration confirmation: %w", err)
+	}
+
+	if confirmed {
+		return true, nil
+	}
+
+	if time.Now().After(exTime) {
+		return false, nil
+	}
+	return true, nil
+}
+
+func (p *Postgres) DeleteAccountByEmail(email string) error {
+	query, ok := p.q["DeleteAccountByEmail"]
+	if !ok {
+		return fmt.Errorf("request 'DeleteAccountByEmail' not found")
+	}
+	err := p.psql.QueryRow(query, email).Err()
+	if err != nil {
+		return fmt.Errorf("error while trying to delete account: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) ConfirmAccount(token string) error {
+	query, ok := p.q["ConfirmAccount"]
+	if !ok {
+		return fmt.Errorf("request 'ConfirmAccount' not found")
+	}
+	res, err := p.psql.Exec(query, token)
+	if err != nil {
+		return fmt.Errorf("error while calling the request to confirm the account: %w", err)
+	}
+	rowsAff, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error while getting the number of affected rows: %w", err)
+	}
+	if rowsAff == 0 {
+		return sql.ErrNoRows
+	}
+
+	return nil
+}
+
+func (p *Postgres) GetAuthInfoByEmail(email string) (*models.AuhtInfo, error) {
+	query, ok := p.q["GetAuthInfoByEmail"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetAuhtInfoByEmail' not found")
+	}
+
+	var id uuid.UUID
+	var passHash string
+	var confirmed bool
+
+	err := p.psql.QueryRow(query, email).Scan(&id, &passHash, &confirmed)
+
+	if err != nil {
+		return nil, fmt.Errorf("error while trying to get user auth data by email: %w", err)
+	}
+
+	return &models.AuhtInfo{
+		Id:           id,
+		PasswordHash: passHash,
+		Confirmed:    confirmed,
+	}, nil
+}
+
+func (p *Postgres) CreateAd(m *models.AdTemplate) (*uuid.UUID, error) {
+	query, ok := p.q["CreateAd"]
+	if !ok {
+		return nil, fmt.Errorf("request 'CreateAd' not found")
+	}
+	var adId uuid.UUID
+	if err := p.psql.QueryRow(query,
+		m.UserId,
+		m.CategoryId,
+		m.Title,
+		m.Description,
+		m.Price,
+		m.LocationId,
+		m.Condition,
+		m.ContactPhone,
+	).Scan(&adId); err != nil {
+		return nil, fmt.Errorf("error while executing create ad request: %w", err)
+	}
+
+	return &adId, nil
+}
+
+func (p *Postgres) GetCreateAdDependencies(m *models.AdTemplate) error {
+	query, ok := p.q["GetCreateAdDependencies"]
+	if !ok {
+		return fmt.Errorf("request 'GetCreateAdDependencies' not found")
+	}
+
+	err := p.psql.QueryRow(query, m.CategoryName, m.LocationName).Scan(&m.CategoryId, &m.LocationId)
+	if err != nil {
+		return fmt.Errorf("error while trying to get create ad dependencies: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) InsertImages(userId *uuid.UUID, adId *uuid.UUID, ids []string) error {
+	query, ok := p.q["InsertImage"]
+	if !ok {
+		return fmt.Errorf("request 'InsertImage' not found")
+	}
+	var valuesStr []string
+	var args []interface{}
+	for i, id := range ids {
+		valuesStr = append(valuesStr, fmt.Sprintf("($%d, $%d, $%d)", i*3+1, i*3+2, i*3+3))
+		args = append(args, adId, id, i)
+	}
+	query = fmt.Sprintf(query, strings.Join(valuesStr, ","))
+
+	_, err := p.psql.ExecContext(context.Background(), query, args...)
+	if err != nil {
+		return fmt.Errorf("error while trying insert images: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) GetAdInfo(adId *uuid.UUID) (*models.AdTemplate, error) {
+	query, ok := p.q["GetAdInfo"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetAdInfo' not found")
+	}
+	var data models.AdTemplate
+	err := p.psql.QueryRow(query, adId).Scan(
+		&data.AdId,
+		&data.UserId,
+		&data.CategoryId,
+		&data.Title,
+		&data.Description,
+		&data.Price,
+		&data.LocationId,
+		&data.Condition,
+		&data.Status,
+		&data.CreatedAt,
+		&data.UpdatedAt,
+		&data.ExpirationDate,
+		&data.ViewsCount,
+		&data.ContactPhone,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("error while executing get ad info request: %w", err)
+	}
+	return &data, nil
+}
+
+func (p *Postgres) GetUserRole(userId *uuid.UUID) (string, error) {
+	query, ok := p.q["GetUserRole"]
+	if !ok {
+		return "", fmt.Errorf("request 'GetUserRole' not found")
+	}
+
+	var role string
+	err := p.psql.QueryRow(query, userId).Scan(&role)
+	if err != nil {
+		return "", fmt.Errorf("error while executing get user role request: %w", err)
+	}
+	return role, nil
+}

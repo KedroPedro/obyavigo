@@ -1,0 +1,41 @@
+[environment]
+env = "local" #local dev prod
+templatesDir = "./web/templates/"
+staticDir = "./web/static/"
+
+[server]
+addr = "localhost:443"
+timeout ="5s"
+idle_timeout ="60s"
+
+[logger]
+error_log_path = "./logs/errors.log"
+info_log_path = "./logs/info.log"
+
+[database]
+queriesFile = "./database/queries.json"
+
+
+[database.postgres]
+host = "localhost"
+port = 5432
+user = "postgres"
+password = "kedr"
+dbname = "obyavigo"
+
+[database.mongo]
+host = "127.0.0.1"
+port = 27017
+user = "obyavigo"
+password = "kedr"
+dbname = "obyavigopics"
+timeout = "5s"
+
+[mail]
+username = "obyavigo"
+password = "fiqf bbke aivj wmhn"
+tlsport = 587
+smtpserver = "smtp.gmail.com"
+
+[secure]
+secretkey = "obyavigosuperpupermegasecretkey1"

@@ -1,0 +1,523 @@
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T08:57:28+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:05:19+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:14:59+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:15:41+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:17:27+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:20:25+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:21:08+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:26:46+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:27:17+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:27:17+03:00"}
+{"level":"INFO","message":"encode password","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:27:17+03:00"}
+{"level":"INFO","message":"work with image","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:27:18+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:36:45+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:36:57+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:36:57+03:00"}
+{"level":"INFO","message":"encode password","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:36:57+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:44:41+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:44:42+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:44:42+03:00"}
+{"level":"INFO","message":"encode password","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:44:42+03:00"}
+{"level":"INFO","message":"the end","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:44:43+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:47:24+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:47:24+03:00"}
+{"level":"INFO","message":"encode password","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:47:24+03:00"}
+{"level":"INFO","message":"the end","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:47:25+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:48:10+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:48:10+03:00"}
+{"level":"INFO","message":"encode password","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:48:10+03:00"}
+{"level":"INFO","message":"the end","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:48:11+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T09:49:52+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:49:56+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:49:56+03:00"}
+{"level":"INFO","message":"encode password","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:49:56+03:00"}
+{"level":"INFO","message":"the end","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:49:57+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:51:49+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:51:49+03:00"}
+{"level":"INFO","message":"encode password","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:51:49+03:00"}
+{"level":"INFO","message":"the end","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T09:51:50+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T23:19:25+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:20:09+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:20:09+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T23:24:31+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:24:34+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:24:34+03:00"}
+{"level":"INFO","message":"encode password","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:24:34+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:25:07+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:25:07+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T23:26:34+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:26:36+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:26:36+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:26:44+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:26:44+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:26:48+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:26:48+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:27:00+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:27:00+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T23:28:36+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:28:47+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:28:47+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T23:32:38+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:32:56+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:32:56+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T23:34:20+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:34:28+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:34:28+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-13T23:37:55+03:00"}
+{"level":"INFO","message":"start registration","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:38:03+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-13T23:38:03+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-14T11:43:25+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-14T11:44:40+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-14T11:48:18+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-14T11:48:31+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-14T11:59:27+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-14T11:59:30+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-14T12:00:07+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-14T12:01:33+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-14T12:01:43+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-14T12:03:33+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-14T12:03:41+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-15T11:49:17+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T11:51:35+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-15T11:55:35+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-15T11:57:56+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-15T12:01:46+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:01:54+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:01:54+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-15T12:03:08+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:03:13+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:03:13+03:00"}
+{"level":"INFO","message":"3","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:03:13+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:04:00+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:04:00+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-15T12:04:53+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:04:56+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:04:56+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:04:57+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:04:57+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-15T12:05:39+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:05:42+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:05:42+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-15T12:17:17+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:17:45+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:17:58+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:17:58+03:00"}
+{"level":"INFO","message":"3","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:17:58+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:18:10+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:18:10+03:00"}
+{"level":"INFO","message":"3","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:18:10+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:18:27+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-15T12:18:27+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T11:20:01+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:06:01+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:07:14+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:08:07+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:08:07+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:08:59+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:09:23+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:09:23+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:10:04+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:10:15+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:10:36+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:10:50+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:10:50+03:00"}
+{"level":"INFO","message":"3","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:10:50+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:11:56+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:14:16+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:15:05+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:18:03+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:18:15+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:44:22+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:47:25+03:00"}
+{"level":"INFO","message":"M426598z","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:47:31+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:48:26+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:48:52+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:49:13+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:49:13+03:00"}
+{"level":"INFO","message":"3","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:49:13+03:00"}
+{"level":"INFO","message":"M426598z","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:50:54+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:51:18+03:00"}
+{"level":"INFO","message":"M426598z","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:51:25+03:00"}
+{"level":"INFO","message":"$2a$14$urp8M.AOBXI7IMWpiHfEzeW21zB7RAnNErc3PzspMrZQmP9xh8te2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:51:25+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:52:54+03:00"}
+{"level":"INFO","message":"M426598z","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:52:58+03:00"}
+{"level":"INFO","message":"$2a$14$urp8M.AOBXI7IMWpiHfEzeW21zB7RAnNErc3PzspMrZQmP9xh8te2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:52:58+03:00"}
+{"level":"INFO","message":"$2a$14$NGqq0I1oitoAjLqBocCr6ukt7d/NOibdODh1JPdZ9gnVWd0uaXIWW","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:52:59+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:53:55+03:00"}
+{"level":"INFO","message":"M426598z","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:54:01+03:00"}
+{"level":"INFO","message":"$2a$14$urp8M.AOBXI7IMWpiHfEzeW21zB7RAnNErc3PzspMrZQmP9xh8te2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:54:01+03:00"}
+{"level":"INFO","message":"$2a$14$sveqVnANSU97YoXM9CiUwexGm43XD3uyEepU1QIuMazKTTlg.I6R.","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:54:02+03:00"}
+{"level":"INFO","message":"M426598z","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:54:06+03:00"}
+{"level":"INFO","message":"$2a$14$urp8M.AOBXI7IMWpiHfEzeW21zB7RAnNErc3PzspMrZQmP9xh8te2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:54:06+03:00"}
+{"level":"INFO","message":"$2a$14$ElPHCyanNaSuYn7VHGeBOeBSNOHQlqzm18aI7hwwKwjvc8F0vvH6i","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:54:06+03:00"}
+{"level":"INFO","message":"M426598z","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:54:10+03:00"}
+{"level":"INFO","message":"$2a$14$urp8M.AOBXI7IMWpiHfEzeW21zB7RAnNErc3PzspMrZQmP9xh8te2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:54:10+03:00"}
+{"level":"INFO","message":"$2a$14$FODegJ.tVTUgMw1ax2opQu4HWCrUOV0ZVT4bZc4kZodXlBQRCcQTu","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:54:11+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:57:35+03:00"}
+{"level":"INFO","message":"пароль не верен","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:57:44+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T12:58:30+03:00"}
+{"level":"INFO","message":"crypto/bcrypt: hashedPassword is not the hash of the given password","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/secure/password.go","time":"2025-10-16T12:58:34+03:00"}
+{"level":"INFO","message":"пароль не верен","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T12:58:34+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T13:00:07+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:00:57+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:01:15+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:01:15+03:00"}
+{"level":"INFO","message":"3","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:01:15+03:00"}
+{"level":"INFO","message":"пароль не верен","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:01:28+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T13:07:48+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:07:55+03:00"}
+{"level":"INFO","message":"all okey","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:07:56+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T13:08:39+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:08:53+03:00"}
+{"level":"INFO","message":"all okey","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:08:55+03:00"}
+{"level":"INFO","message":"","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:08:55+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-16T13:14:00+03:00"}
+{"level":"INFO","message":"decoding body","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:14:06+03:00"}
+{"level":"INFO","message":"all okey","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:14:07+03:00"}
+{"level":"INFO","message":"M426598z","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:14:07+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:14:34+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:14:34+03:00"}
+{"level":"INFO","message":"3","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-16T13:14:34+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T08:49:33+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T08:50:47+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T08:51:54+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T08:52:20+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T08:55:55+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T08:59:07+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:40:48+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:41:10+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:43:29+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:44:48+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:46:39+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:47:48+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:50:17+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:51:44+03:00"}
+{"level":"INFO","message":"","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-18T21:51:46+03:00"}
+{"level":"INFO","message":"","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-18T21:51:57+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:52:54+03:00"}
+{"level":"INFO","message":"33f3a54c-f16d-4083-b93f-e337690b6832","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/middlewares.go","time":"2025-10-18T21:52:59+03:00"}
+{"level":"INFO","message":"","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-18T21:52:59+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T21:53:34+03:00"}
+{"level":"INFO","message":"33f3a54c-f16d-4083-b93f-e337690b6832","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/middlewares.go","time":"2025-10-18T21:53:36+03:00"}
+{"level":"INFO","message":"33f3a54c-f16d-4083-b93f-e337690b6832","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-18T21:53:36+03:00"}
+{"level":"INFO","message":"33f3a54c-f16d-4083-b93f-e337690b6832","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/middlewares.go","time":"2025-10-18T22:09:13+03:00"}
+{"level":"INFO","message":"33f3a54c-f16d-4083-b93f-e337690b6832","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-18T22:09:13+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:07:40+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:14:01+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:14:36+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:15:12+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:15:39+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:17:40+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:18:16+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:18:23+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:18:42+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-18T23:20:45+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:31:25+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:33:24+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:34:56+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:38:27+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:39:18+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:42:00+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:43:08+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:43:09+03:00"}
+{"level":"INFO","message":"Конец","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:43:09+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:43:33+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:43:35+03:00"}
+{"level":"INFO","message":"Конец","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:43:35+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:43:53+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:43:56+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:43:56+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:43:57+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:43:57+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:44:59+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:44:59+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:45:53+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:45:59+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:45:59+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:48:48+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:48:56+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:48:56+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:54:13+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:17+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:17+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:19+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:19+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:19+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:19+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:19+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:19+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:54:20+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:55:37+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:55:39+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:55:39+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:55:40+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:55:40+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:55:40+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:55:40+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:57:07+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:57:11+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:57:11+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:57:13+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:57:13+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:57:19+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:57:19+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:57:39+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:57:39+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T09:58:39+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:58:41+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:58:41+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:58:41+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:58:41+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:58:48+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T09:58:48+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:00:39+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:00:39+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:00:39+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:00:39+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:00:44+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:00:44+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:01:26+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:01:28+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:01:28+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:01:29+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:01:29+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:01:29+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:01:29+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:02:23+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:02:24+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:02:24+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:03:03+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:03:05+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:03:05+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:03:14+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:03:17+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:03:17+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:03:18+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:03:18+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:04:03+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:04:03+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:04:04+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:04:04+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:04:54+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:05:10+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:05:10+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:09:57+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:09:57+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:10:01+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:10:01+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:13:59+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:14:25+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:16:18+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:20:06+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:20:47+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:21:49+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:22:48+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:22:48+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:23:02+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:23:02+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:24:20+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:24:22+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:24:22+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:24:26+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:24:26+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:24:27+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:24:27+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:24:39+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:24:39+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:26:13+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:16+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:16+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:17+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:17+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:18+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:18+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:21+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:21+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:24+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:24+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:25+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:25+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:26+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:26+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:29+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:29+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:31+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:31+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:32+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:32+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:33+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:33+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:33+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:33+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:34+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:34+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:35+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:35+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:35+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:35+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:36+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:36+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:37+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:37+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:37+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:37+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:44+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:44+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:50+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:50+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:52+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:52+03:00"}
+{"level":"INFO","message":"начало","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:56+03:00"}
+{"level":"INFO","message":"Матвей","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T10:26:56+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T10:57:15+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T12:06:44+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T12:08:50+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T12:09:09+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T21:43:38+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T22:11:11+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T22:13:55+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T22:35:50+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T22:37:13+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T22:50:03+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T23:06:55+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T23:13:34+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T23:27:47+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T23:28:18+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T23:28:40+03:00"}
+{"level":"INFO","message":"0","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T23:28:53+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T23:28:53+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T23:31:13+03:00"}
+{"level":"INFO","message":"0","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T23:31:19+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T23:31:19+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-19T23:32:45+03:00"}
+{"level":"INFO","message":"0","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T23:32:48+03:00"}
+{"level":"INFO","message":"1","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T23:32:48+03:00"}
+{"level":"INFO","message":"2","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T23:32:48+03:00"}
+{"level":"INFO","message":"3","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/internal/api/handlers.go","time":"2025-10-19T23:32:48+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:32:36+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:33:07+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:43:04+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:43:13+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:43:24+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:48:36+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:49:36+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:49:59+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:52:30+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:53:03+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:53:03+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:53:12+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:55:22+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:55:22+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:55:30+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:55:30+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:55:34+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:55:51+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:56:23+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:56:49+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:57:04+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:57:04+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:57:11+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:57:19+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:57:29+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:57:34+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-20T23:57:46+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T11:11:45+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T12:05:25+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T12:06:59+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T12:15:44+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T12:24:26+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T12:30:32+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T13:12:21+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T13:12:51+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T13:18:00+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T21:51:40+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T21:59:55+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:09:07+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:29:32+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:30:05+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:30:14+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:33:47+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:35:16+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:35:33+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:37:40+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:38:46+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:39:15+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:40:08+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:40:21+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:40:59+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:40:59+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:41:09+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:41:09+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:41:12+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:41:12+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:41:14+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:41:14+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:42:01+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:42:01+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:42:05+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:42:05+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:42:10+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:42:10+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:43:34+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:43:34+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:47:12+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:48:46+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:49:04+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T22:52:33+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T23:04:54+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T23:05:39+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T23:06:55+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T23:14:44+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-21T23:15:51+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T08:29:28+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T08:34:18+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T08:47:41+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T08:52:09+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T09:09:00+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T09:19:55+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T09:23:30+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T09:28:41+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T09:36:38+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T09:46:34+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T09:51:18+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T09:51:50+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T09:58:10+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:00:04+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:00:33+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:00:48+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:13:06+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:13:47+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:14:28+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:23:00+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:34:15+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:43:55+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:46:30+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:48:20+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:50:58+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T10:52:13+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:20:42+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:22:10+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:22:25+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:22:50+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:22:50+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:25:36+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:25:36+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:26:51+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:36:44+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:37:19+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:37:40+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:38:31+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:38:55+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:41:52+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-22T11:43:04+03:00"}
