@@ -351,17 +351,21 @@
                                     <span>Написать продавцу</span>
                                 </button>
                             </div>
-                            <!-- ДОБАВЛЕНО: данные продавца -->
                             <div class="ad-author" id="adAuthor">
                                 <div class="author-info">
                                     <img
-                                        src=""
+                                        src="/static/pictures/profile.png"
                                         alt="Продавец"
                                         class="author-avatar"
                                     />
                                     <div>
                                         <div class="author-name">
                                             {{.SellerName}}
+                                        </div>
+                                        <div class="author-location">
+                                            📍 {{if
+                                            .SellerCity}}{{.SellerCity}}{{else}}Город
+                                            не указан{{end}}
                                         </div>
                                         <div class="author-online">
                                             {{.Online}}
@@ -371,15 +375,26 @@
                                 <div class="author-contacts">
                                     <div class="contact-item">
                                         <span>📞</span>
-                                        <span id="phoneDisplay"
-                                            >Показать телефон</span
-                                        >
+                                        <span id="phoneDisplay">
+                                            {{if .SellerPhone}}
+                                            <span
+                                                class="phone-hidden"
+                                                style="display: none"
+                                                >{{.SellerPhone}}</span
+                                            >
+                                            <span class="phone-placeholder"
+                                                >Показать телефон</span
+                                            >
+                                            {{else}} Телефон не указан {{end}}
+                                        </span>
+                                        {{if .SellerPhone}}
                                         <button
                                             class="show-phone-btn"
                                             id="showPhoneBtn"
                                         >
                                             Показать
                                         </button>
+                                        {{end}}
                                     </div>
                                 </div>
                             </div>

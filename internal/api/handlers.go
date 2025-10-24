@@ -7,6 +7,7 @@ import (
 	"cmd/obyavigo/main.go/internal/models"
 	"cmd/obyavigo/main.go/internal/secure"
 	"html/template"
+	"log/slog"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -38,22 +39,7 @@ func (h *Handlers) GetMainPage() http.Handler {
 				return
 			}
 
-			userID, err := userIDFromCtx(r)
-			if handleError(w, err, http.StatusInternalServerError, "error while trying to get user id from context") {
-				h.tmpl.ExecuteTemplate(w, "index.html", nil)
-				return
-			}
-			username, err := h.db.Psql.GetUserPreviewData(userID)
-			if handleError(w, err, http.StatusInternalServerError, "error while executing get user preview data") {
-				h.tmpl.ExecuteTemplate(w, "index.html", nil)
-				return
-			}
-
-			data := models.UserPreviewPageData{
-				UserName: username,
-			}
-
-			h.tmpl.ExecuteTemplate(w, "index.html", data)
+			h.tmpl.ExecuteTemplate(w, "index.html", nil)
 
 		},
 	)
@@ -68,10 +54,11 @@ func (h *Handlers) GetProfilePage() http.Handler {
 			}
 
 			userID, err := userIDFromCtx(r)
-			if handleError(w, err, http.StatusInternalServerError, "error while trying to get user id from context") {
-				h.tmpl.ExecuteTemplate(w, "profile.html", nil)
+			if err != nil {
+				http.Redirect(w, r, "/auth/", http.StatusPermanentRedirect)
 				return
 			}
+
 			username, err := h.db.Psql.GetUserPreviewData(userID)
 			if handleError(w, err, http.StatusInternalServerError, "error while executing get user preview data") {
 				h.tmpl.ExecuteTemplate(w, "profile.html", nil)
@@ -145,10 +132,6 @@ func (h *Handlers) GetAdsPage() http.Handler {
 func (h *Handlers) GetAdPage() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
-			userID, err := userIDFromCtx(r)
-			if handleError(w, err, http.StatusInternalServerError, "error while trying to get user id from context") {
-				return
-			}
 			token := r.PathValue("token")
 			adID, err := uuid.Parse(token)
 			if err != nil {
@@ -156,19 +139,46 @@ func (h *Handlers) GetAdPage() http.Handler {
 				return
 			}
 
-			data, err := h.db.Psql.GetAdInfo(&adID)
-			if handleError(w, err, http.StatusInternalServerError, "error while trying to get ad data") {
-				return
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				userID = nil
 			}
-			role, err := h.db.Psql.GetUserRole(userID)
-			if handleError(w, err, http.StatusInternalServerError, "error while trying to get user role") {
-				return
+
+			if userID == nil {
+				slog.Info("the guest visited the ad page", slog.String("page_id", adID.String()))
+			} else {
+				slog.Info("the user visited the ad page",
+					slog.String("user_id", userID.String()),
+					slog.String("page_id", adID.String()))
 			}
-			if (*userID != data.UserId && role == "user") && data.Status != "public" {
+			slog.Info("1")
+			adData, err := h.db.Psql.GetAdInfo(&adID)
+
+			if adData == nil || err != nil {
 				h.sendNotFound(w)
 				return
 			}
-			h.tmpl.ExecuteTemplate(w, "ad.html", data)
+			slog.Info("2")
+			role := "user"
+			if userID != nil {
+				role, err = h.db.Psql.GetUserRole(userID)
+				if handleError(w, err, http.StatusInternalServerError, "error while trying to get user role") {
+					return
+				}
+			}
+			slog.Info("3")
+			if userID == nil || (*userID != adData.UserID && role == "user") {
+				if adData.AdStatus != "public" {
+					h.sendNotFound(w)
+					return
+				}
+			}
+			slog.Info("4")
+			err = h.tmpl.ExecuteTemplate(w, "ad.html", adData)
+
+			if handleError(w, err, http.StatusInternalServerError, "template execution error") {
+				return
+			}
 		},
 	)
 }

@@ -24,3 +24,18 @@ type AdTemplate struct {
 	Status         string     `json:"status"`
 	ViewsCount     int        `json:"viewsCount"`
 }
+
+type AdPage struct {
+	UserID      uuid.UUID
+	AdStatus    string
+	Title       string
+	Price       float32
+	CreatedAt   time.Time
+	ViewsCount  int
+	Condition   string
+	Description string
+	SellerName  string
+	Online      string
+	SellerPhone string
+	SellerCity  string
+}

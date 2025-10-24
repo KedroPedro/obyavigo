@@ -478,7 +478,10 @@ document
       "desc",
       document.getElementById("adDescription").value.trim(),
     );
-    formData.append("price", document.getElementById("adPrice").value.trim());
+    formData.append(
+      "price",
+      Number(document.getElementById("adPrice").value.trim()) * 100,
+    );
     formData.append("phone", document.getElementById("adPhone").value.trim());
     // Если нужно condition (с опечаткой "codition" — исправьте на сервере!)
     formData.append("codition", "used"); // или "new"

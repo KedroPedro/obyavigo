@@ -244,28 +244,31 @@ func (p *Postgres) InsertImages(userId *uuid.UUID, adId *uuid.UUID, ids []string
 	return nil
 }
 
-func (p *Postgres) GetAdInfo(adId *uuid.UUID) (*models.AdTemplate, error) {
+func (p *Postgres) GetAdInfo(adId *uuid.UUID) (*models.AdPage, error) {
 	query, ok := p.q["GetAdInfo"]
 	if !ok {
 		return nil, fmt.Errorf("request 'GetAdInfo' not found")
 	}
-	var data models.AdTemplate
+	var data models.AdPage
+	loc := make([]string, 4)
 	err := p.psql.QueryRow(query, adId).Scan(
-		&data.AdId,
-		&data.UserId,
-		&data.CategoryId,
 		&data.Title,
-		&data.Description,
 		&data.Price,
-		&data.LocationId,
-		&data.Condition,
-		&data.Status,
 		&data.CreatedAt,
-		&data.UpdatedAt,
-		&data.ExpirationDate,
 		&data.ViewsCount,
-		&data.ContactPhone,
+		&data.Condition,
+		&data.Description,
+		&data.AdStatus,
+		&data.SellerName,
+		&data.Online,
+		&data.UserID,
+		&loc[0],
+		&loc[1],
+		&loc[2],
+		&loc[3],
 	)
+	data.SellerCity = strings.Join(loc, " ")
+	data.Price /= 100
 	if err != nil {
 		return nil, fmt.Errorf("error while executing get ad info request: %w", err)
 	}

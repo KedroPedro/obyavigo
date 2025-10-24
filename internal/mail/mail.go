@@ -56,7 +56,7 @@ func (m *Mail) SendRegConfirm(email string) (string, error) {
 
 	msg.Subject("Подтверждение регистрации аккаунта - Obyavigo")
 	msg.SetBodyString(mail.TypeTextPlain,
-		"Перейдите по этой ссылке для подтверждения регистрации: https://localhost:8080/api/auth/confirm-email/"+cipheredMail+"/")
+		"Перейдите по этой ссылке для подтверждения регистрации: https://localhost:443/api/auth/confirm-email/"+cipheredMail+"/")
 
 	if err := m.client.DialAndSend(msg); err != nil {
 		return "", fmt.Errorf("failed to send mail: %w", err)
