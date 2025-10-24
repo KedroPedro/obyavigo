@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict ySCLk4E9WGuWsTPduV3RdMengV0TEuN8d4zCu8MPPXrLepLLfLoVwAMFfA9XSEY
+\restrict md6TKt5jqYzxhYLNThZFy1FQVR0zFppinslurCJNA8oyOgz06JoE1wpY2lZRg3F
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -253,7 +253,6 @@ COPY site.complaints (id, complainant_id, listing_id, target_user_id, complaint_
 --
 
 COPY site.email_confirmations (id, user_id, token, created_at, expires_at, confirmed, confirmed_at) FROM stdin;
-674317ad-4404-4c0d-9f0d-fe4d933f4c99	33f3a54c-f16d-4083-b93f-e337690b6832	\N	2025-10-16 13:14:08.966193+03	2025-10-17 13:14:08.966193+03	t	2025-10-16 13:14:34.213674+03
 \.
 
 
@@ -262,13 +261,6 @@ COPY site.email_confirmations (id, user_id, token, created_at, expires_at, confi
 --
 
 COPY site.listing_images (id, listing_id, image_id, "position", uploaded_at) FROM stdin;
-6fbf1dcb-e120-4b42-b10f-687a90d59a35	13e489ba-1bce-42d3-853b-2dc43dcc4742	375d2c9d-feac-4dcc-9f91-35b6c6ce90dd	0	2025-10-19 22:37:31.683016+03
-e0d7456d-25b0-4aec-b9a0-e82002fb9d80	0bb470fa-add4-405c-932e-9f7dfc5f5231	c44bc17d-faac-40e4-8e7a-8809e64e26d9	0	2025-10-19 22:37:58.876546+03
-84032394-c8cf-4691-9ba1-2bec22f1bf82	bc8065f5-8064-48d8-b5ea-7365a5038417	cf62328f-0699-45b7-a744-c8e35d746fbf	0	2025-10-19 22:38:22.111619+03
-7534fcbd-dd5e-4755-b3c7-12dcb87a4dbc	139d1035-ccd2-43e4-a3f6-edc0d8df6a4e	686bcd8f-6977-47d4-bc3d-c0a2733db458	0	2025-10-19 22:39:08.955346+03
-074aa1b2-9152-4f60-aa34-00529b492744	496a0bd6-2328-40c5-836b-7e7790d3dcb2	0cbdec66-a748-41a3-8530-9159d53f5dfb	0	2025-10-19 22:50:23.654176+03
-36211bdd-689e-4eda-9280-aa7f2c50eaa0	d0967b7e-7a6e-4b71-bcef-64668ce4aed8	4914def5-b263-4a82-92da-81f3cc797fa6	0	2025-10-19 22:51:13.568023+03
-fc117f0e-b9fe-4d60-b05f-fb660897d12d	ad9714b7-2605-4c25-bc4a-caea9739dca9	39316521-7625-4a4d-b19f-61c0509c3f79	0	2025-10-19 23:06:58.35211+03
 \.
 
 
@@ -277,7 +269,6 @@ fc117f0e-b9fe-4d60-b05f-fb660897d12d	ad9714b7-2605-4c25-bc4a-caea9739dca9	393165
 --
 
 COPY site.listings (id, user_id, category_id, title, description, price, location_id, condition, status, created_at, updated_at, expiration_date, views_count, contact_phone) FROM stdin;
-ad9714b7-2605-4c25-bc4a-caea9739dca9	33f3a54c-f16d-4083-b93f-e337690b6832	d2f664ce-6e70-4c05-ba7b-a2606ea75f55	asdfasdf	fdsafdsafdsafdsafdsafdsafdsafdsfdsfdsafdsaf	123	6901ae4e-26cc-4806-ae1d-b4f47d320c50		moderation	2025-10-19 23:06:58.341039+03	\N	\N	0	+375291110235
 \.
 
 
@@ -332,7 +323,6 @@ COPY site.messages (id, sender_id, receiver_id, listing_id, message_text, create
 --
 
 COPY site.users (id, username, email, password_hash, role, status, phone_number, registration_date, last_login, profile_picture_id, bio, settings) FROM stdin;
-33f3a54c-f16d-4083-b93f-e337690b6832	Матвей	zyazyulyam@bk.ru	$2a$14$XPtlkzSAPS6nOeZdE4qvLeKs2kH/nN17ba5yJNtVy5aCgva3gmCci	user	online	\N	2025-10-16 13:14:07.694417+03	\N	\N	\N	"{}"
 \.
 
 
@@ -441,14 +431,6 @@ ALTER TABLE ONLY site.messages
 
 
 --
--- Name: users uniq; Type: CONSTRAINT; Schema: site; Owner: postgres
---
-
-ALTER TABLE ONLY site.users
-    ADD CONSTRAINT uniq UNIQUE (id, username, email);
-
-
---
 -- Name: complaints uniqcomplaints; Type: CONSTRAINT; Schema: site; Owner: postgres
 --
 
@@ -465,6 +447,30 @@ ALTER TABLE ONLY site.users
 
 
 --
+-- Name: categories categories_categories_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.categories
+    ADD CONSTRAINT categories_categories_fk FOREIGN KEY (parent_id) REFERENCES site.categories(id);
+
+
+--
+-- Name: complaints complaints_listings_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.complaints
+    ADD CONSTRAINT complaints_listings_fk FOREIGN KEY (listing_id) REFERENCES site.listings(id) ON DELETE CASCADE;
+
+
+--
+-- Name: complaints complaints_users_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.complaints
+    ADD CONSTRAINT complaints_users_fk FOREIGN KEY (complainant_id) REFERENCES site.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: email_confirmations fk_email_confirmation_user; Type: FK CONSTRAINT; Schema: site; Owner: postgres
 --
 
@@ -473,8 +479,64 @@ ALTER TABLE ONLY site.email_confirmations
 
 
 --
+-- Name: listing_images listing_images_listings_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.listing_images
+    ADD CONSTRAINT listing_images_listings_fk FOREIGN KEY (listing_id) REFERENCES site.listings(id);
+
+
+--
+-- Name: listings listings_categories_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.listings
+    ADD CONSTRAINT listings_categories_fk FOREIGN KEY (category_id) REFERENCES site.categories(id);
+
+
+--
+-- Name: listings listings_locations_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.listings
+    ADD CONSTRAINT listings_locations_fk FOREIGN KEY (location_id) REFERENCES site.locations(id);
+
+
+--
+-- Name: listings listings_users_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.listings
+    ADD CONSTRAINT listings_users_fk FOREIGN KEY (user_id) REFERENCES site.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: messages messages_listings_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.messages
+    ADD CONSTRAINT messages_listings_fk FOREIGN KEY (listing_id) REFERENCES site.listings(id);
+
+
+--
+-- Name: messages messages_users_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.messages
+    ADD CONSTRAINT messages_users_fk FOREIGN KEY (sender_id) REFERENCES site.users(id);
+
+
+--
+-- Name: messages receiver_users_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.messages
+    ADD CONSTRAINT receiver_users_fk FOREIGN KEY (receiver_id) REFERENCES site.categories(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ySCLk4E9WGuWsTPduV3RdMengV0TEuN8d4zCu8MPPXrLepLLfLoVwAMFfA9XSEY
+\unrestrict md6TKt5jqYzxhYLNThZFy1FQVR0zFppinslurCJNA8oyOgz06JoE1wpY2lZRg3F
 

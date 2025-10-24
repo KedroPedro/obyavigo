@@ -11,6 +11,6 @@
   "CreateAd": "INSERT INTO site.listings (user_id, category_id, title, description, price, location_id, condition, contact_phone) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id;",
   "GetCreateAdDependencies": "SELECT (SELECT id FROM site.categories WHERE name = $1) AS category_id, (SELECT id FROM site.locations WHERE city = $2) AS location_id;",
   "InsertImage": "INSERT INTO site.listing_images (listing_id, image_id, position) VALUES %s;",
-  "GetAdInfo": "SELECT * FROM site.listings WHERE id = $1;",
+  "GetAdInfo": "SELECT l.title, l.price, l.created_at, l.views_count, l.condition, l.description,l.status, u.username, u.status, u.id, loc.country ,loc.region ,loc.city ,loc.postal_code FROM site.listings l LEFT JOIN site.users u ON u.id = l.user_id LEFT JOIN site.locations loc ON loc.id = l.location_id WHERE l.id = $1;",
   "GetUserRole": "SELECT role FROM site.users WHERE id = $1;"
 }
