@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Мой профиль — Obyavigo</title>
+        <title>{{.Username}} — Obyavigo</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -323,7 +323,7 @@
                                 />
                             </div>
                             <h2 class="profile-name" id="profileName">
-                                {{.UserName}}
+                                {{.Username}}
                             </h2>
                             <p class="profile-email" id="profileEmail">—</p>
                             <div class="profile-status online">online</div>
@@ -353,7 +353,7 @@
                                     <input
                                         type="text"
                                         id="userName"
-                                        value="{{.UserName}}"
+                                        value="{{.Username}}"
                                         placeholder="Ваше имя"
                                         required
                                     />
@@ -368,6 +368,7 @@
                                         type="email"
                                         id="userEmail"
                                         placeholder="Email"
+                                        value="{{.Email}}"
                                         readonly
                                     />
                                     <p class="help-text">
@@ -380,6 +381,7 @@
                                         type="tel"
                                         id="userPhone"
                                         placeholder="+375 (29) 123-45-67"
+                                        value="{{.PhoneNumber}}"
                                     />
                                     <div
                                         class="error-message"
@@ -456,6 +458,13 @@
                                     id="deleteAccountBtn"
                                 >
                                     Удалить аккаунт
+                                </button>
+                                <button
+                                    type="button"
+                                    class="delete-account-btn"
+                                    id="logoutBtn"
+                                >
+                                    Выйти из аккаунта
                                 </button>
                             </div>
                         </div>

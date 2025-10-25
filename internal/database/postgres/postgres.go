@@ -42,21 +42,6 @@ func (p *Postgres) Ping() error {
 	return nil
 }
 
-func (p *Postgres) GetUserPreviewData(id *uuid.UUID) (string, error) {
-	query, ok := p.q["GetUserPreviewData"]
-	if !ok {
-		return "", fmt.Errorf("request 'GetUserPreviewData' not found")
-	}
-
-	var username string
-	err := p.psql.QueryRow(query, id).Scan(&username)
-	if err != nil {
-		return "", fmt.Errorf("error while executing get user previes data request")
-	}
-
-	return username, nil
-}
-
 func (p *Postgres) CreateNewUser(u *models.User) (*uuid.UUID, error) {
 	query, ok := p.q["CreateNewUser"]
 	if !ok {
@@ -287,4 +272,20 @@ func (p *Postgres) GetUserRole(userId *uuid.UUID) (string, error) {
 		return "", fmt.Errorf("error while executing get user role request: %w", err)
 	}
 	return role, nil
+}
+
+func (p *Postgres) GetUserData(userId *uuid.UUID) (*models.UserData, error) {
+	query, ok := p.q["GetUserData"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetUserData' not found")
+	}
+
+	var data models.UserData
+	p.psql.QueryRow(query, userId).Scan(
+		&data.Username,
+		&data.Email,
+		&data.PhoneNumber,
+		&data.Settings,
+	)
+	return &data, nil
 }

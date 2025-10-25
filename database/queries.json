@@ -1,5 +1,4 @@
 {
-  "GetUserPreviewData": "SELECT username FROM site.users WHERE id = $1;",
   "CreateNewUser": "INSERT INTO site.users (username, email, password_hash, role, status, phone_number, registration_date, last_login, profile_picture_id, bio, settings) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id;",
   "CheckEmail": "SELECT EXISTS (SELECT 1 FROM site.users WHERE email=$1 LIMIT 1);",
   "CreateEmailConfirmation": "INSERT INTO site.email_confirmations (user_id, token) VALUES($1, $2);",
@@ -12,5 +11,6 @@
   "GetCreateAdDependencies": "SELECT (SELECT id FROM site.categories WHERE name = $1) AS category_id, (SELECT id FROM site.locations WHERE city = $2) AS location_id;",
   "InsertImage": "INSERT INTO site.listing_images (listing_id, image_id, position) VALUES %s;",
   "GetAdInfo": "SELECT l.title, l.price, l.created_at, l.views_count, l.condition, l.description,l.status, u.username, u.status, u.id, loc.country ,loc.region ,loc.city ,loc.postal_code FROM site.listings l LEFT JOIN site.users u ON u.id = l.user_id LEFT JOIN site.locations loc ON loc.id = l.location_id WHERE l.id = $1;",
-  "GetUserRole": "SELECT role FROM site.users WHERE id = $1;"
+  "GetUserRole": "SELECT role FROM site.users WHERE id = $1;",
+  "GetUserData": "SELECT username, email, phone_number, settings FROM site.users WHERE id = $1"
 }

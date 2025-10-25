@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
@@ -31,4 +32,11 @@ type AuhtInfo struct {
 	Id           uuid.UUID `db:"id" json:"id"`
 	PasswordHash string    `db:"password_hash" json:"password_hash"`
 	Confirmed    bool      `db:"confirmed" json:"confirmed"`
+}
+
+type UserData struct {
+	Username    string
+	Email       string
+	PhoneNumber string
+	Settings    json.RawMessage
 }

@@ -4,11 +4,11 @@ import (
 	"cmd/obyavigo/main.go/internal/config"
 	"cmd/obyavigo/main.go/internal/database"
 	"cmd/obyavigo/main.go/internal/mail"
-	"cmd/obyavigo/main.go/internal/models"
 	"cmd/obyavigo/main.go/internal/secure"
 	"html/template"
 	"log/slog"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -59,17 +59,13 @@ func (h *Handlers) GetProfilePage() http.Handler {
 				return
 			}
 
-			username, err := h.db.Psql.GetUserPreviewData(userID)
+			userData, err := h.db.Psql.GetUserData(userID)
 			if handleError(w, err, http.StatusInternalServerError, "error while executing get user preview data") {
 				h.tmpl.ExecuteTemplate(w, "profile.html", nil)
 				return
 			}
 
-			data := models.UserPreviewPageData{
-				UserName: username,
-			}
-
-			err = h.tmpl.ExecuteTemplate(w, "profile.html", data)
+			err = h.tmpl.ExecuteTemplate(w, "profile.html", userData)
 			if handleError(w, err, http.StatusInternalServerError, "error while trying to send profile page") {
 				h.sendNotFound(w)
 			}
@@ -151,14 +147,12 @@ func (h *Handlers) GetAdPage() http.Handler {
 					slog.String("user_id", userID.String()),
 					slog.String("page_id", adID.String()))
 			}
-			slog.Info("1")
 			adData, err := h.db.Psql.GetAdInfo(&adID)
 
 			if adData == nil || err != nil {
 				h.sendNotFound(w)
 				return
 			}
-			slog.Info("2")
 			role := "user"
 			if userID != nil {
 				role, err = h.db.Psql.GetUserRole(userID)
@@ -166,19 +160,34 @@ func (h *Handlers) GetAdPage() http.Handler {
 					return
 				}
 			}
-			slog.Info("3")
 			if userID == nil || (*userID != adData.UserID && role == "user") {
 				if adData.AdStatus != "public" {
 					h.sendNotFound(w)
 					return
 				}
 			}
-			slog.Info("4")
 			err = h.tmpl.ExecuteTemplate(w, "ad.html", adData)
 
 			if handleError(w, err, http.StatusInternalServerError, "template execution error") {
 				return
 			}
+		},
+	)
+}
+
+func (h *Handlers) UserLogout() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			http.SetCookie(w, &http.Cookie{
+				Name:     "auth_token",
+				Value:    "",
+				Path:     "/",
+				Expires:  time.Unix(0, 0),
+				MaxAge:   -1,
+				HttpOnly: true,
+				Secure:   true,
+			})
+			w.WriteHeader(http.StatusOK)
 		},
 	)
 }

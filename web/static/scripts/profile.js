@@ -348,3 +348,31 @@ document.getElementById("deleteAccountBtn")?.addEventListener("click", () => {
     window.location.href = "/auth.html";
   }
 });
+
+function deleteAllCookies() {
+  document.cookie.split(";").forEach((cookie) => {
+    const eqPos = cookie.indexOf("=");
+    const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+    document.cookie = name + "=; Max-Age=-1; path=/;";
+  });
+}
+
+document.getElementById("logoutBtn").onclick = async () => {
+  try {
+    const response = await fetch("/api/logout/", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      window.location.href = "/auth/";
+    } else {
+      alert("Ошибка выхода из аккаунта");
+    }
+  } catch (e) {
+    console.error("Ошибка запроса выхода", e);
+  }
+};

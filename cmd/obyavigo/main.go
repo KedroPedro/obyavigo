@@ -44,6 +44,7 @@ func main() {
 	mux.Handle("POST /api/auth/register/", handler.RegistrationHandler())
 	mux.Handle("POST /api/auth/login/", handler.AuthMiddleware(handler.AuthorizationHandler()))
 	mux.Handle("POST /api/create-ad/", handler.AuthMiddleware(handler.CreateAd()))
+	mux.Handle("POST /api/logout/", handler.UserLogout())
 	mux.Handle("GET /api/auth/confirm-email/{token}/", handler.ConfirmRegistrationHandler())
 	mux.Handle("GET /", handler.AuthMiddleware(handler.GetMainPage()))
 	mux.Handle("GET /profile/", handler.AuthMiddleware(handler.GetProfilePage()))
