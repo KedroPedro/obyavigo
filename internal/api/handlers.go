@@ -4,10 +4,12 @@ import (
 	"cmd/obyavigo/main.go/internal/config"
 	"cmd/obyavigo/main.go/internal/database"
 	"cmd/obyavigo/main.go/internal/mail"
+	"cmd/obyavigo/main.go/internal/models"
 	"cmd/obyavigo/main.go/internal/secure"
 	"html/template"
 	"log/slog"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -80,7 +82,27 @@ func (h *Handlers) GetMessagesPage() http.Handler {
 				h.sendNotFound(w)
 				return
 			}
-			h.tmpl.ExecuteTemplate(w, "messages.html", nil)
+
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				http.Redirect(w, r, "/auth/", http.StatusPermanentRedirect)
+				return
+			}
+
+			// Get user chats
+			chats, err := h.db.Psql.GetUserChats(userID)
+			if handleError(w, err, http.StatusInternalServerError, "error while getting user chats") {
+				return
+			}
+
+			data := models.MessagesPageData{
+				Chats: chats,
+			}
+
+			err = h.tmpl.ExecuteTemplate(w, "messages.html", data)
+			if handleError(w, err, http.StatusInternalServerError, "error while executing messages template") {
+				h.sendNotFound(w)
+			}
 		},
 	)
 }
@@ -120,7 +142,40 @@ func (h *Handlers) GetAdsPage() http.Handler {
 				h.sendNotFound(w)
 				return
 			}
-			h.tmpl.ExecuteTemplate(w, "ads.html", nil)
+
+			// Get query parameters for pagination
+			page := 1
+			limit := 20
+			if p := r.URL.Query().Get("page"); p != "" {
+				if parsedPage, err := strconv.Atoi(p); err == nil && parsedPage > 0 {
+					page = parsedPage
+				}
+			}
+
+			offset := (page - 1) * limit
+
+			// Get ads data
+			ads, err := h.db.Psql.GetAdsList(limit, offset)
+			if handleError(w, err, http.StatusInternalServerError, "error while getting ads list") {
+				return
+			}
+
+			totalCount, err := h.db.Psql.GetAdsCount()
+			if handleError(w, err, http.StatusInternalServerError, "error while getting ads count") {
+				return
+			}
+
+			data := models.AdsPageData{
+				Ads:        ads,
+				TotalCount: totalCount,
+				Page:       page,
+				Limit:      limit,
+			}
+
+			err = h.tmpl.ExecuteTemplate(w, "ads.html", data)
+			if handleError(w, err, http.StatusInternalServerError, "error while executing ads template") {
+				h.sendNotFound(w)
+			}
 		},
 	)
 }
@@ -188,6 +243,104 @@ func (h *Handlers) UserLogout() http.Handler {
 				Secure:   true,
 			})
 			w.WriteHeader(http.StatusOK)
+		},
+	)
+}
+
+func (h *Handlers) GetAdminPanelPage() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path != "/admin-panel" && r.URL.Path != "/admin-panel/" {
+				h.sendNotFound(w)
+				return
+			}
+
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				http.Redirect(w, r, "/auth/", http.StatusPermanentRedirect)
+				return
+			}
+
+			role, err := h.db.Psql.GetUserRole(userID)
+			if handleError(w, err, http.StatusInternalServerError, "error while trying to get user role") {
+				return
+			}
+
+			if role != "admin" {
+				h.sendNotFound(w)
+				return
+			}
+
+			// Get admin panel data
+			stats, err := h.db.Psql.GetAdminStats()
+			if handleError(w, err, http.StatusInternalServerError, "error while getting admin stats") {
+				return
+			}
+
+			// Get limited data for each section
+			ads, err := h.db.Psql.GetAllAds(10, 0)
+			if handleError(w, err, http.StatusInternalServerError, "error while getting all ads") {
+				return
+			}
+
+			users, err := h.db.Psql.GetAllUsers(10, 0)
+			if handleError(w, err, http.StatusInternalServerError, "error while getting all users") {
+				return
+			}
+
+			complaints, err := h.db.Psql.GetComplaints(10, 0)
+			if handleError(w, err, http.StatusInternalServerError, "error while getting complaints") {
+				return
+			}
+
+			moderation, err := h.db.Psql.GetModerationAds(10, 0)
+			if handleError(w, err, http.StatusInternalServerError, "error while getting moderation ads") {
+				return
+			}
+
+			data := models.AdminPanelData{
+				Stats:      *stats,
+				Ads:        ads,
+				Users:      users,
+				Complaints: complaints,
+				Moderation: moderation,
+			}
+
+			err = h.tmpl.ExecuteTemplate(w, "admin-panel.html", data)
+			if handleError(w, err, http.StatusInternalServerError, "error while executing admin panel template") {
+				h.sendNotFound(w)
+			}
+		},
+	)
+}
+
+func (h *Handlers) GetLikedAdsPage() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path != "/liked-ads" && r.URL.Path != "/liked-ads/" {
+				h.sendNotFound(w)
+				return
+			}
+
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				http.Redirect(w, r, "/auth/", http.StatusPermanentRedirect)
+				return
+			}
+
+			ads, err := h.db.Psql.GetLikedAds(userID)
+			if handleError(w, err, http.StatusInternalServerError, "error while getting liked ads") {
+				return
+			}
+
+			data := models.LikedAdsPageData{
+				Ads: ads,
+			}
+
+			err = h.tmpl.ExecuteTemplate(w, "liked-ads.html", data)
+			if handleError(w, err, http.StatusInternalServerError, "error while executing liked ads template") {
+				h.sendNotFound(w)
+			}
 		},
 	)
 }

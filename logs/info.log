@@ -90,3 +90,13 @@
 {"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-24T11:25:54+03:00"}
 {"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-24T11:34:41+03:00"}
 {"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-24T11:35:40+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:30:33+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:30:33+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:31:49+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:31:49+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:32:09+03:00"}
+{"level":"INFO","message":"server is stopped","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:32:09+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:32:33+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:37:43+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:43:29+03:00"}
+{"level":"INFO","message":"server is started","source":"/home/kedr/code/github.com/KedroPedro/obyavigo/cmd/obyavigo/main.go","time":"2025-10-25T21:47:34+03:00"}

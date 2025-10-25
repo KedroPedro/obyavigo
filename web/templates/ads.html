@@ -412,17 +412,54 @@
                         <div class="ads-header">
                             <h1>Объявления</h1>
                             <div class="ads-stats">
-                                <span id="adsCount">Найдено: 0 объявлений</span>
+                                <span id="adsCount"
+                                    >Найдено: {{.TotalCount}} объявлений</span
+                                >
                             </div>
                         </div>
 
                         <div class="ads-grid" id="adsGrid">
-                            <div class="skeleton-ad"></div>
-                            <div class="skeleton-ad"></div>
-                            <div class="skeleton-ad"></div>
-                            <div class="skeleton-ad"></div>
-                            <div class="skeleton-ad"></div>
-                            <div class="skeleton-ad"></div>
+                            {{range .Ads}}
+                            <div class="ad-card">
+                                <div class="ad-image">
+                                    <img
+                                        src="/static/pictures/logo.png"
+                                        alt="{{.Title}}"
+                                        loading="lazy"
+                                    />
+                                </div>
+                                <div class="ad-content">
+                                    <h3 class="ad-title">{{.Title}}</h3>
+                                    <p class="ad-description">
+                                        {{.Description}}
+                                    </p>
+                                    <div class="ad-meta">
+                                        <span class="ad-price"
+                                            >{{.Price}} BY</span
+                                        >
+                                        <span class="ad-location"
+                                            >📍 {{.LocationName}}</span
+                                        >
+                                        <span class="ad-category"
+                                            >{{.CategoryName}}</span
+                                        >
+                                    </div>
+                                    <div class="ad-footer">
+                                        <span class="ad-date"
+                                            >{{.CreatedAt.Format
+                                            "02.01.2006"}}</span
+                                        >
+                                        <span class="ad-views"
+                                            >👁️ {{.ViewsCount}}</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            {{else}}
+                            <div class="no-ads">
+                                <p>Объявления не найдены</p>
+                            </div>
+                            {{end}}
                         </div>
 
                         <div class="load-more-section">

@@ -53,6 +53,8 @@ func main() {
 	mux.Handle("GET /auth/", handler.AuthMiddleware(handler.GetAuthPage()))
 	mux.Handle("GET /ads/", handler.AuthMiddleware(handler.GetAdsPage()))
 	mux.Handle("GET /ads/{token}/", handler.AuthMiddleware(handler.GetAdPage()))
+	mux.Handle("GET /admin-panel/", handler.AuthMiddleware(handler.GetAdminPanelPage()))
+	mux.Handle("GET /liked-ads/", handler.AuthMiddleware(handler.GetLikedAdsPage()))
 	mux.Handle("GET /static/", handler.NoDirListing(http.StripPrefix("/static/", fs)))
 
 	go func() {
@@ -73,9 +75,9 @@ func main() {
 		WriteTimeout: cfg.Server.Timeout,
 	}
 
-	log.Info("server is started")
+	slog.Info("server is started")
 	if err := srv.ListenAndServeTLS("./localhost.crt", "./localhost.key"); err != nil {
-		log.Error("error shutdown the server")
+		slog.Error("error shutdown the server", slog.String("error", err.Error()))
 	}
-	log.Info("server is stopped")
+	slog.Info("server is stopped")
 }

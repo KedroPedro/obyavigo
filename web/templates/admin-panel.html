@@ -381,10 +381,24 @@
                                 </tr>
                             </thead>
                             <tbody id="adsTableBody">
-                                <!-- Загружается с бэкенда -->
+                                {{range .Ads}}
                                 <tr>
-                                    <td colspan="7" class="loading">Загрузка...</td>
+                                    <td>{{.AdId}}</td>
+                                    <td>{{.Title}}</td>
+                                    <td>{{.UserId}}</td>
+                                    <td>{{.Price}} BY</td>
+                                    <td>{{.LocationName}}</td>
+                                    <td>{{.Status}}</td>
+                                    <td>
+                                        <button class="btn-primary">Просмотр</button>
+                                        <button class="btn-secondary">Редактировать</button>
+                                    </td>
                                 </tr>
+                                {{else}}
+                                <tr>
+                                    <td colspan="7" class="no-data">Нет данных</td>
+                                </tr>
+                                {{end}}
                             </tbody>
                         </table>
                     </div>
@@ -411,9 +425,24 @@
                                 </tr>
                             </thead>
                             <tbody id="usersTableBody">
+                                {{range .Users}}
                                 <tr>
-                                    <td colspan="7" class="loading">Загрузка...</td>
+                                    <td>{{.ID}}</td>
+                                    <td>{{.Username}}</td>
+                                    <td>{{.Email}}</td>
+                                    <td>{{if .PhoneNumber}}{{.PhoneNumber}}{{else}}—{{end}}</td>
+                                    <td>{{.RegistrationDate.Format "02.01.2006"}}</td>
+                                    <td>{{.Status}}</td>
+                                    <td>
+                                        <button class="btn-primary">Просмотр</button>
+                                        <button class="btn-secondary">Редактировать</button>
+                                    </td>
                                 </tr>
+                                {{else}}
+                                <tr>
+                                    <td colspan="7" class="no-data">Нет данных</td>
+                                </tr>
+                                {{end}}
                             </tbody>
                         </table>
                     </div>
@@ -437,9 +466,22 @@
                                 </tr>
                             </thead>
                             <tbody id="moderationTableBody">
+                                {{range .Moderation}}
                                 <tr>
-                                    <td colspan="5" class="loading">Загрузка...</td>
+                                    <td>{{.AdId}}</td>
+                                    <td>{{.Title}}</td>
+                                    <td>{{.UserId}}</td>
+                                    <td>{{.CreatedAt.Format "02.01.2006"}}</td>
+                                    <td>
+                                        <button class="btn-primary">Одобрить</button>
+                                        <button class="btn-danger">Отклонить</button>
+                                    </td>
                                 </tr>
+                                {{else}}
+                                <tr>
+                                    <td colspan="5" class="no-data">Нет данных</td>
+                                </tr>
+                                {{end}}
                             </tbody>
                         </table>
                     </div>
@@ -460,9 +502,23 @@
                                 </tr>
                             </thead>
                             <tbody id="reportsTableBody">
+                                {{range .Complaints}}
                                 <tr>
-                                    <td colspan="6" class="loading">Загрузка...</td>
+                                    <td>{{.ID}}</td>
+                                    <td>{{if .ListingID}}{{.ListingID}}{{else}}—{{end}}</td>
+                                    <td>{{.ComplaintType}}</td>
+                                    <td>{{.CreatedAt.Format "02.01.2006"}}</td>
+                                    <td>{{.Status}}</td>
+                                    <td>
+                                        <button class="btn-primary">Просмотр</button>
+                                        <button class="btn-secondary">Обработать</button>
+                                    </td>
                                 </tr>
+                                {{else}}
+                                <tr>
+                                    <td colspan="6" class="no-data">Нет данных</td>
+                                </tr>
+                                {{end}}
                             </tbody>
                         </table>
                     </div>
@@ -474,28 +530,28 @@
                         <div class="stat-card">
                             <div class="stat-icon">📋</div>
                             <div class="stat-content">
-                                <div class="stat-value" id="totalAds">—</div>
+                                <div class="stat-value" id="totalAds">{{.Stats.TotalAds}}</div>
                                 <div class="stat-label">Всего объявлений</div>
                             </div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-icon">👥</div>
                             <div class="stat-content">
-                                <div class="stat-value" id="totalUsers">—</div>
+                                <div class="stat-value" id="totalUsers">{{.Stats.TotalUsers}}</div>
                                 <div class="stat-label">Активных пользователей</div>
                             </div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-icon">⚠️</div>
                             <div class="stat-content">
-                                <div class="stat-value" id="pendingReports">—</div>
+                                <div class="stat-value" id="pendingReports">{{.Stats.PendingReports}}</div>
                                 <div class="stat-label">Новых жалоб</div>
                             </div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-icon">🛡️</div>
                             <div class="stat-content">
-                                <div class="stat-value" id="pendingModeration">—</div>
+                                <div class="stat-value" id="pendingModeration">{{.Stats.PendingModeration}}</div>
                                 <div class="stat-label">На модерации</div>
                             </div>
                         </div>
