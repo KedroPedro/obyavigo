@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Объявления — Obyavigo</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/static/styles/style.css" />
+        <link rel="stylesheet" href="/static/styles/ads.css" />
+        <link rel="icon" type="image/png" href="/static/pictures/logo.png" />
+    </head>
+    <body>
+        <div
+            class="search-overlay"
+            id="searchOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="search-title"
+            aria-hidden="true"
+        >
+            <div class="search-modal" id="searchModal">
+                <h2 id="search-title" class="sr-only">Поиск объявлений</h2>
+                <div class="search-input-container">
+                    <label for="searchInput" class="sr-only">Поиск</label>
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="searchInput"
+                        placeholder="Найти автомобиль, телефон, услугу..."
+                        autocomplete="off"
+                    />
+                    <button
+                        class="close-search"
+                        id="closeSearch"
+                        aria-label="Закрыть поиск"
+                    >
+                        ×
+                    </button>
+                </div>
+                <div
+                    class="search-suggestions"
+                    id="searchSuggestions"
+                    role="listbox"
+                    aria-label="Результаты поиска"
+                ></div>
+            </div>
+        </div>
+        <div
+            class="mobile-menu-overlay"
+            id="mobileMenuOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-menu-title"
+            aria-hidden="true"
+        >
+            <div class="mobile-menu">
+                <h2 id="mobile-menu-title" class="sr-only">
+                    Навигационное меню
+                </h2>
+                <button
+                    class="close-mobile-menu"
+                    id="closeMobileMenu"
+                    aria-label="Закрыть меню"
+                >
+                    ×
+                </button>
+                <nav
+                    class="mobile-nav"
+                    role="navigation"
+                    aria-label="Основная навигация"
+                >
+                    <button data-category="services" role="menuitem">
+                        Услуги
+                    </button>
+                    <button data-category="auto" role="menuitem">Авто</button>
+                    <button data-category="realty" role="menuitem">
+                        Недвижимость
+                    </button>
+                    <button data-category="electronics" role="menuitem">
+                        Электроника
+                    </button>
+                    <button data-category="work" role="menuitem">Работа</button>
+                    <button data-category="fashion" role="menuitem">
+                        Мода
+                    </button>
+                    <button data-category="home" role="menuitem">
+                        Для дома
+                    </button>
+                    <button data-category="hobby" role="menuitem">Хобби</button>
+                </nav>
+            </div>
+        </div>
+
+        <div
+            class="chat-overlay"
+            id="chatOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="chat-title"
+            aria-hidden="true"
+        >
+            <div class="chat-container">
+                <div class="chat-sidebar">
+                    <div class="chat-header">
+                        <div class="chat-title-section">
+                            <h3 id="chat-title">Сообщения</h3>
+                            <span
+                                class="unread-count"
+                                aria-label="Непрочитанных сообщений: 0"
+                                >0</span
+                            >
+                        </div>
+                        <button
+                            class="close-chat-btn"
+                            id="closeChatBtn"
+                            aria-label="Закрыть чат"
+                        >
+                            ×
+                        </button>
+                    </div>
+                    <div
+                        class="chat-list"
+                        id="chatList"
+                        role="list"
+                        aria-label="Список сообщений"
+                    >
+                        <div class="no-messages">Нет сообщений</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="loved-overlay"
+            id="lovedOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="loved-title"
+            aria-hidden="true"
+        >
+            <div class="loved-container">
+                <div class="loved-header">
+                    <h3 id="loved-title">Избранные объявления</h3>
+                    <button
+                        class="close-loved-btn"
+                        id="closeLovedBtn"
+                        aria-label="Закрыть избранное"
+                    >
+                        ×
+                    </button>
+                </div>
+                <div
+                    class="loved-list"
+                    id="lovedList"
+                    role="list"
+                    aria-label="Список избранных объявлений"
+                >
+                    <div class="no-loved">
+                        Вы ещё ничего не добавили в избранное
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <header class="header" id="header" role="banner">
+            <div class="header-container">
+                <a
+                    href="/"
+                    class="header-logo-container"
+                    aria-label="Obyavigo - главная страница"
+                >
+                    <img
+                        src="/static/pictures/logo.png"
+                        alt="Obyavigo"
+                        class="header-logo"
+                    />
+                </a>
+
+                <div class="categories-dropdown">
+                    <button
+                        class="categories-btn"
+                        id="categoriesBtn"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-label="Открыть меню категорий"
+                    >
+                        <span>Все категории</span>
+                        <span class="dropdown-arrow" aria-hidden="true">▼</span>
+                    </button>
+                </div>
+
+                <nav
+                    class="main-menu"
+                    role="navigation"
+                    aria-label="Основная навигация"
+                >
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Услуги" />
+                        <button class="menu-btn" type="submit" role="menuitem">
+                            Услуги
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Авто" />
+                        <button class="menu-btn" type="submit" role="menuitem">
+                            Авто
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Недвижимость" />
+                        <button class="menu-btn" type="submit" role="menuitem">
+                            Недвижимость
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input
+                            type="hidden"
+                            name="category"
+                            value="Электроника"
+                        />
+                        <button class="menu-btn" type="submit" role="menuitem">
+                            Электроника
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Работа" />
+                        <button class="menu-btn" type="submit" role="menuitem">
+                            Работа
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Мода" />
+                        <button class="menu-btn" type="submit" role="menuitem">
+                            Мода
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Для дома" />
+                        <button class="menu-btn" type="submit" role="menuitem">
+                            Для дома
+                        </button>
+                    </form>
+                </nav>
+
+                <div
+                    class="user-actions"
+                    role="toolbar"
+                    aria-label="Действия пользователя"
+                >
+                    <button
+                        class="icon-btn search-btn"
+                        aria-label="Открыть поиск"
+                        id="searchBtn"
+                    >
+                        <span class="icon-text" aria-hidden="true">🔍</span>
+                    </button>
+                    <form action="/messages/" method="get">
+                        <button
+                            class="icon-btn messages-btn"
+                            aria-label="Открыть сообщения"
+                            id="messagesBtn"
+                        >
+                            <span class="icon-text" aria-hidden="true">💬</span>
+                        </button>
+                    </form>
+
+                    <form action="/liked-ads/" method="get">
+                        <button
+                            class="icon-btn loved-btn"
+                            aria-label="Открыть избранное"
+                            id="lovedBtn"
+                        >
+                            <span class="icon-text" aria-hidden="true">❤️</span>
+                        </button>
+                    </form>
+                    <form action="/profile/" method="get">
+                        <button
+                            class="icon-btn profile-btn"
+                            aria-label="Открыть профиль"
+                            id="profileBtn"
+                        >
+                            <img
+                                src="/static/pictures/profile.png"
+                                alt="Аватар пользователя"
+                                class="profile-img"
+                            />
+                        </button>
+                    </form>
+                    <button
+                        class="icon-btn theme-toggle-btn"
+                        aria-label="Переключить тему"
+                        id="themeToggleBtn"
+                    >
+                        <span class="theme-icon" aria-hidden="true">🌙</span>
+                    </button>
+                    <button
+                        class="mobile-menu-btn"
+                        aria-label="Открыть мобильное меню"
+                        id="mobileMenuBtn"
+                        aria-expanded="false"
+                    >
+                        ☰
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div
+            class="categories-menu"
+            id="categoriesMenu"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="categories-title"
+            aria-hidden="true"
+        ></div>
+
+        <main class="main-content">
+            <div class="container">
+                <div class="ads-page">
+                    <aside class="filters-sidebar">
+                        <div class="filters-header">
+                            <h3>Фильтры</h3>
+                            <button
+                                class="clear-filters-btn"
+                                id="clearFilters"
+                                type="button"
+                            >
+                                Очистить
+                            </button>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4>Категория</h4>
+                            <select id="categoryFilter" class="filter-select">
+                                <option value="">Все категории</option>
+                                <option value="Авто">Авто</option>
+                                <option value="Недвижимость">Недвижимость</option>
+                                <option value="Электроника">Электроника</option>
+                                <option value="Услуги">Услуги</option>
+                                <option value="Работа">Работа</option>
+                                <option value="Мода">Мода</option>
+                                <option value="Для дома">Для дома</option>
+                                <option value="Хобби">Хобби</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4>Подкатегория</h4>
+                            <select
+                                id="subcategoryFilter"
+                                class="filter-select"
+                                disabled
+                            >
+                                <option value="">Все подкатегории</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4>Регион</h4>
+                            <select id="regionFilter" class="filter-select">
+                                <option value="">Все регионы</option>
+                                <option value="Минская область">
+                                    Минская область
+                                </option>
+                                <option value="Гомельская область">
+                                    Гомельская область
+                                </option>
+                                <option value="Могилёвская область">
+                                    Могилёвская область
+                                </option>
+                                <option value="Витебская область">
+                                    Витебская область
+                                </option>
+                                <option value="Гродненская область">
+                                    Гродненская область
+                                </option>
+                                <option value="Брестская область">
+                                    Брестская область
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4>Город</h4>
+                            <select id="cityFilter" class="filter-select">
+                                <option value="">Все города</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4>Цена</h4>
+                            <div class="price-range">
+                                <input
+                                    type="number"
+                                    id="minPrice"
+                                    placeholder="От"
+                                    class="price-input"
+                                />
+                                <input
+                                    type="number"
+                                    id="maxPrice"
+                                    placeholder="До"
+                                    class="price-input"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4>Состояние</h4>
+                            <label class="filter-checkbox">
+                                <input
+                                    type="checkbox"
+                                    id="newCondition"
+                                    value="new"
+                                />
+                                <span>Новое</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input
+                                    type="checkbox"
+                                    id="usedCondition"
+                                    value="used"
+                                />
+                                <span>Б/у</span>
+                            </label>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4>Сортировка</h4>
+                            <select id="sortFilter" class="filter-select">
+                                <option value="newest">Сначала новые</option>
+                                <option value="oldest">Сначала старые</option>
+                                <option value="price-low">
+                                    Цена: по возрастанию
+                                </option>
+                                <option value="price-high">
+                                    Цена: по убыванию
+                                </option>
+                                <option value="popular">Популярные</option>
+                            </select>
+                        </div>
+
+                        <button
+                            class="apply-filters-btn"
+                            id="applyFilters"
+                            type="button"
+                        >
+                            Применить фильтры
+                        </button>
+                    </aside>
+                    <div class="ads-content">
+                        <div class="ads-header">
+                            <h1>Объявления</h1>
+                            <div class="ads-stats">
+                                <span id="adsCount"
+                                    >Найдено: {{.TotalCount}} объявлений</span
+                                >
+                            </div>
+                        </div>
+
+                        <div class="ads-grid" id="adsGrid">
+                            {{range .Ads}}
+                            <a
+                                href="/ads/{{.AdId}}/"
+                                class="ad-card"
+                                style="text-decoration: none; color: inherit"
+                            >
+                                <div class="ad-image">
+                                    {{if .ImageID}}
+                                    <img
+                                        src="/api/images/{{.ImageID}}/"
+                                        alt="{{.Title}}"
+                                        loading="lazy"
+                                    />
+                                    {{else}}
+                                    <img
+                                        src="/static/pictures/logo.png"
+                                        alt="{{.Title}}"
+                                        loading="lazy"
+                                    />
+                                    {{end}}
+                                </div>
+                                <div class="ad-content">
+                                    <h3 class="ad-title">{{.Title}}</h3>
+                                    <p class="ad-description">
+                                        {{.Description}}
+                                    </p>
+                                    <div class="ad-meta">
+                                        <span class="ad-price"
+                                            >{{.Price}} BYN</span
+                                        >
+                                        <span class="ad-location"
+                                            >📍 {{.LocationName}}</span
+                                        >
+                                        <span class="ad-category"
+                                            >{{.CategoryName}}</span
+                                        >
+                                    </div>
+                                    <div class="ad-footer">
+                                        <span class="ad-date"
+                                            >{{.CreatedAt.Format
+                                            "02.01.2006"}}</span
+                                        >
+                                        <span class="ad-views"
+                                            >👁️ {{.ViewsCount}}</span
+                                        >
+                                    </div>
+                                </div>
+                            </a>
+                            {{else}}
+                            <div class="no-ads">
+                                <p>Объявления не найдены</p>
+                            </div>
+                            {{end}}
+                        </div>
+
+                        <div class="load-more-section">
+                            <button class="load-more-btn" id="loadMoreBtn">
+                                Показать ещё
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Obyavigo</h3>
+                        <p>
+                            Лучшая площадка для размещения объявлений в Беларуси
+                        </p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Категории</h4>
+                        <a href="#">Авто</a>
+                        <a href="#">Недвижимость</a>
+                        <a href="#">Электроника</a>
+                        <a href="#">Услуги</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Помощь</h4>
+                        <a href="#">Как разместить объявление</a>
+                        <a href="#">Правила безопасности</a>
+                        <a href="#">Поддержка</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Контакты</h4>
+                        <p>📧 info@obyavigo.by</p>
+                        <p>📞 +375 (29) 123-45-67</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Obyavigo. Все права защищены.</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="/static/scripts/header.js"></script>
+        <script src="/static/scripts/main.js"></script>
+        <script src="/static/scripts/ads.js"></script>
+    </body>
+</html>

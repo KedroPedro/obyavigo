@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Сообщения — Obyavigo</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/static/styles/style.css" />
+        <link rel="stylesheet" href="/static/styles/messages.css" />
+        <link rel="icon" type="image/png" href="/static/pictures/logo.png" />
+    </head>
+    <body>
+        <div
+            class="search-overlay"
+            id="searchOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="search-title"
+            aria-hidden="true"
+        >
+            <div class="search-modal" id="searchModal">
+                <h2 id="search-title" class="sr-only">Поиск объявлений</h2>
+                <div class="search-input-container">
+                    <label for="searchInput" class="sr-only">Поиск</label>
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="searchInput"
+                        placeholder="Найти автомобиль, телефон, услугу..."
+                        autocomplete="off"
+                    />
+                    <button
+                        class="close-search"
+                        id="closeSearch"
+                        aria-label="Закрыть поиск"
+                    >
+                        ×
+                    </button>
+                </div>
+                <div
+                    class="search-suggestions"
+                    id="searchSuggestions"
+                    role="listbox"
+                    aria-label="Результаты поиска"
+                ></div>
+            </div>
+        </div>
+        <div
+            class="mobile-menu-overlay"
+            id="mobileMenuOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-menu-title"
+            aria-hidden="true"
+        >
+            <div class="mobile-menu">
+                <h2 id="mobile-menu-title" class="sr-only">
+                    Навигационное меню
+                </h2>
+                <button
+                    class="close-mobile-menu"
+                    id="closeMobileMenu"
+                    aria-label="Закрыть меню"
+                >
+                    ×
+                </button>
+                <nav
+                    class="mobile-nav"
+                    role="navigation"
+                    aria-label="Основная навигация"
+                >
+                    <button data-category="services" role="menuitem">
+                        Услуги
+                    </button>
+                    <button data-category="auto" role="menuitem">Авто</button>
+                    <button data-category="realty" role="menuitem">
+                        Недвижимость
+                    </button>
+                    <button data-category="electronics" role="menuitem">
+                        Электроника
+                    </button>
+                    <button data-category="work" role="menuitem">Работа</button>
+                    <button data-category="fashion" role="menuitem">
+                        Мода
+                    </button>
+                    <button data-category="home" role="menuitem">
+                        Для дома
+                    </button>
+                    <button data-category="hobby" role="menuitem">Хобби</button>
+                </nav>
+            </div>
+        </div>
+
+        <div
+            class="chat-overlay"
+            id="chatOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="chat-title"
+            aria-hidden="true"
+        >
+            <div class="chat-container">
+                <div class="chat-sidebar">
+                    <div class="chat-header">
+                        <div class="chat-title-section">
+                            <h3 id="chat-title">Сообщения</h3>
+                            <span
+                                class="unread-count"
+                                aria-label="Непрочитанных сообщений: 0"
+                                >0</span
+                            >
+                        </div>
+                        <button
+                            class="close-chat-btn"
+                            id="closeChatBtn"
+                            aria-label="Закрыть чат"
+                        >
+                            ×
+                        </button>
+                    </div>
+                    <div
+                        class="chat-list"
+                        id="chatList"
+                        role="list"
+                        aria-label="Список сообщений"
+                    >
+                        <div class="no-messages">Нет сообщений</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="loved-overlay"
+            id="lovedOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="loved-title"
+            aria-hidden="true"
+        >
+            <div class="loved-container">
+                <div class="loved-header">
+                    <h3 id="loved-title">Избранные объявления</h3>
+                    <button
+                        class="close-loved-btn"
+                        id="closeLovedBtn"
+                        aria-label="Закрыть избранное"
+                    >
+                        ×
+                    </button>
+                </div>
+                <div
+                    class="loved-list"
+                    id="lovedList"
+                    role="list"
+                    aria-label="Список избранных объявлений"
+                >
+                    <div class="no-loved">
+                        Вы ещё ничего не добавили в избранное
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <header class="header" id="header" role="banner">
+            <div class="header-container">
+                <a
+                    href="/"
+                    class="header-logo-container"
+                    aria-label="Obyavigo - главная страница"
+                >
+                    <img
+                        src="/static/pictures/logo.png"
+                        alt="Obyavigo"
+                        class="header-logo"
+                    />
+                </a>
+
+                <div class="categories-dropdown">
+                    <button
+                        class="categories-btn"
+                        id="categoriesBtn"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-label="Открыть меню категорий"
+                    >
+                        <span>Все категории</span>
+                        <span class="dropdown-arrow" aria-hidden="true">▼</span>
+                    </button>
+                </div>
+
+                <nav
+                    class="main-menu"
+                    role="navigation"
+                    aria-label="Основная навигация"
+                >
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Услуги" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Услуги
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Авто" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Авто
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Недвижимость" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Недвижимость
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Электроника" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Электроника
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Работа" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Работа
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Мода" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Мода
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Для дома" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Для дома
+                        </button>
+                    </form>
+                </nav>
+
+                <div
+                    class="user-actions"
+                    role="toolbar"
+                    aria-label="Действия пользователя"
+                >
+                    <button
+                        class="icon-btn search-btn"
+                        aria-label="Открыть поиск"
+                        id="searchBtn"
+                    >
+                        <span class="icon-text" aria-hidden="true">🔍</span>
+                    </button>
+                    <form action="/messages/" method="get">
+                        <button
+                            class="icon-btn messages-btn"
+                            aria-label="Открыть сообщения"
+                            id="messagesBtn"
+                        >
+                            <span class="icon-text" aria-hidden="true">💬</span>
+                        </button>
+                    </form>
+
+                    <form action="/liked-ads/" method="get">
+                        <button
+                            class="icon-btn loved-btn"
+                            aria-label="Открыть избранное"
+                            id="lovedBtn"
+                        >
+                            <span class="icon-text" aria-hidden="true">❤️</span>
+                        </button>
+                    </form>
+                    <form action="/profile/" method="get">
+                        <button
+                            class="icon-btn profile-btn"
+                            aria-label="Открыть профиль"
+                            id="profileBtn"
+                        >
+                            <img
+                                src="/static/pictures/profile.png"
+                                alt="Аватар пользователя"
+                                class="profile-img"
+                            />
+                        </button>
+                    </form>
+                    <button
+                        class="icon-btn theme-toggle-btn"
+                        aria-label="Переключить тему"
+                        id="themeToggleBtn"
+                    >
+                        <span class="theme-icon" aria-hidden="true">🌙</span>
+                    </button>
+                    <button
+                        class="mobile-menu-btn"
+                        aria-label="Открыть мобильное меню"
+                        id="mobileMenuBtn"
+                        aria-expanded="false"
+                    >
+                        ☰
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div
+            class="categories-menu"
+            id="categoriesMenu"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="categories-title"
+            aria-hidden="true"
+        ></div>
+
+        <main class="main-content">
+            <div class="container">
+                <div class="messages-page">
+                    <aside class="chats-sidebar">
+                        <div class="chats-header">
+                            <h2>Сообщения</h2>
+                            <button
+                                class="new-chat-btn"
+                                id="newChatBtn"
+                                aria-label="Новый чат"
+                            >
+                                +
+                            </button>
+                        </div>
+
+                        <div class="chats-search">
+                            <input
+                                type="text"
+                                id="chatsSearch"
+                                placeholder="Поиск в сообщениях..."
+                                class="chats-search-input"
+                            />
+                        </div>
+
+                        <div class="chats-list" id="chatsList">
+                            {{range .Chats}}
+                            <div class="chat-item">
+                                <div class="chat-avatar">
+                                    <img src="/static/pictures/profile.png" alt="{{.Username}}">
+                                </div>
+                                <div class="chat-info">
+                                    <div class="chat-header">
+                                        <h4 class="chat-name">{{.Username}}</h4>
+                                        <span class="chat-time">{{.LastMessageTime.Format "15:04"}}</span>
+                                    </div>
+                                    <div class="chat-preview">
+                                        <p class="chat-message">{{.LastMessage}}</p>
+                                        {{if .UnreadCount}}
+                                        <span class="unread-badge">{{.UnreadCount}}</span>
+                                        {{end}}
+                                    </div>
+                                </div>
+                            </div>
+                            {{else}}
+                            <div class="no-chats">
+                                <p>У вас пока нет сообщений</p>
+                            </div>
+                            {{end}}
+                        </div>
+                    </aside>
+                    <div class="chat-main">
+                        <div class="chat-placeholder" id="chatPlaceholder">
+                            <div class="placeholder-content">
+                                <div class="placeholder-icon">💬</div>
+                                <h3>Выберите чат</h3>
+                                <p>
+                                    Выберите чат из списка слева, чтобы начать
+                                    переписку
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="chat-window"
+                            id="chatWindow"
+                            style="display: none"
+                        >
+                            <div class="chat-window-header">
+                                <div class="chat-user-info">
+                                    <img
+                                        src=""
+                                        alt=""
+                                        class="chat-user-avatar"
+                                        id="chatUserAvatar"
+                                    />
+                                    <div class="chat-user-details">
+                                        <h3 id="chatUserName">
+                                            Имя пользователя
+                                        </h3>
+                                        <span
+                                            class="chat-user-status"
+                                            id="chatUserStatus"
+                                            >онлайн</span
+                                        >
+                                    </div>
+                                </div>
+                                <div class="chat-actions">
+                                    <button
+                                        class="chat-action-btn"
+                                        id="chatInfoBtn"
+                                        aria-label="Информация о чате"
+                                    >
+                                        ℹ️
+                                    </button>
+                                    <button
+                                        class="chat-action-btn"
+                                        id="chatMoreBtn"
+                                        aria-label="Дополнительно"
+                                    >
+                                        ⋮
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="chat-messages" id="chatMessages"></div>
+
+                            <div class="chat-input-area">
+                                <div class="chat-input-container">
+                                    <button
+                                        class="chat-attach-btn"
+                                        id="chatAttachBtn"
+                                        aria-label="Прикрепить файл"
+                                    >
+                                        📎
+                                    </button>
+                                    <input
+                                        type="text"
+                                        id="chatMessageInput"
+                                        placeholder="Введите сообщение..."
+                                        class="chat-message-input"
+                                    />
+                                    <button
+                                        class="chat-send-btn"
+                                        id="chatSendBtn"
+                                        aria-label="Отправить"
+                                    >
+                                        ➤
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Obyavigo</h3>
+                        <p>
+                            Лучшая площадка для размещения объявлений в Беларуси
+                        </p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Категории</h4>
+                        <a href="#">Авто</a>
+                        <a href="#">Недвижимость</a>
+                        <a href="#">Электроника</a>
+                        <a href="#">Услуги</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Помощь</h4>
+                        <a href="#">Как разместить объявление</a>
+                        <a href="#">Правила безопасности</a>
+                        <a href="#">Поддержка</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Контакты</h4>
+                        <p>📧 info@obyavigo.by</p>
+                        <p>📞 +375 (29) 123-45-67</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Obyavigo. Все права защищены.</p>
+                </div>
+            </div>
+        </footer>
+
+        <script src="/static/scripts/header.js"></script>
+        <script src="/static/scripts/main.js"></script>
+        <script src="/static/scripts/messages.js"></script>
+    </body>
+</html>

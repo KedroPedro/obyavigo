@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Создать объявление — Obyavigo</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/static/styles/style.css" />
+        <link rel="stylesheet" href="/static/styles/create-ad.css" />
+        <link rel="icon" type="image/png" href="/static/pictures/logo.png" />
+    </head>
+    <body>
+        <div
+            class="search-overlay"
+            id="searchOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="search-title"
+            aria-hidden="true"
+        >
+            <div class="search-modal" id="searchModal">
+                <h2 id="search-title" class="sr-only">Поиск объявлений</h2>
+                <div class="search-input-container">
+                    <label for="searchInput" class="sr-only">Поиск</label>
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="searchInput"
+                        placeholder="Найти автомобиль, телефон, услугу..."
+                        autocomplete="off"
+                    />
+                    <button
+                        class="close-search"
+                        id="closeSearch"
+                        aria-label="Закрыть поиск"
+                    >
+                        ×
+                    </button>
+                </div>
+                <div
+                    class="search-suggestions"
+                    id="searchSuggestions"
+                    role="listbox"
+                    aria-label="Результаты поиска"
+                ></div>
+            </div>
+        </div>
+        <div
+            class="mobile-menu-overlay"
+            id="mobileMenuOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-menu-title"
+            aria-hidden="true"
+        >
+            <div class="mobile-menu">
+                <h2 id="mobile-menu-title" class="sr-only">
+                    Навигационное меню
+                </h2>
+                <button
+                    class="close-mobile-menu"
+                    id="closeMobileMenu"
+                    aria-label="Закрыть меню"
+                >
+                    ×
+                </button>
+                <nav
+                    class="mobile-nav"
+                    role="navigation"
+                    aria-label="Основная навигация"
+                >
+                    <button data-category="services" role="menuitem">
+                        Услуги
+                    </button>
+                    <button data-category="auto" role="menuitem">Авто</button>
+                    <button data-category="realty" role="menuitem">
+                        Недвижимость
+                    </button>
+                    <button data-category="electronics" role="menuitem">
+                        Электроника
+                    </button>
+                    <button data-category="work" role="menuitem">Работа</button>
+                    <button data-category="fashion" role="menuitem">
+                        Мода
+                    </button>
+                    <button data-category="home" role="menuitem">
+                        Для дома
+                    </button>
+                    <button data-category="hobby" role="menuitem">Хобби</button>
+                </nav>
+            </div>
+        </div>
+
+        <div
+            class="chat-overlay"
+            id="chatOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="chat-title"
+            aria-hidden="true"
+        >
+            <div class="chat-container">
+                <div class="chat-sidebar">
+                    <div class="chat-header">
+                        <div class="chat-title-section">
+                            <h3 id="chat-title">Сообщения</h3>
+                            <span
+                                class="unread-count"
+                                aria-label="Непрочитанных сообщений: 0"
+                                >0</span
+                            >
+                        </div>
+                        <button
+                            class="close-chat-btn"
+                            id="closeChatBtn"
+                            aria-label="Закрыть чат"
+                        >
+                            ×
+                        </button>
+                    </div>
+                    <div
+                        class="chat-list"
+                        id="chatList"
+                        role="list"
+                        aria-label="Список сообщений"
+                    >
+                        <div class="no-messages">Нет сообщений</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="loved-overlay"
+            id="lovedOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="loved-title"
+            aria-hidden="true"
+        >
+            <div class="loved-container">
+                <div class="loved-header">
+                    <h3 id="loved-title">Избранные объявления</h3>
+                    <button
+                        class="close-loved-btn"
+                        id="closeLovedBtn"
+                        aria-label="Закрыть избранное"
+                    >
+                        ×
+                    </button>
+                </div>
+                <div
+                    class="loved-list"
+                    id="lovedList"
+                    role="list"
+                    aria-label="Список избранных объявлений"
+                >
+                    <div class="no-loved">
+                        Вы ещё ничего не добавили в избранное
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <header class="header" id="header" role="banner">
+            <div class="header-container">
+                <a
+                    href="/"
+                    class="header-logo-container"
+                    aria-label="Obyavigo - главная страница"
+                >
+                    <img
+                        src="/static/pictures/logo.png"
+                        alt="Obyavigo"
+                        class="header-logo"
+                    />
+                </a>
+
+                <div class="categories-dropdown">
+                    <button
+                        class="categories-btn"
+                        id="categoriesBtn"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-label="Открыть меню категорий"
+                    >
+                        <span>Все категории</span>
+                        <span class="dropdown-arrow" aria-hidden="true">▼</span>
+                    </button>
+                </div>
+
+                <nav
+                    class="main-menu"
+                    role="navigation"
+                    aria-label="Основная навигация"
+                >
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Услуги" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Услуги
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Авто" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Авто
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Недвижимость" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Недвижимость
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Электроника" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Электроника
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Работа" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Работа
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Мода" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Мода
+                        </button>
+                    </form>
+                    <form action="/ads/" method="get">
+                        <input type="hidden" name="category" value="Для дома" />
+                        <button
+                            class="menu-btn"
+                            type="submit"
+                            role="menuitem"
+                        >
+                            Для дома
+                        </button>
+                    </form>
+                </nav>
+
+                <div
+                    class="user-actions"
+                    role="toolbar"
+                    aria-label="Действия пользователя"
+                >
+                    <button
+                        class="icon-btn search-btn"
+                        aria-label="Открыть поиск"
+                        id="searchBtn"
+                    >
+                        <span class="icon-text" aria-hidden="true">🔍</span>
+                    </button>
+                    <form action="/messages/" method="get">
+                        <button
+                            class="icon-btn messages-btn"
+                            aria-label="Открыть сообщения"
+                            id="messagesBtn"
+                        >
+                            <span class="icon-text" aria-hidden="true">💬</span>
+                        </button>
+                    </form>
+
+                    <form action="/liked-ads/" method="get">
+                        <button
+                            class="icon-btn loved-btn"
+                            aria-label="Открыть избранное"
+                            id="lovedBtn"
+                        >
+                            <span class="icon-text" aria-hidden="true">❤️</span>
+                        </button>
+                    </form>
+                    <form action="/profile/" method="get">
+                        <button
+                            class="icon-btn profile-btn"
+                            aria-label="Открыть профиль"
+                            id="profileBtn"
+                        >
+                            <img
+                                src="/static/pictures/profile.png"
+                                alt="Аватар пользователя"
+                                class="profile-img"
+                            />
+                        </button>
+                    </form>
+                    <button
+                        class="icon-btn theme-toggle-btn"
+                        aria-label="Переключить тему"
+                        id="themeToggleBtn"
+                    >
+                        <span class="theme-icon" aria-hidden="true">🌙</span>
+                    </button>
+                    <button
+                        class="mobile-menu-btn"
+                        aria-label="Открыть мобильное меню"
+                        id="mobileMenuBtn"
+                        aria-expanded="false"
+                    >
+                        ☰
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div
+            class="categories-menu"
+            id="categoriesMenu"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="categories-title"
+            aria-hidden="true"
+        ></div>
+
+        <main class="main-content">
+            <div class="container">
+                <div class="create-ad-page">
+                    <div class="progress-steps">
+                        <div class="step active" data-step="1">
+                            <div class="step-number">1</div>
+                            <div class="step-label">Категория</div>
+                        </div>
+                        <div class="step" data-step="2">
+                            <div class="step-number">2</div>
+                            <div class="step-label">Детали</div>
+                        </div>
+                        <div class="step" data-step="3">
+                            <div class="step-number">3</div>
+                            <div class="step-label">Контакты</div>
+                        </div>
+                    </div>
+
+                    <form id="createAdForm" class="create-ad-form">
+                        <div class="form-step active" data-step="1">
+                            <h2>Выберите категорию</h2>
+                            <p class="step-description">
+                                Это поможет быстрее найти ваше объявление
+                            </p>
+
+                            <div
+                                class="categories-grid"
+                                id="categoryGrid"
+                            ></div>
+
+                            <div
+                                class="subcategories-section"
+                                id="subcategoriesSection"
+                                style="display: none"
+                            >
+                                <h3>Выберите подкатегорию</h3>
+                                <div
+                                    class="subcategories-grid"
+                                    id="subcategoriesGrid"
+                                ></div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button
+                                    type="button"
+                                    class="btn-secondary"
+                                    disabled
+                                >
+                                    Назад
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn-primary next-btn"
+                                    disabled
+                                >
+                                    Далее
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-step" data-step="2">
+                            <h2>Добавьте детали объявления</h2>
+                            <p class="step-description">
+                                Чем подробнее описание, тем больше откликов
+                            </p>
+
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label
+                                        >Заголовок <span class="required"></span
+                                    ></label>
+                                    <input
+                                        type="text"
+                                        id="adTitle"
+                                        placeholder=""
+                                        maxlength="100"
+                                    />
+                                    <div
+                                        class="error-message"
+                                        id="titleError"
+                                    ></div>
+                                </div>
+                                <div class="form-group half">
+                                    <label
+                                        >Цена (в BYN)
+                                        <span class="required"></span
+                                    ></label>
+                                    <input
+                                        type="number"
+                                        id="adPrice"
+                                        placeholder="0"
+                                        min="0"
+                                    />
+                                    <div
+                                        class="error-message"
+                                        id="priceError"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    >Город
+                                    <span class="required">*</span></label
+                                >
+                                <div class="city-input-wrapper">
+                                    <select id="adCity">
+                                        <option value="">Выберите город</option>
+                                        <option value="minsk">Минск</option>
+                                        <option value="brest">Брест</option>
+                                        <option value="vitebsk">Витебск</option>
+                                        <option value="gomel">Гомель</option>
+                                        <option value="grodno">Гродно</option>
+                                        <option value="mogilev">Могилёв</option>
+                                        <option value="other">
+                                            Другой город
+                                        </option>
+                                    </select>
+                                    <button
+                                        type="button"
+                                        class="btn-auto-detect"
+                                        id="autoDetectCity"
+                                    >
+                                        Авто
+                                    </button>
+                                </div>
+                                <div class="error-message" id="cityError"></div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label
+                                        >Состояние
+                                        <span class="required">*</span></label
+                                    >
+                                    <select id="adCondition">
+                                        <option value="">Выберите состояние</option>
+                                        <option value="new">Новое</option>
+                                        <option value="used">Б/У</option>
+                                    </select>
+                                    <div
+                                        class="error-message"
+                                        id="conditionError"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    >Описание
+                                    <span class="required">*</span></label
+                                >
+                                <textarea
+                                    id="adDescription"
+                                    placeholder="Расскажите подробнее: состояние, комплектация, причина продажи..."
+                                    rows="6"
+                                    maxlength="2000"
+                                ></textarea>
+
+                                <div
+                                    class="error-message"
+                                    id="descriptionError"
+                                ></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Фотографии (до 10 шт.)</label>
+                                <div class="image-upload" id="dropZone">
+                                    <div class="upload-icon">📷</div>
+                                    <p>
+                                        Перетащите фото сюда или
+                                        <span class="browse-link"
+                                            >выберите файлы</span
+                                        >
+                                    </p>
+                                    <input
+                                        type="file"
+                                        id="adImages"
+                                        accept="image/*"
+                                        multiple
+                                    />
+                                </div>
+                                <div
+                                    class="image-preview"
+                                    id="imagePreview"
+                                ></div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button
+                                    type="button"
+                                    class="btn-secondary prev-btn"
+                                >
+                                    Назад
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn-primary next-btn"
+                                >
+                                    Далее
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-step" data-step="3">
+                            <h2>Контактная информация</h2>
+                            <p class="step-description">
+                                Покупатели будут связываться с вами через эти
+                                данные
+                            </p>
+
+                            <div class="form-group">
+                                <label
+                                    >Имя <span class="required">*</span></label
+                                >
+                                <input
+                                    type="text"
+                                    id="adName"
+                                    placeholder="Ваше имя"
+                                    value="example"
+                                />
+                                <div class="error-message" id="nameError"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    >Телефон
+                                    <span class="required">*</span></label
+                                >
+                                <input
+                                    type="tel"
+                                    id="adPhone"
+                                    placeholder="+375 (29) 123-45-67"
+                                />
+                                <div
+                                    class="error-message"
+                                    id="phoneError"
+                                ></div>
+                            </div>
+
+                            <div class="preview-section">
+                                <h3>Предварительный просмотр</h3>
+                                <div class="ad-preview" id="adPreview">
+                                    <div class="preview-image-placeholder">
+                                        📷
+                                    </div>
+                                    <div class="preview-content">
+                                        <h4 id="previewTitle">
+                                            Заголовок объявления
+                                        </h4>
+                                        <p
+                                            id="previewPrice"
+                                            class="preview-price"
+                                        >
+                                            0 руб.
+                                        </p>
+                                        <p
+                                            id="previewCity"
+                                            class="preview-city"
+                                        >
+                                            —
+                                        </p>
+                                        <p
+                                            id="previewDescription"
+                                            class="preview-description"
+                                        >
+                                            Описание...
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-terms">
+                                <label class="checkbox-label">
+                                    <input
+                                        type="checkbox"
+                                        id="agreeRules"
+                                        required
+                                    />Я согласен с
+                                    <a href="#" target="_blank"
+                                        >правилами размещения</a
+                                    >
+                                </label>
+                                <div
+                                    class="error-message"
+                                    id="rulesError"
+                                ></div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button
+                                    type="button"
+                                    class="btn-secondary prev-btn"
+                                >
+                                    Назад
+                                </button>
+                                <button
+                                    type="submit"
+                                    class="btn-primary submit-btn"
+                                >
+                                    Опубликовать объявление
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <script src="/static/scripts/header.js"></script>
+        <script src="/static/scripts/main.js"></script>
+        <script src="/static/scripts/create-ad.js"></script>
+    </body>
+</html>

@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Вход и регистрация на Obyavigo - площадке объявлений в Беларуси"
+        />
+        <meta name="robots" content="noindex, nofollow" />
+        <title>Вход / Регистрация — Obyavigo</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/static/styles/style.css" />
+        <link rel="stylesheet" href="/static/styles/auth.css" />
+        <link rel="icon" type="image/png" href="/static/pictures/logo.png" />
+    </head>
+    <body>
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-logo">
+                    <img
+                        src="/static/pictures/logo.png"
+                        alt="Obyavigo"
+                        width="50"
+                        height="50"
+                    />
+                </div>
+
+                <div
+                    class="auth-toggle"
+                    role="tablist"
+                    aria-label="Выбор типа авторизации"
+                >
+                    <button
+                        id="loginBtn"
+                        class="auth-toggle-btn active"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="loginForm"
+                    >
+                        Вход
+                    </button>
+                    <button
+                        id="registerBtn"
+                        class="auth-toggle-btn"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="registerForm"
+                    >
+                        Регистрация
+                    </button>
+                </div>
+                <form
+                    id="loginForm"
+                    class="auth-form active"
+                    role="tabpanel"
+                    aria-labelledby="loginBtn"
+                    novalidate
+                >
+                    <div class="form-group">
+                        <label for="loginEmail" class="sr-only"
+                            >Email или телефон</label
+                        >
+                        <input
+                            type="text"
+                            id="loginEmail"
+                            placeholder="Email или телефон"
+                            required
+                            autocomplete="username"
+                            aria-describedby="loginEmailError"
+                        />
+                        <div
+                            class="error-message"
+                            id="loginEmailError"
+                            role="alert"
+                            aria-live="polite"
+                        ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword" class="sr-only"
+                            >Пароль</label
+                        >
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Пароль"
+                            required
+                            autocomplete="current-password"
+                            aria-describedby="loginPasswordError"
+                        />
+                        <div
+                            class="error-message"
+                            id="loginPasswordError"
+                            role="alert"
+                            aria-live="polite"
+                        ></div>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input
+                                type="checkbox"
+                                id="rememberMe"
+                                autocomplete="off"
+                            />
+                            Запомнить меня
+                        </label>
+                        <a
+                            href="#"
+                            class="forgot-password"
+                            id="forgotPasswordLink"
+                            >Забыли пароль?</a
+                        >
+                    </div>
+                    <button type="submit" class="auth-submit-btn">Войти</button>
+                </form>
+                <form
+                    id="registerForm"
+                    class="auth-form"
+                    role="tabpanel"
+                    aria-labelledby="registerBtn"
+                    novalidate
+                >
+                    <div class="form-group">
+                        <label for="regName" class="sr-only">Ваше имя</label>
+                        <input
+                            type="text"
+                            id="regName"
+                            placeholder="Ваше имя"
+                            required
+                            autocomplete="name"
+                            aria-describedby="regNameError"
+                        />
+                        <div
+                            class="error-message"
+                            id="regNameError"
+                            role="alert"
+                            aria-live="polite"
+                        ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail" class="sr-only">Email</label>
+                        <input
+                            type="email"
+                            id="regEmail"
+                            placeholder="Email"
+                            required
+                            autocomplete="email"
+                            aria-describedby="regEmailError"
+                        />
+                        <div
+                            class="error-message"
+                            id="regEmailError"
+                            role="alert"
+                            aria-live="polite"
+                        ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword" class="sr-only">Пароль</label>
+                        <input
+                            type="password"
+                            id="regPassword"
+                            placeholder="Пароль"
+                            required
+                            autocomplete="new-password"
+                            aria-describedby="regPasswordError"
+                        />
+                        <div
+                            class="error-message"
+                            id="regPasswordError"
+                            role="alert"
+                            aria-live="polite"
+                        ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPasswordConfirm" class="sr-only"
+                            >Повторите пароль</label
+                        >
+                        <input
+                            type="password"
+                            id="regPasswordConfirm"
+                            placeholder="Повторите пароль"
+                            required
+                            autocomplete="new-password"
+                            aria-describedby="regPasswordConfirmError"
+                        />
+                        <div
+                            class="error-message"
+                            id="regPasswordConfirmError"
+                            role="alert"
+                            aria-live="polite"
+                        ></div>
+                    </div>
+                    <div class="form-terms">
+                        <label class="checkbox-label">
+                            <input
+                                type="checkbox"
+                                id="agreeTerms"
+                                required
+                                aria-describedby="termsText"
+                            />
+                            <span id="termsText"
+                                >Я согласен с
+                                <a href="#" target="_blank" rel="noopener"
+                                    >условиями использования</a
+                                >
+                                и
+                                <a href="#" target="_blank" rel="noopener"
+                                    >политикой конфиденциальности</a
+                                ></span
+                            >
+                        </label>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">
+                        Зарегистрироваться
+                    </button>
+                </form>
+                <form
+                    id="forgotPasswordForm"
+                    class="auth-form"
+                    role="tabpanel"
+                    aria-labelledby="forgotPasswordLink"
+                    novalidate
+                >
+                    <p class="form-info">
+                        Введите email, указанный при регистрации. Мы вышлем
+                        ссылку для восстановления пароля.
+                    </p>
+                    <div class="form-group">
+                        <label for="forgotEmail" class="sr-only"
+                            >Ваш email</label
+                        >
+                        <input
+                            type="email"
+                            id="forgotEmail"
+                            placeholder="Ваш email"
+                            required
+                            autocomplete="email"
+                            aria-describedby="forgotEmailError"
+                        />
+                        <div
+                            class="error-message"
+                            id="forgotEmailError"
+                            role="alert"
+                            aria-live="polite"
+                        ></div>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">
+                        Отправить ссылку
+                    </button>
+                    <button
+                        type="button"
+                        id="backToLoginBtn"
+                        class="auth-back-btn"
+                    >
+                        ← Вернуться ко входу
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Авторизуясь, вы соглашаетесь с правилами площадки</p>
+                </div>
+            </div>
+
+            <button
+                id="themeToggleBtn"
+                class="theme-toggle-btn"
+                aria-label="Переключить тему"
+            >
+                <span class="theme-icon" aria-hidden="true">🌙</span>
+            </button>
+        </div>
+
+        <script src="/static/scripts/auth.js"></script>
+    </body>
+</html>

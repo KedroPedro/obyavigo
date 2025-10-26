@@ -1,0 +1,251 @@
+/* ad.css */
+.ad-page {
+    padding: 20px 0;
+}
+
+.ad-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    box-shadow: var(--shadow);
+    margin-bottom: 40px;
+}
+
+@media (min-width: 769px) {
+    .ad-container {
+        flex-direction: row;
+    }
+}
+
+.ad-gallery {
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.ad-main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    margin-bottom: 15px;
+    transition: opacity 0.3s ease;
+}
+
+.ad-thumbnails {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.ad-thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition);
+}
+
+.ad-thumbnail:hover,
+.ad-thumbnail.active {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.ad-content {
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.ad-price {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 10px 0 20px;
+    font-family: "Nunito", sans-serif;
+}
+
+.ad-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.ad-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.ad-description {
+    margin-bottom: 25px;
+    line-height: 1.7;
+    color: var(--text-color);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.ad-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.favorite-btn,
+.contact-btn {
+    flex: 1;
+    min-width: 180px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-family: "Nunito", sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: var(--transition);
+}
+
+.favorite-btn {
+    background: var(--bg-secondary);
+    color: var(--text-color);
+}
+
+.favorite-btn:hover {
+    background: var(--hover-bg);
+}
+
+.favorite-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.contact-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.contact-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--button-shadow);
+}
+
+.ad-author {
+    background: var(--bg-secondary);
+    padding: 25px;
+    border-radius: var(--radius-lg);
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.author-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.author-name {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+.author-online {
+    color: #4caf50;
+    font-size: 0.9rem;
+}
+
+[data-theme="dark"] .author-online {
+    color: #66bb6a;
+}
+
+.author-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-color);
+}
+
+.show-phone-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.show-phone-btn:hover {
+    background: var(--primary-hover);
+}
+
+/* Loading states */
+.loading-skeleton {
+    background: var(--skeleton-bg);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+@media (max-width: 768px) {
+    .ad-container {
+        padding: 20px;
+    }
+    .ad-main-image {
+        height: 300px;
+    }
+    .ad-price {
+        font-size: 1.8rem;
+    }
+    .ad-actions {
+        flex-direction: column;
+    }
+    .favorite-btn,
+    .contact-btn {
+        min-width: auto;
+        width: 100%;
+    }
+}
