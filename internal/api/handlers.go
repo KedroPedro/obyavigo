@@ -153,6 +153,7 @@ func (h *Handlers) GetAdsPage() http.Handler {
 				Limit:       20,
 				Category:    r.URL.Query().Get("category"),
 				Subcategory: r.URL.Query().Get("subcategory"),
+				Region:      r.URL.Query().Get("region"),
 				Location:    r.URL.Query().Get("location"),
 				Condition:   r.URL.Query().Get("condition"),
 				SearchQuery: r.URL.Query().Get("q"),
@@ -235,7 +236,18 @@ func (h *Handlers) GetAdPage() http.Handler {
 					return
 				}
 			}
-			err = h.tmpl.ExecuteTemplate(w, "ad.html", adData)
+
+			// Форматируем дату
+			type AdPageView struct {
+				models.AdPage
+				FormattedDate string
+			}
+			pageData := AdPageView{
+				AdPage:        *adData,
+				FormattedDate: adData.CreatedAt.Format("02.01.2006"),
+			}
+
+			err = h.tmpl.ExecuteTemplate(w, "ad.html", pageData)
 
 			if handleError(w, err, http.StatusInternalServerError, "template execution error") {
 				return

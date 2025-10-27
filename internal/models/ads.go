@@ -54,6 +54,7 @@ type AdsPageData struct {
 type AdSearchFilters struct {
 	Category    string
 	Subcategory string
+	Region      string
 	Location    string
 	MinPrice    *int
 	MaxPrice    *int

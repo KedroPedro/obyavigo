@@ -284,7 +284,7 @@ class AuthManager {
 
       const result = await response.json();
       if (response.ok) {
-        alert("Вход выполнен успешно!");
+        alert("Вход выполнен успешно");
         window.location.href = "/";
       } else if (response.status === 401) {
         alert("Ошибка: неверный логин или пароль");
@@ -409,7 +409,7 @@ class AuthManager {
       const emailInput = document.getElementById("regEmail");
 
       if (response.ok) {
-        alert("Регистрация успешна!");
+        alert("Регистрация успешна");
         window.location.href = "/";
       } else if (response.status === 409) {
         this.showError("regEmailError", "Ошибка: email уже зарегистрирован");
@@ -453,7 +453,7 @@ class AuthManager {
 
   forgotPassword(email) {
     console.log("Восстановление пароля:", { email });
-    alert("Ссылка для восстановления пароля отправлена на ваш email!");
+    alert("Ссылка для восстановления пароля отправлена на ваш email");
   }
 }
 new AuthManager();

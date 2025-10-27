@@ -1,4 +1,4 @@
-/* ad.css */
+
 .ad-page {
     padding: 20px 0;
 }
@@ -28,23 +28,47 @@
 
 .ad-main-image {
     width: 100%;
-    height: 400px;
-    object-fit: cover;
+    max-height: 500px;
+    object-fit: contain;
     border-radius: var(--radius-lg);
     margin-bottom: 15px;
     transition: opacity 0.3s ease;
+    background: var(--bg-secondary);
 }
 
 .ad-thumbnails {
     display: flex;
     gap: 10px;
     overflow-x: auto;
-    padding-bottom: 10px;
+    padding: 5px;
+    padding-bottom: 15px;
+    margin: -5px;
+    scrollbar-width: thin;
+}
+
+.ad-thumbnails::-webkit-scrollbar {
+    height: 8px;
+}
+
+.ad-thumbnails::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.ad-thumbnails::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.ad-thumbnails::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
 }
 
 .ad-thumbnail {
     width: 80px;
     height: 80px;
+    min-width: 80px;
+    flex-shrink: 0;
     object-fit: cover;
     border-radius: var(--radius);
     cursor: pointer;
@@ -55,7 +79,7 @@
 .ad-thumbnail:hover,
 .ad-thumbnail.active {
     border-color: var(--primary-color);
-    transform: scale(1.05);
+    box-shadow: 0 0 0 2px var(--primary-color);
 }
 
 .ad-content {
@@ -132,7 +156,8 @@
     background: var(--hover-bg);
 }
 
-.favorite-btn.active {
+.favorite-btn.active,
+.favorite-btn.favorite-active {
     background: var(--primary-color);
     color: white;
 }
@@ -211,7 +236,7 @@
     background: var(--primary-hover);
 }
 
-/* Loading states */
+
 .loading-skeleton {
     background: var(--skeleton-bg);
     border-radius: var(--radius);
@@ -235,7 +260,7 @@
         padding: 20px;
     }
     .ad-main-image {
-        height: 300px;
+        max-height: 300px;
     }
     .ad-price {
         font-size: 1.8rem;

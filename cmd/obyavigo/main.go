@@ -46,10 +46,15 @@ func main() {
 	mux.Handle("POST /api/create-ad/", handler.AuthMiddleware(handler.CreateAd()))
 	mux.Handle("POST /api/logout/", handler.UserLogout())
 	mux.Handle("POST /api/profile/change-password/", handler.AuthMiddleware(handler.ChangePasswordHandler()))
+	mux.Handle("POST /api/profile/update/", handler.AuthMiddleware(handler.UpdateProfileHandler()))
 	mux.Handle("POST /api/profile/delete-account/", handler.AuthMiddleware(handler.DeleteAccountHandler()))
 	mux.Handle("GET /api/auth/confirm-email/{token}/", handler.ConfirmRegistrationHandler())
 	mux.Handle("GET /api/ads/", handler.AuthMiddleware(handler.GetAdsAPI()))
 	mux.Handle("GET /api/ads/{token}/", handler.AuthMiddleware(handler.GetAdByIDAPI()))
+	mux.Handle("GET /api/user/ads/", handler.AuthMiddleware(handler.GetUserAdsAPI()))
+	mux.Handle("POST /api/favorites/{token}/", handler.AuthMiddleware(handler.AddToFavoritesAPI()))
+	mux.Handle("DELETE /api/favorites/{token}/", handler.AuthMiddleware(handler.RemoveFromFavoritesAPI()))
+	mux.Handle("GET /api/favorites/check/{token}/", handler.AuthMiddleware(handler.CheckIfFavoriteAPI()))
 	mux.Handle("GET /api/images/{id}/", handler.GetImageByID())
 	mux.Handle("GET /", handler.AuthMiddleware(handler.GetMainPage()))
 	mux.Handle("GET /profile/", handler.AuthMiddleware(handler.GetProfilePage()))
@@ -65,7 +70,7 @@ func main() {
 	go func() {
 		err := http.ListenAndServe(":8080", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			target := "https://" + cfg.Server.Addr + r.URL.RequestURI()
-			http.Redirect(w, r, target, http.StatusMovedPermanently) // 301 редирект
+			http.Redirect(w, r, target, http.StatusMovedPermanently)
 		}))
 		if err != nil {
 			slog.Error("HTTP redirect server failed", slog.String("error", err.Error()))

@@ -1,22 +1,17 @@
-// Функция переключения избранного
+
 function toggleFavorite(button, adId) {
     const card = button.closest('.ad-card');
     const isActive = button.classList.contains('active');
     
     if (isActive) {
         // Удаляем из избранного
-        fetch('/api/liked-ads/remove', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ad_id: adId }),
-            credentials: 'include'
+        fetch(`/api/favorites/${adId}/`, {
+            method: 'DELETE'
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Плавно удаляем карточку
+
                 card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                 card.style.opacity = '0';
                 card.style.transform = 'scale(0.9)';
@@ -25,12 +20,12 @@ function toggleFavorite(button, adId) {
                     card.remove();
                     updateLikedCount();
                     
-                    // Проверяем, остались ли объявления
+
                     const grid = document.getElementById('likedAdsGrid');
                     const remainingCards = grid.querySelectorAll('.ad-card');
                     
                     if (remainingCards.length === 0) {
-                        // Показываем пустое состояние
+
                         grid.innerHTML = `
                             <div class="no-ads">
                                 <div class="no-ads-content">
@@ -51,7 +46,7 @@ function toggleFavorite(button, adId) {
     }
 }
 
-// Обновление счетчика избранных
+
 function updateLikedCount() {
     const grid = document.getElementById('likedAdsGrid');
     const count = grid.querySelectorAll('.ad-card').length;
@@ -67,7 +62,7 @@ function updateLikedCount() {
     countElement.textContent = `В избранном: ${count} ${word}`;
 }
 
-// Инициализация при загрузке страницы
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Liked ads page loaded');
 });

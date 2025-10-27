@@ -1,11 +1,11 @@
 :root {
-    /* Основные цвета */
+
     --primary-color: #D22B2B;
     --primary-hover: #B82424;
     --primary-light: rgba(210, 43, 43, 0.1);
     --primary-dark: #8B1A1A;
     
-    /* Фоновые цвета */
+
     --bg-color: #f8f9fa;
     --bg-secondary: #f0f2f5;
     --card-bg: #ffffff;
@@ -14,13 +14,13 @@
     --footer-text: #ccc;
     --footer-link: #999;
     
-    /* Текстовые цвета */
+
     --text-color: #333333;
     --text-secondary: #666666;
     --text-muted: #999999;
     --text-inverse: #ffffff;
     
-    /* Границы и тени */
+
     --border-color: #e0e0e0;
     --border-light: #ebebeb;
     --border-dark: #cccccc;
@@ -29,7 +29,7 @@
     --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
     --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
     
-    /* Интерактивные элементы */
+
     --input-border: #d0d0d0;
     --input-focus: var(--primary-color);
     --input-error: #ff4444;
@@ -37,31 +37,31 @@
     --hover-bg: var(--primary-light);
     --accent-bg: #fff8e1;
     
-    /* Кнопки */
+
     --button-shadow: 0 4px 10px rgba(210, 43, 43, 0.3);
     --button-hover-shadow: 0 6px 15px rgba(210, 43, 43, 0.4);
     
-    /* Оверлеи */
+
     --overlay-bg: rgba(0,0,0,0.5);
     --backdrop-blur: blur(8px);
     
-    /* Анимации */
+
     --transition-fast: all 0.2s ease;
     --transition: all 0.3s ease;
     --transition-slow: all 0.5s ease;
     
-    /* Скелетоны */
+
     --skeleton-bg: #f0f0f0;
     --skeleton-shimmer: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
     
-    /* Радиусы */
+
     --radius-sm: 8px;
     --radius: 12px;
     --radius-lg: 16px;
     --radius-xl: 20px;
     --radius-full: 50px;
     
-    /* Отступы */
+
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing: 16px;
@@ -70,15 +70,15 @@
     --spacing-2xl: 48px;
 }
 
-/* Тёмная тема */
+
 [data-theme="dark"] {
-    /* Основные цвета */
+
     --primary-color: #FF6B6B;
     --primary-hover: #FF5252;
     --primary-light: rgba(255, 107, 107, 0.15);
     --primary-dark: #E53935;
     
-    /* Фоновые цвета */
+
     --bg-color: #18181b;
     --bg-secondary: #1a1a1d;
     --card-bg: #202024;
@@ -87,13 +87,13 @@
     --footer-text: #e0e0e0;
     --footer-link: #b0b0b0;
     
-    /* Текстовые цвета */
+
     --text-color: #e4e4e7;
     --text-secondary: #a1a1aa;
     --text-muted: #71717a;
     --text-inverse: #ffffff;
     
-    /* Границы и тени */
+
     --border-color: #27272a;
     --border-light: #2a2a2e;
     --border-dark: #1f1f23;
@@ -102,7 +102,7 @@
     --shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
     --shadow-xl: 0 20px 40px rgba(0,0,0,0.5);
     
-    /* Интерактивные элементы */
+
     --input-border: #3f3f46;
     --input-focus: #FF6B6B;
     --input-error: #ff6b6b;
@@ -110,15 +110,15 @@
     --hover-bg: var(--primary-light);
     --accent-bg: #2c262e;
     
-    /* Кнопки */
+
     --button-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
     --button-hover-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
     
-    /* Оверлеи */
+
     --overlay-bg: rgba(0,0,0,0.7);
     --backdrop-blur: blur(12px);
     
-    /* Скелетоны */
+
     --skeleton-bg: #2a2a2e;
     --skeleton-shimmer: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
 }
@@ -142,9 +142,9 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Основной контент */
+
 .main-content {
-    margin-top: 80px; /* Отступ для фиксированного header */
+    margin-top: 80px; 
     min-height: calc(100vh - 80px);
 }
 
@@ -280,7 +280,7 @@ h6 { font-size: 1rem; }
     opacity: 1 !important;
 }
 
-/* Скрываем контент за оверлеем */
+
 body.categories-open {
     overflow: hidden !important;
 }
@@ -296,7 +296,7 @@ body.categories-open footer {
     pointer-events: none;
 }
 
-/* Внутреннее окно категорий поверх оверлея */
+
 .categories-modal {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -484,7 +484,7 @@ body.categories-open footer {
 }
 
 .profile-img {
-    width: 36px; /* 👈 ИСПРАВЛЕНО: фиксированный размер аватара в хедере */
+    width: 36px; 
     height: 36px;
     border-radius: 50%;
     object-fit: cover;
@@ -969,7 +969,7 @@ body.categories-open footer {
     90% { transform: translate3d(0,-2px,0); }
 }
 
-/* Модальные оверлеи */
+
 .search-overlay,
 .mobile-menu-overlay,
 .profile-menu-overlay,
@@ -1126,7 +1126,7 @@ body.categories-open footer {
 }
 
 .profile-menu-img {
-    width: 60px; /* 👈 ИСПРАВЛЕНО: фиксированный размер в меню профиля */
+    width: 60px; 
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
@@ -1373,7 +1373,7 @@ body.categories-open footer {
     outline-offset: 2px;
 }
 
-/* Стили для select */
+
 select,
 .form-group select {
     width: 100% !important;

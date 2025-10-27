@@ -80,10 +80,15 @@ func (h *BHandler) fileWriter(ch chan slog.Record, f *bufio.Writer) {
 }
 
 func (h *BHandler) formatRecord(r slog.Record) (string, error) {
+	source := "no data"
+	if src := r.Source(); src != nil {
+		source = src.File
+	}
+
 	m := map[string]interface{}{
 		"time":    r.Time.Format(time.RFC3339),
 		"level":   r.Level.String(),
-		"source":  r.Source().File,
+		"source":  source,
 		"message": r.Message,
 	}
 

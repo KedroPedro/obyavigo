@@ -17,6 +17,11 @@ type AccountDeleteRequest struct {
 	Password string `json:"password"`
 }
 
+type ProfileUpdateRequest struct {
+	Username    string  `json:"username"`
+	PhoneNumber *string `json:"phone_number"`
+}
+
 func (h *Handlers) ChangePasswordHandler() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +47,7 @@ func (h *Handlers) ChangePasswordHandler() http.Handler {
 			}
 
 			if !secure.CheckPasswordHash(req.OldPassword, authInfo.PasswordHash) {
-				sendToClient(w, http.StatusUnauthorized, "incorrect old password")
+				sendToClient(w, http.StatusUnauthorized, "Неверный старый пароль")
 				return
 			}
 
@@ -56,7 +61,7 @@ func (h *Handlers) ChangePasswordHandler() http.Handler {
 				return
 			}
 
-			sendToClient(w, http.StatusOK, "password updated successfully")
+			sendToClient(w, http.StatusOK, "Пароль успешно обновлён")
 		},
 	)
 }
@@ -67,26 +72,6 @@ func (h *Handlers) DeleteAccountHandler() http.Handler {
 			userID, err := userIDFromCtx(r)
 			if err != nil {
 				http.Redirect(w, r, "/auth/", http.StatusPermanentRedirect)
-				return
-			}
-
-			var req AccountDeleteRequest
-			if err := json.NewDecoder(r.Body).Decode(&req); handleError(w, err, http.StatusBadRequest, "invalid request body") {
-				return
-			}
-
-			userData, err := h.db.Psql.GetUserData(userID)
-			if handleError(w, err, http.StatusInternalServerError, "error while getting user data") {
-				return
-			}
-
-			authInfo, err := h.db.Psql.GetAuthInfoByEmail(userData.Email)
-			if handleError(w, err, http.StatusInternalServerError, "error while getting auth info") {
-				return
-			}
-
-			if !secure.CheckPasswordHash(req.Password, authInfo.PasswordHash) {
-				sendToClient(w, http.StatusUnauthorized, "incorrect password")
 				return
 			}
 
@@ -106,7 +91,37 @@ func (h *Handlers) DeleteAccountHandler() http.Handler {
 			})
 
 			slog.Info("account deleted", slog.String("user_id", userID.String()))
-			sendToClient(w, http.StatusOK, "account deleted successfully")
+			sendToClient(w, http.StatusOK, "Аккаунт удалён")
+		},
+	)
+}
+
+func (h *Handlers) UpdateProfileHandler() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				sendToClient(w, http.StatusUnauthorized, "unauthorized")
+				return
+			}
+
+			var req ProfileUpdateRequest
+			if err := json.NewDecoder(r.Body).Decode(&req); handleError(w, err, http.StatusBadRequest, "invalid request body") {
+				return
+			}
+
+			if req.Username == "" {
+				sendToClient(w, http.StatusBadRequest, "Имя не может быть пустым")
+				return
+			}
+
+			err = h.db.Psql.UpdateUserProfile(userID, req.Username, req.PhoneNumber)
+			if handleError(w, err, http.StatusInternalServerError, "error while updating profile") {
+				return
+			}
+
+			slog.Info("profile updated", slog.String("user_id", userID.String()))
+			sendToClient(w, http.StatusOK, "Профиль успешно обновлён")
 		},
 	)
 }

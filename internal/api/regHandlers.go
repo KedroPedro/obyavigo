@@ -91,6 +91,6 @@ func (h *Handlers) ConfirmRegistrationHandler() http.Handler {
 				return
 			}
 
-			http.Redirect(w, r, "/auth", http.StatusOK)
+			http.Redirect(w, r, "/auth", http.StatusMovedPermanently)
 		})
 }

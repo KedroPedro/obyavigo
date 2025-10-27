@@ -442,30 +442,29 @@
 
                             <div class="form-group">
                                 <label
+                                    >Регион
+                                    <span class="required">*</span></label
+                                >
+                                <select id="adRegion">
+                                    <option value="">Выберите регион</option>
+                                    <option value="Минская область">Минская область</option>
+                                    <option value="Гомельская область">Гомельская область</option>
+                                    <option value="Могилёвская область">Могилёвская область</option>
+                                    <option value="Витебская область">Витебская область</option>
+                                    <option value="Гродненская область">Гродненская область</option>
+                                    <option value="Брестская область">Брестская область</option>
+                                </select>
+                                <div class="error-message" id="regionError"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
                                     >Город
                                     <span class="required">*</span></label
                                 >
-                                <div class="city-input-wrapper">
-                                    <select id="adCity">
-                                        <option value="">Выберите город</option>
-                                        <option value="minsk">Минск</option>
-                                        <option value="brest">Брест</option>
-                                        <option value="vitebsk">Витебск</option>
-                                        <option value="gomel">Гомель</option>
-                                        <option value="grodno">Гродно</option>
-                                        <option value="mogilev">Могилёв</option>
-                                        <option value="other">
-                                            Другой город
-                                        </option>
-                                    </select>
-                                    <button
-                                        type="button"
-                                        class="btn-auto-detect"
-                                        id="autoDetectCity"
-                                    >
-                                        Авто
-                                    </button>
-                                </div>
+                                <select id="adCity">
+                                    <option value="">Выберите город</option>
+                                </select>
                                 <div class="error-message" id="cityError"></div>
                             </div>
 
@@ -544,40 +543,10 @@
                             </div>
                         </div>
                         <div class="form-step" data-step="3">
-                            <h2>Контактная информация</h2>
+                            <h2>Предварительный просмотр</h2>
                             <p class="step-description">
-                                Покупатели будут связываться с вами через эти
-                                данные
+                                Проверьте ваше объявление перед публикацией
                             </p>
-
-                            <div class="form-group">
-                                <label
-                                    >Имя <span class="required">*</span></label
-                                >
-                                <input
-                                    type="text"
-                                    id="adName"
-                                    placeholder="Ваше имя"
-                                    value="example"
-                                />
-                                <div class="error-message" id="nameError"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label
-                                    >Телефон
-                                    <span class="required">*</span></label
-                                >
-                                <input
-                                    type="tel"
-                                    id="adPhone"
-                                    placeholder="+375 (29) 123-45-67"
-                                />
-                                <div
-                                    class="error-message"
-                                    id="phoneError"
-                                ></div>
-                            </div>
 
                             <div class="preview-section">
                                 <h3>Предварительный просмотр</h3>

@@ -20,6 +20,11 @@ func (h *Handlers) CreateAd() http.Handler {
 				return
 			}
 
+			user, err := h.db.Psql.GetUserData(userID)
+			if handleError(w, err, http.StatusInternalServerError, "error while trying to get user data") {
+				return
+			}
+
 			adData := models.AdTemplate{
 				UserId:          *userID,
 				CategoryName:    r.FormValue("categoryName"),
@@ -27,7 +32,7 @@ func (h *Handlers) CreateAd() http.Handler {
 				LocationName:    r.FormValue("locationName"),
 				Title:           r.FormValue("title"),
 				Description:     r.FormValue("desc"),
-				ContactPhone:    r.FormValue("phone"),
+				ContactPhone:    user.PhoneNumber,
 				Condition:       r.FormValue("condition"),
 			}
 

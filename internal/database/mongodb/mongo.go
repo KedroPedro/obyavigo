@@ -143,7 +143,6 @@ func (m *Mongo) GetImageIDsByAdID(ctx context.Context, adID string) ([]string, e
 			return nil, fmt.Errorf("file id not in expected format")
 		}
 
-		// Конвертируем Binary UUID в строку
 		uuidVal, err := uuid.FromBytes(fileID.Data)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse UUID: %w", err)

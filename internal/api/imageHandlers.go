@@ -59,11 +59,11 @@ func (h *Handlers) GetImageByID() http.Handler {
 					if contentType, ok := metadata["contentType"].(string); ok && contentType != "" {
 						w.Header().Set("Content-Type", contentType)
 					}
-				}
 			}
+		}
 
-			w.Header().Set("Cache-Control", "public, max-age=31536000") // Кэш на год
-			w.Header().Set("Content-Length", fmt.Sprintf("%d", buf.Len()))
+		w.Header().Set("Cache-Control", "public, max-age=31536000")
+		w.Header().Set("Content-Length", fmt.Sprintf("%d", buf.Len()))
 
 			if w.Header().Get("Content-Type") == "" {
 				w.Header().Set("Content-Type", "image/jpeg")

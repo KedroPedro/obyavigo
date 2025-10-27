@@ -1,7 +1,7 @@
 
-/* ... весь CSS хедера из profile.css ... */
+
 .main-content {
-    padding: 0; /* Убираем padding, так как margin-top уже есть в style.css */
+    padding: 0; 
 }
 
 .create-ad-page {
@@ -76,6 +76,9 @@ textarea#adDescription {
     color: var(--text-color);
     transition: var(--transition);
     line-height: 1.6;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 textarea#adDescription:focus {
@@ -139,6 +142,69 @@ textarea#adDescription:focus {
     font-size: 1.1rem;
     margin: 0;
 }
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="tel"],
+.form-group select {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px;
+    border: 2px solid var(--input-border);
+    border-radius: 12px;
+    background: var(--card-bg);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group select:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(210, 43, 43, 0.1);
+    outline: none;
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 40px;
+}
+
+.form-group .required {
+    color: var(--primary-color);
+}
+
+.error-message {
+    color: var(--primary-color);
+    font-size: 0.875rem;
+    margin-top: 8px;
+    display: block;
+}
+
 .form-row {
     display: flex;
     gap: 25px;
@@ -292,6 +358,14 @@ select option {
 
 .preview-content {
     flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.preview-content h4 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin: 0 0 8px 0;
 }
 
 .preview-price {
@@ -299,12 +373,16 @@ select option {
     font-weight: bold;
     font-size: 1.2rem;
     margin: 5px 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .preview-city {
     color: var(--light-text);
     font-size: 0.95rem;
     margin-bottom: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .preview-description {

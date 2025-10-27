@@ -1,6 +1,6 @@
-// ad.js — только функционал страницы объявления
+
 document.addEventListener("DOMContentLoaded", function () {
-  // Инициализируем страницу объявления, если находим её признаки
+
   if (
     document.getElementById("adTitle") &&
     document.getElementById("adAuthor")
@@ -9,31 +9,34 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// ----------------------------
-// AD-SPECIFIC LOGIC
-// ----------------------------
+
+
+
 
 function initAdPage() {
-  // Получаем adId из URL: /ads/abc-123/ → adId = "abc-123"
+
   const pathParts = window.location.pathname.split("/").filter((p) => p);
   const adId = pathParts.length >= 2 ? pathParts[pathParts.length - 1] : null;
   if (!adId) return;
 
-  // === Галерея изображений ===
-  // Используем setTimeout чтобы убедиться что DOM полностью загружен
+
+
   setTimeout(() => {
     initImageGallery();
   }, 100);
 
-  // === Избранное ===
+
   const favBtn = document.getElementById("favoriteBtn");
   if (favBtn) {
+    // Проверяем начальный статус избранного
+    checkFavoriteStatus(adId, favBtn);
+    
     favBtn.addEventListener("click", () => {
-      alert("Функция избранного пока не реализована");
+      toggleFavorite(adId, favBtn);
     });
   }
 
-  // === Написать продавцу ===
+
   const contactBtn = document.getElementById("contactBtn");
   if (contactBtn) {
     contactBtn.addEventListener("click", (e) => {
@@ -43,7 +46,7 @@ function initAdPage() {
     });
   }
 
-  // === Показать телефон ===
+
   const showBtn = document.getElementById("showPhoneBtn");
   const phoneDisp = document.getElementById("phoneDisplay");
   if (showBtn && phoneDisp) {
@@ -67,20 +70,73 @@ function initImageGallery() {
     return;
   }
 
-  // Обработчик клика на миниатюры
+
   thumbnails.forEach((thumb) => {
     thumb.style.cursor = "pointer";
     
     thumb.addEventListener("click", (e) => {
       e.preventDefault();
       
-      // Меняем главное изображение
+
       mainImage.src = thumb.src;
       mainImage.alt = thumb.alt;
       
-      // Добавляем визуальный эффект активной миниатюры
+
       thumbnails.forEach(t => t.classList.remove("active"));
       thumb.classList.add("active");
     });
   });
+}
+
+function checkFavoriteStatus(adId, favBtn) {
+  fetch(`/api/favorites/check/${encodeURIComponent(adId)}/`)
+    .then((r) => {
+      if (!r.ok) throw new Error("Failed to check favorite status");
+      return r.json();
+    })
+    .then((data) => {
+      if (data.isFavorite) {
+        updateFavoriteButton(favBtn, true);
+      } else {
+        updateFavoriteButton(favBtn, false);
+      }
+    })
+    .catch((err) => {
+      console.error("Ошибка при проверке статуса избранного:", err);
+    });
+}
+
+function toggleFavorite(adId, favBtn) {
+  const isFavorite = favBtn.dataset.isFavorite === "true";
+  
+  const method = isFavorite ? "DELETE" : "POST";
+  const url = `/api/favorites/${encodeURIComponent(adId)}/`;
+  
+  fetch(url, { method })
+    .then((r) => {
+      if (!r.ok) throw new Error("Failed to toggle favorite");
+      return r.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        updateFavoriteButton(favBtn, !isFavorite);
+      }
+    })
+    .catch((err) => {
+      console.error("Ошибка при изменении статуса избранного:", err);
+      alert("Не удалось изменить статус избранного");
+    });
+}
+
+function updateFavoriteButton(favBtn, isFavorite) {
+  favBtn.dataset.isFavorite = isFavorite;
+  const span = favBtn.querySelector("span:last-child");
+  
+  if (isFavorite) {
+    favBtn.classList.add("favorite-active");
+    if (span) span.textContent = "Удалить из избранного";
+  } else {
+    favBtn.classList.remove("favorite-active");
+    if (span) span.textContent = "В избранное";
+  }
 }

@@ -202,7 +202,6 @@ func (p *Postgres) GetCreateAdDependencies(m *models.AdTemplate) error {
 		return fmt.Errorf("request 'GetCreateAdDependencies' not found")
 	}
 
-	// Если есть подкатегория, используем её
 	var subcategoryName *string
 	if m.SubcategoryName != "" {
 		subcategoryName = &m.SubcategoryName
@@ -360,7 +359,7 @@ func (p *Postgres) GetAdsList(limit, offset int) ([]models.AdTemplate, error) {
 		}
 		ad.UpdatedAt = updatedAt
 		ad.ExpirationDate = expirationDate
-		ad.Price = ad.Price / 100 // Convert from cents
+		ad.Price = ad.Price / 100
 		ads = append(ads, ad)
 	}
 
@@ -448,13 +447,14 @@ func (p *Postgres) GetLikedAds(userId *uuid.UUID) ([]models.AdTemplate, error) {
 			&expirationDate,
 			&ad.Status,
 			&ad.ViewsCount,
+			&ad.ImageID,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("error while scanning liked ads: %w", err)
 		}
 		ad.UpdatedAt = updatedAt
 		ad.ExpirationDate = expirationDate
-		ad.Price = ad.Price / 100 // Convert from cents
+		ad.Price = ad.Price / 100
 		ads = append(ads, ad)
 	}
 
@@ -520,7 +520,7 @@ func (p *Postgres) GetAllAds(limit, offset int) ([]models.AdTemplate, error) {
 		}
 		ad.UpdatedAt = updatedAt
 		ad.ExpirationDate = expirationDate
-		ad.Price = ad.Price / 100 // Convert from cents
+		ad.Price = ad.Price / 100
 		ads = append(ads, ad)
 	}
 
@@ -636,7 +636,7 @@ func (p *Postgres) GetModerationAds(limit, offset int) ([]models.AdTemplate, err
 		}
 		ad.UpdatedAt = updatedAt
 		ad.ExpirationDate = expirationDate
-		ad.Price = ad.Price / 100 // Convert from cents
+		ad.Price = ad.Price / 100
 		ads = append(ads, ad)
 	}
 
@@ -710,7 +710,7 @@ func (p *Postgres) GetAdsListByCategory(category string, limit, offset int) ([]m
 		}
 		ad.UpdatedAt = updatedAt
 		ad.ExpirationDate = expirationDate
-		ad.Price = ad.Price / 100 // Convert from cents
+		ad.Price = ad.Price / 100
 		ads = append(ads, ad)
 	}
 
@@ -744,6 +744,12 @@ func (p *Postgres) SearchAds(filters *models.AdSearchFilters) ([]models.AdTempla
 	if filters.Category != "" && filters.Subcategory == "" {
 		query += fmt.Sprintf(" AND (c.name = $%d OR c.parent_id = (SELECT id FROM site.categories WHERE name = $%d))", argIndex, argIndex)
 		args = append(args, filters.Category)
+		argIndex++
+	}
+
+	if filters.Region != "" {
+		query += fmt.Sprintf(" AND loc.region = $%d", argIndex)
+		args = append(args, filters.Region)
 		argIndex++
 	}
 
@@ -854,6 +860,12 @@ func (p *Postgres) SearchAdsCount(filters *models.AdSearchFilters) (int, error) 
 		argIndex++
 	}
 
+	if filters.Region != "" {
+		query += fmt.Sprintf(" AND loc.region = $%d", argIndex)
+		args = append(args, filters.Region)
+		argIndex++
+	}
+
 	if filters.Location != "" {
 		query += fmt.Sprintf(" AND loc.city ILIKE $%d", argIndex)
 		args = append(args, "%"+filters.Location+"%")
@@ -897,4 +909,117 @@ func (p *Postgres) SearchAdsCount(filters *models.AdSearchFilters) (int, error) 
 	}
 
 	return count, nil
+}
+
+func (p *Postgres) AddToFavorites(userId, adId *uuid.UUID) error {
+	query, ok := p.q["AddToFavorites"]
+	if !ok {
+		return fmt.Errorf("request 'AddToFavorites' not found")
+	}
+
+	_, err := p.psql.Exec(query, userId, adId)
+	if err != nil {
+		return fmt.Errorf("error while adding to favorites: %w", err)
+	}
+
+	return nil
+}
+
+func (p *Postgres) RemoveFromFavorites(userId, adId *uuid.UUID) error {
+	query, ok := p.q["RemoveFromFavorites"]
+	if !ok {
+		return fmt.Errorf("request 'RemoveFromFavorites' not found")
+	}
+
+	res, err := p.psql.Exec(query, userId, adId)
+	if err != nil {
+		return fmt.Errorf("error while removing from favorites: %w", err)
+	}
+
+	rowsAff, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error while getting affected rows: %w", err)
+	}
+
+	if rowsAff == 0 {
+		return sql.ErrNoRows
+	}
+
+	return nil
+}
+
+func (p *Postgres) CheckIfFavorite(userId, adId *uuid.UUID) (bool, error) {
+	query, ok := p.q["CheckIfFavorite"]
+	if !ok {
+		return false, fmt.Errorf("request 'CheckIfFavorite' not found")
+	}
+
+	var isFavorite bool
+	err := p.psql.QueryRow(query, userId, adId).Scan(&isFavorite)
+	if err != nil {
+		return false, fmt.Errorf("error while checking favorite status: %w", err)
+	}
+
+	return isFavorite, nil
+}
+
+func (p *Postgres) GetUserAds(userId *uuid.UUID) ([]models.AdTemplate, error) {
+	query, ok := p.q["GetUserAds"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetUserAds' not found")
+	}
+
+	rows, err := p.psql.Query(query, userId)
+	if err != nil {
+		return nil, fmt.Errorf("error while executing get user ads request: %w", err)
+	}
+	defer rows.Close()
+
+	var ads []models.AdTemplate
+	for rows.Next() {
+		var ad models.AdTemplate
+		var updatedAt, expirationDate *time.Time
+		err := rows.Scan(
+			&ad.AdId,
+			&ad.UserId,
+			&ad.CategoryId,
+			&ad.CategoryName,
+			&ad.LocationId,
+			&ad.LocationName,
+			&ad.Title,
+			&ad.Description,
+			&ad.Price,
+			&ad.Condition,
+			&ad.ContactPhone,
+			&ad.CreatedAt,
+			&updatedAt,
+			&expirationDate,
+			&ad.Status,
+			&ad.ViewsCount,
+			&ad.ImageID,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("error while scanning user ads: %w", err)
+		}
+		ad.UpdatedAt = updatedAt
+		ad.ExpirationDate = expirationDate
+		ad.Price = ad.Price / 100
+		ads = append(ads, ad)
+	}
+
+	return ads, nil
+}
+
+func (p *Postgres) UpdateUserProfile(userId *uuid.UUID, username string, phoneNumber *string) error {
+	query, ok := p.q["UpdateUserProfile"]
+	if !ok {
+		return fmt.Errorf("request 'UpdateUserProfile' not found")
+	}
+
+	_, err := p.psql.Exec(query, username, phoneNumber, userId)
+	if err != nil {
+		return fmt.Errorf("error while updating user profile: %w", err)
+	}
+
+	return nil
 }

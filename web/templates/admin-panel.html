@@ -336,25 +336,6 @@
             </nav>
         </aside>
 
-        <!-- Основной контент -->
-        <main class="main-content">
-            <header class="main-header">
-                <div class="header-title">
-                    <h1 id="pageTitle">Объявления</h1>
-                </div>
-                <div class="header-actions">
-                    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-
-                </div>
-                <div class="header-actions">
-                    <div class="user-info">
-                        <span>Администратор</span>
-                    </div>
-                </div>
-            </header>
-
-            <div class="content-container">
-                <!-- Объявления -->
                 <div class="tab-content active" id="ads-tab">
                     <div class="controls">
                         <div class="search-box">
@@ -404,51 +385,6 @@
                     </div>
                 </div>
 
-                <!-- Пользователи -->
-                <div class="tab-content" id="users-tab">
-                    <div class="controls">
-                        <div class="search-box">
-                            <input type="text" placeholder="Поиск пользователей..." id="usersSearch">
-                        </div>
-                    </div>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Имя</th>
-                                    <th>Email</th>
-                                    <th>Телефон</th>
-                                    <th>Регистрация</th>
-                                    <th>Статус</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody id="usersTableBody">
-                                {{range .Users}}
-                                <tr>
-                                    <td>{{.ID}}</td>
-                                    <td>{{.Username}}</td>
-                                    <td>{{.Email}}</td>
-                                    <td>{{if .PhoneNumber}}{{.PhoneNumber}}{{else}}—{{end}}</td>
-                                    <td>{{.RegistrationDate.Format "02.01.2006"}}</td>
-                                    <td>{{.Status}}</td>
-                                    <td>
-                                        <button class="btn-primary">Просмотр</button>
-                                        <button class="btn-secondary">Редактировать</button>
-                                    </td>
-                                </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="7" class="no-data">Нет данных</td>
-                                </tr>
-                                {{end}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Модерация -->
                 <div class="tab-content" id="moderation-tab">
                     <div class="info-box">
                         <h3>Объявления на модерации</h3>
@@ -487,44 +423,6 @@
                     </div>
                 </div>
 
-                <!-- Жалобы -->
-                <div class="tab-content" id="reports-tab">
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Объявление</th>
-                                    <th>Жалоба</th>
-                                    <th>Дата</th>
-                                    <th>Статус</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody id="reportsTableBody">
-                                {{range .Complaints}}
-                                <tr>
-                                    <td>{{.ID}}</td>
-                                    <td>{{if .ListingID}}{{.ListingID}}{{else}}—{{end}}</td>
-                                    <td>{{.ComplaintType}}</td>
-                                    <td>{{.CreatedAt.Format "02.01.2006"}}</td>
-                                    <td>{{.Status}}</td>
-                                    <td>
-                                        <button class="btn-primary">Просмотр</button>
-                                        <button class="btn-secondary">Обработать</button>
-                                    </td>
-                                </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="6" class="no-data">Нет данных</td>
-                                </tr>
-                                {{end}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Статистика -->
                 <div class="tab-content" id="stats-tab">
                     <div class="stats-grid">
                         <div class="stat-card">
@@ -561,19 +459,3 @@
         </main>
     </div>
 
-    <!-- Модальное окно подтверждения -->
-    <div class="modal-overlay" id="confirmModal">
-        <div class="modal">
-            <h3 id="modalTitle">Подтверждение</h3>
-            <p id="modalMessage">Вы уверены?</p>
-            <div class="modal-actions">
-                <button class="btn-secondary" id="cancelBtn">Отмена</button>
-                <button class="btn-primary" id="confirmBtn">Подтвердить</button>
-            </div>
-        </div>
-    </div>
-        <script src="/static/scripts/header.js"></script>
-        <script src="/static/scripts/admin-panel.js"></script>
-
-</body>
-</html>

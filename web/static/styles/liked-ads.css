@@ -1,4 +1,4 @@
-/* Страница избранных объявлений */
+
 .liked-ads-page {
     max-width: 1400px;
     margin: 0 auto;
@@ -24,7 +24,7 @@
     color: var(--text-secondary);
 }
 
-/* Сетка объявлений */
+
 .ads-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -39,7 +39,7 @@
     }
 }
 
-/* Карточка объявления */
+
 .ad-card {
     background: var(--card-bg);
     border-radius: 16px;
@@ -183,7 +183,7 @@
     gap: 4px;
 }
 
-/* Пустое состояние */
+
 .no-ads {
     grid-column: 1 / -1;
     display: flex;
@@ -240,7 +240,7 @@
     box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
 }
 
-/* Адаптивность */
+
 @media (max-width: 768px) {
     .liked-ads-page {
         padding: 24px 16px;

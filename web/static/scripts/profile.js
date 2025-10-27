@@ -258,6 +258,16 @@ function initTabs() {
       button.classList.add("active");
       const tabId = button.dataset.tab + "-tab";
       document.getElementById(tabId).classList.add("active");
+      
+      // Load user ads when switching to ads tab
+      if (tabId === "ads-tab") {
+        loadUserAds();
+      }
+      
+      // Load liked ads when switching to loved tab
+      if (tabId === "loved-tab") {
+        loadLikedAds();
+      }
     });
   });
 }
@@ -265,14 +275,59 @@ function initTabs() {
 function initProfileForm() {
   const form = document.getElementById("profileForm");
   if (!form) return;
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
+    
+    // Clear previous errors
+    showError("nameError", "");
+    showError("phoneError", "");
+    
+    const username = document.getElementById("userName").value.trim();
     const phone = document.getElementById("userPhone").value.trim();
+    
+    // Validation
+    if (!username) {
+      showError("nameError", "Имя не может быть пустым");
+      return;
+    }
+    
     if (phone && !isValidBelarusPhone(phone)) {
       showError("phoneError", "Неверный формат белорусского номера");
       return;
     }
-    alert("Профиль обновлён!");
+    
+    // Prepare data
+    const data = {
+      username: username,
+      phone_number: phone || null
+    };
+    
+    try {
+      const response = await fetch("/api/profile/update/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+        alert("Профиль успешно обновлён");
+        // Update profile name in sidebar
+        const profileName = document.getElementById("profileName");
+        if (profileName) {
+          profileName.textContent = username;
+        }
+      } else {
+        showError("nameError", result.message || "Ошибка при обновлении профиля");
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении профиля:", error);
+      showError("nameError", "Ошибка подключения к серверу");
+    }
   });
 }
 
@@ -309,9 +364,16 @@ function initPasswordModal() {
   modal.addEventListener("click", (e) => {
     if (e.target === modal) modal.style.display = "none";
   });
-  document.getElementById("savePasswordBtn")?.addEventListener("click", () => {
+  document.getElementById("savePasswordBtn")?.addEventListener("click", async () => {
+    const oldPass = document.getElementById("oldPassword")?.value || "";
     const newPass = document.getElementById("newPassword").value;
     const confirmPass = document.getElementById("confirmPassword").value;
+    
+
+    showError("oldPasswordError", "");
+    showError("newPasswordError", "");
+    showError("confirmPasswordError", "");
+    
     if (newPass !== confirmPass) {
       showError("confirmPasswordError", "Пароли не совпадают");
       return;
@@ -323,8 +385,36 @@ function initPasswordModal() {
       );
       return;
     }
-    alert("Пароль изменён!");
-    modal.style.display = "none";
+    
+    try {
+      const response = await fetch("/api/profile/change-password/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          old_password: oldPass,
+          new_password: newPass,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        alert("Пароль успешно изменён");
+        modal.style.display = "none";
+
+        if (document.getElementById("oldPassword")) document.getElementById("oldPassword").value = "";
+        document.getElementById("newPassword").value = "";
+        document.getElementById("confirmPassword").value = "";
+      } else {
+        showError("newPasswordError", data.message || "Ошибка при изменении пароля");
+      }
+    } catch (error) {
+      console.error("Ошибка при смене пароля:", error);
+      showError("newPasswordError", "Ошибка подключения к серверу");
+    }
   });
 }
 
@@ -343,9 +433,28 @@ function initLogout() {
   });
 }
 
-document.getElementById("deleteAccountBtn")?.addEventListener("click", () => {
-  if (confirm("Удалить аккаунт навсегда?")) {
-    window.location.href = "/auth.html";
+document.getElementById("deleteAccountBtn")?.addEventListener("click", async () => {
+  if (confirm("Вы уверены, что хотите удалить аккаунт. Это действие нельзя отменить")) {
+    try {
+      const response = await fetch("/api/profile/delete-account/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      if (response.ok) {
+        alert("Аккаунт удалён");
+        window.location.href = "/auth/";
+      } else {
+        const data = await response.json();
+        alert(data.message || "Ошибка при удалении аккаунта");
+      }
+    } catch (error) {
+      console.error("Ошибка при удалении аккаунта:", error);
+      alert("Ошибка подключения к серверу");
+    }
   }
 });
 
@@ -376,3 +485,129 @@ document.getElementById("logoutBtn").onclick = async () => {
     console.error("Ошибка запроса выхода", e);
   }
 };
+
+let userAdsLoaded = false;
+let likedAdsLoaded = false;
+
+async function loadUserAds() {
+  if (userAdsLoaded) return;
+  
+  const adsList = document.getElementById("userAdsList");
+  
+  try {
+    const response = await fetch("/api/user/ads/", {
+      credentials: "include",
+    });
+    
+    if (!response.ok) {
+      throw new Error("Failed to load ads");
+    }
+    
+    const data = await response.json();
+    
+    if (data.success && data.data && data.data.length > 0) {
+      adsList.innerHTML = data.data.map(ad => `
+        <div class="ad-card" onclick="window.location.href='/ads/${ad.adID}/'" style="cursor: pointer;">
+          <div class="ad-image">
+            ${ad.imageID ? 
+              `<img src="/api/images/${ad.imageID}/" alt="${ad.title}" loading="lazy" />` : 
+              `<img src="/static/pictures/logo.png" alt="${ad.title}" loading="lazy" />`
+            }
+            <span class="ad-status ${ad.status}">${getStatusText(ad.status)}</span>
+          </div>
+          <div class="ad-content">
+            <h3 class="ad-title">${ad.title}</h3>
+            <p class="ad-description">${ad.desc}</p>
+            <div class="ad-meta">
+              <span class="ad-price">${ad.price} BYN</span>
+              <span class="ad-location">📍 ${ad.locationName}</span>
+              <span class="ad-category">${ad.categoryName}</span>
+            </div>
+            <div class="ad-footer">
+              <span class="ad-date">${new Date(ad.createdAt).toLocaleDateString('ru-RU')}</span>
+              <span class="ad-views">👁️ ${ad.viewsCount}</span>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    } else {
+      adsList.innerHTML = `
+        <div class="no-ads">
+          <div class="no-ads-content">
+            <div class="no-ads-icon">📦</div>
+            <h3>У вас пока нет объявлений</h3>
+            <p>Создайте свое первое объявление</p>
+            <a href="/create-ad/" class="btn-primary">Создать объявление</a>
+          </div>
+        </div>
+      `;
+    }
+    
+    userAdsLoaded = true;
+  } catch (error) {
+    console.error("Error loading user ads:", error);
+    adsList.innerHTML = `
+      <div class="no-ads">
+        <div class="no-ads-content">
+          <div class="no-ads-icon">⚠️</div>
+          <h3>Ошибка загрузки объявлений</h3>
+          <p>Попробуйте обновить страницу</p>
+        </div>
+      </div>
+    `;
+  }
+}
+
+async function loadLikedAds() {
+  if (likedAdsLoaded) return;
+  
+  const adsList = document.getElementById("lovedAdsList");
+  
+  try {
+    const response = await fetch("/api/ads/?limit=100", {
+      credentials: "include",
+    });
+    
+    if (!response.ok) {
+      throw new Error("Failed to load liked ads");
+    }
+    
+    const data = await response.json();
+    
+    // Filter only favorited ads - you would need to check favorite status for each
+    // For now, we'll just show a placeholder
+    adsList.innerHTML = `
+      <div class="no-ads">
+        <div class="no-ads-content">
+          <div class="no-ads-icon">❤️</div>
+          <h3>Избранные объявления</h3>
+          <p>Функция в разработке. Используйте страницу "Избранное" из меню</p>
+        </div>
+      </div>
+    `;
+    
+    likedAdsLoaded = true;
+  } catch (error) {
+    console.error("Error loading liked ads:", error);
+    adsList.innerHTML = `
+      <div class="no-ads">
+        <div class="no-ads-content">
+          <div class="no-ads-icon">⚠️</div>
+          <h3>Ошибка загрузки избранного</h3>
+          <p>Попробуйте обновить страницу</p>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function getStatusText(status) {
+  const statusMap = {
+    'public': 'Активно',
+    'moderation': 'На модерации',
+    'draft': 'Черновик',
+    'archived': 'В архиве',
+    'blocked': 'Заблокировано'
+  };
+  return statusMap[status] || status;
+}

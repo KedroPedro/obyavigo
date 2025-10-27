@@ -119,7 +119,7 @@ class HeaderManager {
   navigateToAds(category, subcategory) {
     const params = new URLSearchParams();
     if (category) {
-      // Преобразовать ключ категории в русское название
+
       const categoryName = this.getCategoryName(category);
       params.set("category", categoryName);
     }

@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     
-    // Инициализация навигации
+
     initNavigation();
     
-    // Загрузка данных
+
     loadDashboardData();
 });
 
 
 
-// Навигация по вкладкам
+
 function initNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -20,16 +20,16 @@ function initNavigation() {
         item.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Убираем активный класс у всех
+
             navItems.forEach(i => i.classList.remove('active'));
             tabContents.forEach(t => t.classList.remove('active'));
             
-            // Добавляем активный класс текущему
+
             item.classList.add('active');
             const tabId = item.dataset.tab + '-tab';
             document.getElementById(tabId).classList.add('active');
             
-            // Обновляем заголовок
+
             const titles = {
                 ads: 'Объявления',
                 users: 'Пользователи',
@@ -39,13 +39,13 @@ function initNavigation() {
             };
             pageTitle.textContent = titles[item.dataset.tab];
             
-            // Загружаем данные для вкладки
+
             loadTabData(item.dataset.tab);
         });
     });
 }
 
-// Загрузка данных для вкладки
+
 function loadTabData(tab) {
     switch(tab) {
         case 'ads':
@@ -61,24 +61,24 @@ function loadTabData(tab) {
             loadReports();
             break;
         case 'stats':
-            // Статистика уже загружена
+
             break;
     }
 }
 
-// Загрузка дашборда
+
 function loadDashboardData() {
-    // Статистика
+
     document.getElementById('totalAds').textContent = '24,567';
     document.getElementById('totalUsers').textContent = '18,932';
     document.getElementById('pendingReports').textContent = '12';
     document.getElementById('pendingModeration').textContent = '8';
     
-    // Загружаем данные для первой вкладки (объявления)
+
     loadAds();
 }
 
-// Загрузка объявлений
+
 function loadAds() {
     const tbody = document.getElementById('adsTableBody');
     tbody.innerHTML = `
@@ -120,11 +120,11 @@ function loadAds() {
         </tr>
     `;
     
-    // Добавляем обработчики кнопок
+
     addActionButtonListeners();
 }
 
-// Загрузка пользователей
+
 function loadUsers() {
     const tbody = document.getElementById('usersTableBody');
     tbody.innerHTML = `
@@ -154,7 +154,7 @@ function loadUsers() {
     addActionButtonListeners();
 }
 
-// Загрузка модерации
+
 function loadModeration() {
     const tbody = document.getElementById('moderationTableBody');
     tbody.innerHTML = `
@@ -182,7 +182,7 @@ function loadModeration() {
     addActionButtonListeners();
 }
 
-// Загрузка жалоб
+
 function loadReports() {
     const tbody = document.getElementById('reportsTableBody');
     tbody.innerHTML = `
@@ -211,7 +211,7 @@ function loadReports() {
     addActionButtonListeners();
 }
 
-// Обработчики кнопок действий
+
 function addActionButtonListeners() {
     document.querySelectorAll('.action-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -225,15 +225,15 @@ function addActionButtonListeners() {
             }
             
             showConfirmModal(action, () => {
-                // Здесь будет запрос к бэкенду
+
                 console.log(`Выполнено действие: ${action}`);
-                alert(`Действие "${action}" выполнено успешно!`);
+                alert(`Действие "${action}" выполнено успешно`);
             });
         });
     });
 }
 
-// Модальное окно подтверждения
+
 function showConfirmModal(action, callback) {
     const modal = document.getElementById('confirmModal');
     const title = document.getElementById('modalTitle');

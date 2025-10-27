@@ -1,3 +1,12 @@
+const REGIONS = {
+  "Минская область": ["Минск", "Борисов", "Солигорск", "Молодечно", "Слуцк"],
+  "Гомельская область": ["Гомель", "Мозырь", "Жлобин", "Речица", "Петриков"],
+  "Могилёвская область": ["Могилёв", "Кричев", "Славгород", "Шклов"],
+  "Витебская область": ["Витебск", "Новополоцк", "Полоцк", "Браслав", "Орша"],
+  "Гродненская область": ["Гродно", "Лида", "Слоним", "Щучин", "Волковыск"],
+  "Брестская область": ["Брест", "Пинск", "Барановичи", "Кобрин"],
+};
+
 const categories = [
   {
     id: "auto",
@@ -100,9 +109,8 @@ const categories = [
 document.addEventListener("DOMContentLoaded", function () {
   initStepNavigation();
   initCategorySelection();
-  initFormValidation();
   initImageUpload();
-  initAutoDetectCity();
+  initRegionCitySelection();
   initDraftSaving();
   initPreview();
 });
@@ -231,6 +239,12 @@ function validateStep(stepNumber) {
       isValid = false;
     }
 
+    const region = document.getElementById("adRegion").value;
+    if (!region) {
+      showError("regionError", "Выберите регион");
+      isValid = false;
+    }
+
     const city = document.getElementById("adCity").value;
     if (!city) {
       showError("cityError", "Выберите город");
@@ -260,21 +274,6 @@ function validateStep(stepNumber) {
 
   if (stepNumber === 3) {
     let isValid = true;
-
-    const name = document.getElementById("adName").value.trim();
-    if (!name) {
-      showError("nameError", "Введите имя");
-      isValid = false;
-    }
-
-    const phone = document.getElementById("adPhone").value.trim();
-    if (!phone) {
-      showError("phoneError", "Введите телефон");
-      isValid = false;
-    } else if (!isValidBelarusPhone(phone)) {
-      showError("phoneError", "Неверный формат белорусского номера");
-      isValid = false;
-    }
 
     const rules = document.getElementById("agreeRules");
     if (!rules.checked) {
@@ -331,8 +330,11 @@ function initImageUpload() {
     handleFiles(fileInput.files);
   });
 
+  let uploadedImages = [];
+
   function handleFiles(files) {
     preview.innerHTML = "";
+    uploadedImages = [];
     const validFiles = Array.from(files).slice(0, 10);
 
     validFiles.forEach((file) => {
@@ -340,6 +342,7 @@ function initImageUpload() {
 
       const reader = new FileReader();
       reader.onload = (e) => {
+        uploadedImages.push(e.target.result);
         const img = document.createElement("img");
         img.src = e.target.result;
         preview.appendChild(img);
@@ -349,15 +352,41 @@ function initImageUpload() {
     });
   }
 }
-function initAutoDetectCity() {
-  document.getElementById("autoDetectCity").addEventListener("click", () => {
-    // Для демо — просто ставим Минск
-    document.getElementById("adCity").value = "minsk";
+function initRegionCitySelection() {
+  const regionSelect = document.getElementById("adRegion");
+  const citySelect = document.getElementById("adCity");
+
+  if (!regionSelect || !citySelect) {
+    console.error("Region or city select not found!");
+    return;
+  }
+
+  console.log("Region-city selection initialized");
+  console.log("Available regions:", Object.keys(REGIONS));
+
+  regionSelect.addEventListener("change", () => {
+    const selectedRegion = regionSelect.value;
+    console.log("Region changed to:", selectedRegion);
+    
+    citySelect.innerHTML = '<option value="">Выберите город</option>';
+
+    if (selectedRegion && REGIONS[selectedRegion]) {
+      console.log("Adding cities:", REGIONS[selectedRegion]);
+      REGIONS[selectedRegion].forEach((city) => {
+        const option = document.createElement("option");
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
+      console.log("Cities added, total options:", citySelect.options.length);
+    }
     updatePreview();
   });
+
+  citySelect.addEventListener("change", updatePreview);
 }
 function initPreview() {
-  const fields = ["adTitle", "adPrice", "adCity", "adDescription", "adName"];
+  const fields = ["adTitle", "adPrice", "adCity", "adDescription"];
   fields.forEach((id) => {
     const el = document.getElementById(id);
     if (el) {
@@ -377,34 +406,58 @@ function updatePreview() {
     : "Цена не указана";
 
   const city = document.getElementById("adCity").value;
-  const cityNames = {
-    minsk: "Минск",
-    brest: "Брест",
-    vitebsk: "Витебск",
-    gomel: "Гомель",
-    grodno: "Гродно",
-    mogilev: "Могилёв",
-    other: "Другой город",
-  };
-  document.getElementById("previewCity").textContent = city
-    ? cityNames[city] || city
-    : "—";
+  document.getElementById("previewCity").textContent = city || "—";
 
   document.getElementById("previewDescription").textContent =
     document.getElementById("adDescription").value || "Описание...";
+
+
+  const previewImagePlaceholder = document.querySelector(".preview-image-placeholder");
+  if (previewImagePlaceholder) {
+    const imagePreview = document.getElementById("imagePreview");
+    const firstImage = imagePreview?.querySelector("img");
+    
+    if (firstImage && firstImage.src) {
+      previewImagePlaceholder.style.backgroundImage = `url(${firstImage.src})`;
+      previewImagePlaceholder.style.backgroundSize = "cover";
+      previewImagePlaceholder.style.backgroundPosition = "center";
+      previewImagePlaceholder.textContent = "";
+    } else {
+      previewImagePlaceholder.style.backgroundImage = "none";
+      previewImagePlaceholder.textContent = "📷";
+    }
+  }
 }
 function initDraftSaving() {
   const fields = [
     "adTitle",
     "adPrice",
+    "adRegion",
     "adCity",
     "adDescription",
-    "adPhone",
-    "adName",
   ];
   const draft = localStorage.getItem("obyavigo_draft");
   if (draft) {
     const data = JSON.parse(draft);
+
+    if (data.adRegion) {
+      const regionSelect = document.getElementById("adRegion");
+      if (regionSelect) {
+        regionSelect.value = data.adRegion;
+
+        const citySelect = document.getElementById("adCity");
+        if (citySelect && REGIONS[data.adRegion]) {
+          citySelect.innerHTML = '<option value="">Выберите город</option>';
+          REGIONS[data.adRegion].forEach((city) => {
+            const option = document.createElement("option");
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+          });
+        }
+      }
+    }
+
     fields.forEach((field) => {
       const el = document.getElementById(field);
       if (el && data[field] !== undefined) {
@@ -450,7 +503,7 @@ document
 
     const formData = new FormData();
 
-    // === Категория: slug → имя ===
+
     const categorySlug = this.dataset.category;
     const categoryNameMap = {
       auto: "Авто",
@@ -465,7 +518,7 @@ document
     const categoryName = categoryNameMap[categorySlug] || "Другое";
     formData.append("categoryName", categoryName);
 
-    // === Подкатегория ===
+
     const subcategorySlug = this.dataset.subcategory;
     if (subcategorySlug) {
       const category = categories.find((cat) => cat.id === categorySlug);
@@ -477,21 +530,12 @@ document
       }
     }
 
-    // === Город: значение → название ===
+
     const cityValue = document.getElementById("adCity").value;
-    const cityNames = {
-      minsk: "Минск",
-      brest: "Брест",
-      vitebsk: "Витебск",
-      gomel: "Гомель",
-      grodno: "Гродно",
-      mogilev: "Могилёв",
-      other: "Другой город",
-    };
-    const locationName = cityNames[cityValue] || cityValue || "Не указан";
+    const locationName = cityValue || "Не указан";
     formData.append("locationName", locationName);
 
-    // === Остальные текстовые поля ===
+
     formData.append("title", document.getElementById("adTitle").value.trim());
     formData.append(
       "desc",
@@ -501,7 +545,6 @@ document
       "price",
       Number(document.getElementById("adPrice").value.trim()) * 100,
     );
-    formData.append("phone", document.getElementById("adPhone").value.trim());
     formData.append("condition", document.getElementById("adCondition").value);
 
     const files = document.getElementById("adImages").files;
@@ -509,17 +552,17 @@ document
       formData.append("images", files[i]);
     }
 
-    // === Отправка как multipart/form-data (автоматически) ===
+
     fetch("/api/create-ad/", {
       method: "POST",
       body: formData,
-      // ⚠️ НЕ указываем Content-Type! Браузер сам установит boundary
+
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           localStorage.removeItem("obyavigo_draft");
-          alert("Объявление успешно опубликовано!");
+          alert("Объявление успешно опубликовано");
           window.location.href = data.url || "/ads/" + data.adId;
         } else {
           alert("Ошибка: " + (data.message || "Не удалось создать объявление"));

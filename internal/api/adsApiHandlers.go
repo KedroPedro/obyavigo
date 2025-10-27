@@ -36,12 +36,18 @@ func (h *Handlers) GetAdsAPI() http.Handler {
 				Limit:       parseIntParam(r, "limit", 20, 100),
 				Category:    r.URL.Query().Get("category"),
 				Subcategory: r.URL.Query().Get("subcategory"),
+				Region:      r.URL.Query().Get("region"),
 				Location:    r.URL.Query().Get("location"),
 				Condition:   r.URL.Query().Get("condition"),
 				SearchQuery: r.URL.Query().Get("q"),
 				SortBy:      r.URL.Query().Get("sort"),
 				MinPrice:    parsePriceParam(r, "min_price"),
 				MaxPrice:    parsePriceParam(r, "max_price"),
+			}
+
+			if filters.MinPrice != nil && filters.MaxPrice != nil && *filters.MinPrice > *filters.MaxPrice {
+				sendToClient(w, http.StatusBadRequest, "min_price cannot be greater than max_price")
+				return
 			}
 
 			ads, err := h.db.Psql.SearchAds(&filters)
@@ -104,6 +110,31 @@ func (h *Handlers) GetAdByIDAPI() http.Handler {
 			response := map[string]interface{}{
 				"success": true,
 				"data":    adData,
+			}
+
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			json.NewEncoder(w).Encode(response)
+		},
+	)
+}
+
+func (h *Handlers) GetUserAdsAPI() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				sendToClient(w, http.StatusUnauthorized, "unauthorized")
+				return
+			}
+
+			ads, err := h.db.Psql.GetUserAds(userID)
+			if handleError(w, err, http.StatusInternalServerError, "error while getting user ads") {
+				return
+			}
+
+			response := map[string]interface{}{
+				"success": true,
+				"data":    ads,
 			}
 
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")

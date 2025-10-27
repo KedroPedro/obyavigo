@@ -239,12 +239,24 @@ function syncUrlWithFilters() {
     "subcategory",
     document.getElementById("subcategoryFilter")?.value || "",
   );
-  setOrDelete("region", document.getElementById("regionFilter")?.value || "");
+  const regionValue = document.getElementById("regionFilter")?.value || "";
+  setOrDelete("region", regionValue);
   const cityValue = document.getElementById("cityFilter")?.value || "";
   setOrDelete("city", cityValue);
   setOrDelete("location", cityValue);
-  setOrDelete("min_price", document.getElementById("minPrice")?.value || "");
-  setOrDelete("max_price", document.getElementById("maxPrice")?.value || "");
+  let minPrice = document.getElementById("minPrice")?.value || "";
+  let maxPrice = document.getElementById("maxPrice")?.value || "";
+  
+  if (minPrice && maxPrice && parseFloat(minPrice) > parseFloat(maxPrice)) {
+    const temp = minPrice;
+    minPrice = maxPrice;
+    maxPrice = temp;
+    document.getElementById("minPrice").value = minPrice;
+    document.getElementById("maxPrice").value = maxPrice;
+  }
+  
+  setOrDelete("min_price", minPrice);
+  setOrDelete("max_price", maxPrice);
   setOrDelete("sort", document.getElementById("sortFilter")?.value || "newest");
   const newChecked = document.getElementById("newCondition")?.checked;
   const usedChecked = document.getElementById("usedCondition")?.checked;

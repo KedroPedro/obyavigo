@@ -44,7 +44,7 @@ body {
     min-height: 100vh;
 }
 
-/* Боковое меню */
+
 .sidebar {
     width: 250px;
     background: var(--sidebar-bg);
@@ -118,7 +118,7 @@ body {
     background: var(--hover-bg);
 }
 
-/* Основной контент */
+
 .main-content {
     flex: 1;
     display: flex;
@@ -151,7 +151,7 @@ body {
     flex: 1;
 }
 
-/* Вкладки */
+
 .tab-content {
     display: none;
 }
@@ -166,7 +166,7 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Элементы управления */
+
 .controls {
     display: flex;
     gap: 15px;
@@ -198,7 +198,7 @@ body {
     font-size: 0.95rem;
 }
 
-/* Таблицы */
+
 .table-container {
     background: var(--card-bg);
     border-radius: 12px;
@@ -243,7 +243,7 @@ body {
     font-style: italic;
 }
 
-/* Статусы */
+
 .status {
     padding: 4px 12px;
     border-radius: 20px;
@@ -271,7 +271,7 @@ body {
     color: #dc3545;
 }
 
-/* Кнопки действий */
+
 .action-btn {
     background: none;
     border: none;
@@ -310,7 +310,7 @@ body {
     background: var(--hover-bg);
 }
 
-/* Статистика */
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -357,7 +357,7 @@ body {
     font-size: 0.95rem;
 }
 
-/* Модальное окно */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -420,13 +420,13 @@ body {
     color: var(--text-color);
 }
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+
 @media (max-width: 768px) {
     .admin-layout {
         flex-direction: column;
     }
     
-    /* Боковое меню */
+
     .sidebar {
         position: fixed;
         top: 0;
@@ -457,7 +457,7 @@ body {
         display: block;
     }
     
-    /* Хедер */
+
     .main-header {
         flex-direction: column;
         align-items: flex-start;
@@ -475,7 +475,7 @@ body {
         margin-right: 15px;
     }
     
-    /* Контент */
+
     .content-container {
         padding: 15px;
     }
@@ -492,7 +492,7 @@ body {
         min-width: auto;
     }
     
-    /* Таблицы → Карточки */
+
     .table-container {
         border-radius: 12px;
         overflow: hidden;
@@ -572,7 +572,7 @@ body {
         justify-content: center;
     }
     
-    /* Статистика */
+
     .stats-grid {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -594,7 +594,7 @@ body {
         font-size: 1.5rem;
     }
     
-    /* Модальное окно */
+
     .modal {
         padding: 20px;
         margin: 10px;
@@ -612,18 +612,18 @@ body {
         font-size: 1rem;
     }
     
-    /* Скрытие некоторых колонок на мобильных */
+
     .hide-mobile {
         display: none !important;
     }
 }
 
-/* Стили для карточек (изначально скрыты на десктопе) */
+
 .card-list {
     display: none;
 }
 
-/* На десктопе показываем таблицы, на мобильных - карточки */
+
 @media (min-width: 769px) {
     .card-list {
         display: none !important;
