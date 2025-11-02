@@ -381,39 +381,6 @@ func (p *Postgres) GetAdsCount() (int, error) {
 	return count, nil
 }
 
-func (p *Postgres) GetUserChats(userId *uuid.UUID) ([]models.ChatPreview, error) {
-	query, ok := p.q["GetUserChats"]
-	if !ok {
-		return nil, fmt.Errorf("request 'GetUserChats' not found")
-	}
-
-	rows, err := p.psql.Query(query, userId)
-	if err != nil {
-		return nil, fmt.Errorf("error while executing get user chats request: %w", err)
-	}
-	defer rows.Close()
-
-	var chats []models.ChatPreview
-	for rows.Next() {
-		var chat models.ChatPreview
-		err := rows.Scan(
-			&chat.UserID,
-			&chat.Username,
-			&chat.LastMessage,
-			&chat.LastMessageTime,
-			&chat.UnreadCount,
-		)
-		if err != nil {
-			return nil, fmt.Errorf("error while scanning user chats: %w", err)
-		}
-		chat.ID = *userId     // This would need to be adjusted based on actual chat ID logic
-		chat.IsOnline = false // This would need to be determined based on last activity
-		chats = append(chats, chat)
-	}
-
-	return chats, nil
-}
-
 func (p *Postgres) GetLikedAds(userId *uuid.UUID) ([]models.AdTemplate, error) {
 	query, ok := p.q["GetLikedAds"]
 	if !ok {
@@ -451,188 +418,6 @@ func (p *Postgres) GetLikedAds(userId *uuid.UUID) ([]models.AdTemplate, error) {
 		)
 		if err != nil {
 			return nil, fmt.Errorf("error while scanning liked ads: %w", err)
-		}
-		ad.UpdatedAt = updatedAt
-		ad.ExpirationDate = expirationDate
-		ad.Price = ad.Price / 100
-		ads = append(ads, ad)
-	}
-
-	return ads, nil
-}
-
-func (p *Postgres) GetAdminStats() (*models.AdminStats, error) {
-	query, ok := p.q["GetAdminStats"]
-	if !ok {
-		return nil, fmt.Errorf("request 'GetAdminStats' not found")
-	}
-
-	var stats models.AdminStats
-	err := p.psql.QueryRow(query).Scan(
-		&stats.TotalAds,
-		&stats.TotalUsers,
-		&stats.PendingReports,
-		&stats.PendingModeration,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("error while executing get admin stats request: %w", err)
-	}
-
-	return &stats, nil
-}
-
-func (p *Postgres) GetAllAds(limit, offset int) ([]models.AdTemplate, error) {
-	query, ok := p.q["GetAllAds"]
-	if !ok {
-		return nil, fmt.Errorf("request 'GetAllAds' not found")
-	}
-
-	rows, err := p.psql.Query(query, limit, offset)
-	if err != nil {
-		return nil, fmt.Errorf("error while executing get all ads request: %w", err)
-	}
-	defer rows.Close()
-
-	var ads []models.AdTemplate
-	for rows.Next() {
-		var ad models.AdTemplate
-		var updatedAt, expirationDate *time.Time
-		err := rows.Scan(
-			&ad.AdId,
-			&ad.UserId,
-			&ad.CategoryId,
-			&ad.CategoryName,
-			&ad.LocationId,
-			&ad.LocationName,
-			&ad.Title,
-			&ad.Description,
-			&ad.Price,
-			&ad.Condition,
-			&ad.ContactPhone,
-			&ad.CreatedAt,
-			&updatedAt,
-			&expirationDate,
-			&ad.Status,
-			&ad.ViewsCount,
-		)
-		if err != nil {
-			return nil, fmt.Errorf("error while scanning all ads: %w", err)
-		}
-		ad.UpdatedAt = updatedAt
-		ad.ExpirationDate = expirationDate
-		ad.Price = ad.Price / 100
-		ads = append(ads, ad)
-	}
-
-	return ads, nil
-}
-
-func (p *Postgres) GetAllUsers(limit, offset int) ([]models.UserTemplate, error) {
-	query, ok := p.q["GetAllUsers"]
-	if !ok {
-		return nil, fmt.Errorf("request 'GetAllUsers' not found")
-	}
-
-	rows, err := p.psql.Query(query, limit, offset)
-	if err != nil {
-		return nil, fmt.Errorf("error while executing get all users request: %w", err)
-	}
-	defer rows.Close()
-
-	var users []models.UserTemplate
-	for rows.Next() {
-		var user models.UserTemplate
-		err := rows.Scan(
-			&user.ID,
-			&user.Username,
-			&user.Email,
-			&user.PhoneNumber,
-			&user.RegistrationDate,
-			&user.Status,
-			&user.Role,
-		)
-		if err != nil {
-			return nil, fmt.Errorf("error while scanning all users: %w", err)
-		}
-		users = append(users, user)
-	}
-
-	return users, nil
-}
-
-func (p *Postgres) GetComplaints(limit, offset int) ([]models.ComplaintTemplate, error) {
-	query, ok := p.q["GetComplaints"]
-	if !ok {
-		return nil, fmt.Errorf("request 'GetComplaints' not found")
-	}
-
-	rows, err := p.psql.Query(query, limit, offset)
-	if err != nil {
-		return nil, fmt.Errorf("error while executing get complaints request: %w", err)
-	}
-	defer rows.Close()
-
-	var complaints []models.ComplaintTemplate
-	for rows.Next() {
-		var complaint models.ComplaintTemplate
-		err := rows.Scan(
-			&complaint.ID,
-			&complaint.ListingID,
-			&complaint.TargetUserID,
-			&complaint.ComplainantID,
-			&complaint.ComplaintType,
-			&complaint.Description,
-			&complaint.Status,
-			&complaint.CreatedAt,
-			&complaint.UpdatedAt,
-			&complaint.AdminID,
-			&complaint.ResolutionComment,
-		)
-		if err != nil {
-			return nil, fmt.Errorf("error while scanning complaints: %w", err)
-		}
-		complaints = append(complaints, complaint)
-	}
-
-	return complaints, nil
-}
-
-func (p *Postgres) GetModerationAds(limit, offset int) ([]models.AdTemplate, error) {
-	query, ok := p.q["GetModerationAds"]
-	if !ok {
-		return nil, fmt.Errorf("request 'GetModerationAds' not found")
-	}
-
-	rows, err := p.psql.Query(query, limit, offset)
-	if err != nil {
-		return nil, fmt.Errorf("error while executing get moderation ads request: %w", err)
-	}
-	defer rows.Close()
-
-	var ads []models.AdTemplate
-	for rows.Next() {
-		var ad models.AdTemplate
-		var updatedAt, expirationDate *time.Time
-		err := rows.Scan(
-			&ad.AdId,
-			&ad.UserId,
-			&ad.CategoryId,
-			&ad.CategoryName,
-			&ad.LocationId,
-			&ad.LocationName,
-			&ad.Title,
-			&ad.Description,
-			&ad.Price,
-			&ad.Condition,
-			&ad.ContactPhone,
-			&ad.CreatedAt,
-			&updatedAt,
-			&expirationDate,
-			&ad.Status,
-			&ad.ViewsCount,
-		)
-		if err != nil {
-			return nil, fmt.Errorf("error while scanning moderation ads: %w", err)
 		}
 		ad.UpdatedAt = updatedAt
 		ad.ExpirationDate = expirationDate
@@ -1022,4 +807,93 @@ func (p *Postgres) UpdateUserProfile(userId *uuid.UUID, username string, phoneNu
 	}
 
 	return nil
+}
+
+func (p *Postgres) CreateChat(chat *models.Chat) error {
+	query, ok := p.q["CreateChat"]
+	if !ok {
+		return fmt.Errorf("request 'CreateChat' not found")
+	}
+
+	_, err := p.psql.Exec(
+		query,
+		chat.CustomerId,
+		chat.ListingId,
+	)
+	if err != nil {
+		return fmt.Errorf("error while trying to create new chat: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) GetChatById(chatID string) (*models.Chat, error) {
+	query, ok := p.q["GetChatById"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetChatId' not found")
+	}
+
+	var chat models.Chat
+	err := p.psql.QueryRow(
+		query,
+		chatID,
+	).Scan(
+		&chat.ChatId,
+		&chat.SellerId,
+		&chat.CustomerId,
+		&chat.ListingId,
+		&chat.CreatedAt,
+	)
+
+	if err != nil {
+		return nil, fmt.Errorf("error while trying to get chat data: %w", err)
+	}
+
+	return &chat, nil
+}
+
+func (p *Postgres) CreateMessage(msg *models.Message) error {
+	query, ok := p.q["CreateMessage"]
+	if !ok {
+		return fmt.Errorf("request 'CreateMessage' not found")
+	}
+
+	_, err := p.psql.Exec(
+		query,
+		msg.ChatId,
+		msg.SenderId,
+		msg.Text,
+	)
+	if err != nil {
+		return fmt.Errorf("error while trying to create new message")
+	}
+	return nil
+}
+
+func (p *Postgres) GetMessages(chatId string, offset string) (*[]models.Message, error) {
+	query, ok := p.q["GetMessages"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetMessages' not found")
+	}
+
+	rows, err := p.psql.Query(
+		query,
+		chatId,
+		offset,
+	)
+	defer rows.Close()
+
+	if err != nil {
+		return nil, fmt.Errorf("error while trying to execute query: %w", err)
+	}
+
+	var messages []models.Message
+
+	for rows.Next() {
+		var m models.Message
+		if err := rows.Scan(&m.Id, &m.SenderId, &m.Text, &m.CreatedAt, &m.ChatId); err != nil {
+			return nil, err
+		}
+		messages = append(messages, m)
+	}
+	return &messages, nil
 }

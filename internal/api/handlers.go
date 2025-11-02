@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"log/slog"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -19,6 +20,7 @@ type Handlers struct {
 	tmpl *template.Template
 	mail *mail.Mail
 	jwt  *secure.JWT
+	ws   sync.Map
 }
 
 func New(db *database.DB, cfg *config.Config, mail *mail.Mail) *Handlers {
@@ -88,19 +90,10 @@ func (h *Handlers) GetMessagesPage() http.Handler {
 				return
 			}
 
-			chats, err := h.db.Psql.GetUserChats(userID)
-			if handleError(w, err, http.StatusInternalServerError, "error while getting user chats") {
-				return
-			}
+			_ = userID
 
-			data := models.MessagesPageData{
-				Chats: chats,
-			}
+			h.tmpl.ExecuteTemplate(w, "messages.html", nil)
 
-			err = h.tmpl.ExecuteTemplate(w, "messages.html", data)
-			if handleError(w, err, http.StatusInternalServerError, "error while executing messages template") {
-				h.sendNotFound(w)
-			}
 		},
 	)
 }
@@ -217,7 +210,6 @@ func (h *Handlers) GetAdPage() http.Handler {
 				return
 			}
 
-			// Получаем UUID изображений из PostgreSQL
 			imageIDs, err := h.db.Psql.GetAdImageIDs(&adID)
 			if err == nil && len(imageIDs) > 0 {
 				adData.Images = imageIDs
@@ -237,7 +229,6 @@ func (h *Handlers) GetAdPage() http.Handler {
 				}
 			}
 
-			// Форматируем дату
 			type AdPageView struct {
 				models.AdPage
 				FormattedDate string
@@ -292,45 +283,12 @@ func (h *Handlers) GetAdminPanelPage() http.Handler {
 				return
 			}
 
-			if role != "admin" {
+			if role != "admin" || role != "moderator" {
 				h.sendNotFound(w)
 				return
 			}
 
-			stats, err := h.db.Psql.GetAdminStats()
-			if handleError(w, err, http.StatusInternalServerError, "error while getting admin stats") {
-				return
-			}
-
-			ads, err := h.db.Psql.GetAllAds(10, 0)
-			if handleError(w, err, http.StatusInternalServerError, "error while getting all ads") {
-				return
-			}
-
-			users, err := h.db.Psql.GetAllUsers(10, 0)
-			if handleError(w, err, http.StatusInternalServerError, "error while getting all users") {
-				return
-			}
-
-			complaints, err := h.db.Psql.GetComplaints(10, 0)
-			if handleError(w, err, http.StatusInternalServerError, "error while getting complaints") {
-				return
-			}
-
-			moderation, err := h.db.Psql.GetModerationAds(10, 0)
-			if handleError(w, err, http.StatusInternalServerError, "error while getting moderation ads") {
-				return
-			}
-
-			data := models.AdminPanelData{
-				Stats:      *stats,
-				Ads:        ads,
-				Users:      users,
-				Complaints: complaints,
-				Moderation: moderation,
-			}
-
-			err = h.tmpl.ExecuteTemplate(w, "admin-panel.html", data)
+			err = h.tmpl.ExecuteTemplate(w, "admin-panel.html", nil)
 			if handleError(w, err, http.StatusInternalServerError, "error while executing admin panel template") {
 				h.sendNotFound(w)
 			}

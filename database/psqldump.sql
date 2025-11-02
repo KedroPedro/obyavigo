@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
-\restrict r7b8GPgmrYe2RXpPOneKFHhzbANCsLHRV1xKAEigBpNtGizA98nYYW4MpZXb2Wk
+\restrict O4FWwkQy0YNjLzTKZvpye1a6IIAfS5Q8NgNkwQ4VotWbriXRjt2hPEAfj46fxrH
 
 -- Dumped from database version 17.6
--- Dumped by pg_dump version 17.6
+-- Dumped by pg_dump version 18.0
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -52,6 +52,21 @@ CREATE TABLE site.categories (
 
 
 ALTER TABLE site.categories OWNER TO postgres;
+
+--
+-- Name: chats; Type: TABLE; Schema: site; Owner: postgres
+--
+
+CREATE TABLE site.chats (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    seller_id uuid NOT NULL,
+    customer_id uuid NOT NULL,
+    listing_id uuid NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE site.chats OWNER TO postgres;
 
 --
 -- Name: complaints; Type: TABLE; Schema: site; Owner: postgres
@@ -150,13 +165,11 @@ ALTER TABLE site.locations OWNER TO postgres;
 --
 
 CREATE TABLE site.messages (
-    id uuid NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     sender_id uuid NOT NULL,
-    receiver_id uuid NOT NULL,
-    listing_id uuid NOT NULL,
     message_text text NOT NULL,
-    created_at timestamp with time zone NOT NULL,
-    is_read boolean NOT NULL
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    chat_id uuid NOT NULL
 );
 
 
@@ -255,6 +268,14 @@ bd4dcc63-8009-403f-ac4b-4dc8f9bf8a6f	Книги и журналы	95a56d54-9a54-
 
 
 --
+-- Data for Name: chats; Type: TABLE DATA; Schema: site; Owner: postgres
+--
+
+COPY site.chats (id, seller_id, customer_id, listing_id, created_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: complaints; Type: TABLE DATA; Schema: site; Owner: postgres
 --
 
@@ -267,6 +288,7 @@ COPY site.complaints (id, complainant_id, listing_id, target_user_id, complaint_
 --
 
 COPY site.email_confirmations (id, user_id, token, created_at, expires_at, confirmed, confirmed_at) FROM stdin;
+fb983ef3-574a-4240-9743-cd8cca86d3a4	93721bbe-d0de-433c-8546-eae0e1a8e064	\N	2025-10-27 22:12:53.494372+03	2025-10-28 22:12:53.494372+03	t	2025-10-27 22:13:31.115297+03
 \.
 
 
@@ -275,6 +297,11 @@ COPY site.email_confirmations (id, user_id, token, created_at, expires_at, confi
 --
 
 COPY site.listing_images (id, listing_id, image_id, "position", uploaded_at) FROM stdin;
+5a5a391d-523c-4ddb-8275-ba8132eb50e9	83b068f7-206d-4659-bcbd-d81f544ad6b6	ae65bfe9-13c1-4ada-850d-fab3a4c3a370	0	2025-10-27 22:24:08.515684+03
+e383525e-7549-4e26-a5a5-982cb4af2e96	83b068f7-206d-4659-bcbd-d81f544ad6b6	e869142a-356b-4caf-a327-eba364dff9a6	1	2025-10-27 22:24:08.515684+03
+e7551347-50d6-4820-a8f3-08ebe899f1f5	83b068f7-206d-4659-bcbd-d81f544ad6b6	c1751dc3-d2e6-42fc-bd24-cc12f570e2bd	2	2025-10-27 22:24:08.515684+03
+05c0003f-5bf7-4dbf-b478-082f7a2af7cf	83b068f7-206d-4659-bcbd-d81f544ad6b6	6a44ff4f-20c2-4091-8871-1eb4f28ee3f7	3	2025-10-27 22:24:08.515684+03
+3cce8d3b-1a72-40b0-aff1-3cd342ef31a6	83b068f7-206d-4659-bcbd-d81f544ad6b6	7ae31958-4b8c-4922-8846-2c0616e84f81	4	2025-10-27 22:24:08.515684+03
 \.
 
 
@@ -283,6 +310,7 @@ COPY site.listing_images (id, listing_id, image_id, "position", uploaded_at) FRO
 --
 
 COPY site.listings (id, user_id, category_id, title, description, price, location_id, condition, status, created_at, updated_at, expiration_date, views_count, contact_phone) FROM stdin;
+83b068f7-206d-4659-bcbd-d81f544ad6b6	93721bbe-d0de-433c-8546-eae0e1a8e064	2ebc2d48-ad9b-4156-bcac-d1600f180327	afdfdsaf	asdfsadfsadasdfsadfsadasdfsadfsadasdfsadfsadasdfsadfsadasdfsadfsadasdfsadfsad	321400	cf8f67a1-4328-44bb-9971-a7d4c6924d84	new	public	2025-10-27 22:24:08.499737+03	\N	\N	0	
 \.
 
 
@@ -328,7 +356,7 @@ ae76e4d6-68f4-4be3-8b72-f2cac567dd3d	Беларусь	Брестская обл�
 -- Data for Name: messages; Type: TABLE DATA; Schema: site; Owner: postgres
 --
 
-COPY site.messages (id, sender_id, receiver_id, listing_id, message_text, created_at, is_read) FROM stdin;
+COPY site.messages (id, sender_id, message_text, created_at, chat_id) FROM stdin;
 \.
 
 
@@ -337,6 +365,7 @@ COPY site.messages (id, sender_id, receiver_id, listing_id, message_text, create
 --
 
 COPY site.user_favorites (id, user_id, listing_id, created_at) FROM stdin;
+7698223c-094a-4cba-9968-1f19ebdc3998	93721bbe-d0de-433c-8546-eae0e1a8e064	83b068f7-206d-4659-bcbd-d81f544ad6b6	2025-10-27 22:59:22.845384+03
 \.
 
 
@@ -345,6 +374,7 @@ COPY site.user_favorites (id, user_id, listing_id, created_at) FROM stdin;
 --
 
 COPY site.users (id, username, email, password_hash, role, status, phone_number, registration_date, last_login, profile_picture_id, bio, settings) FROM stdin;
+93721bbe-d0de-433c-8546-eae0e1a8e064	Матвей	zyazyulyam@bk.ru	$2a$14$FShrhSRN.eYmulPI0TRphu6df56JI/mwvXjdvCUBhALNPHkr6UMya	user	online	+375291110235	2025-10-27 22:12:52.094949+03	\N	\N	\N	"{}"
 \.
 
 
@@ -362,6 +392,22 @@ ALTER TABLE ONLY site.categories
 
 ALTER TABLE ONLY site.categories
     ADD CONSTRAINT categoriesid UNIQUE (id);
+
+
+--
+-- Name: chats chats_pkey; Type: CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.chats
+    ADD CONSTRAINT chats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: chats chats_user1_id_user2_id_listing_id_key; Type: CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.chats
+    ADD CONSTRAINT chats_user1_id_user2_id_listing_id_key UNIQUE (seller_id, customer_id, listing_id);
 
 
 --
@@ -493,6 +539,14 @@ ALTER TABLE ONLY site.categories
 
 
 --
+-- Name: chats chats_listings_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.chats
+    ADD CONSTRAINT chats_listings_fk FOREIGN KEY (listing_id) REFERENCES site.listings(id);
+
+
+--
 -- Name: complaints complaints_listings_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
 --
 
@@ -549,27 +603,11 @@ ALTER TABLE ONLY site.listings
 
 
 --
--- Name: messages messages_listings_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+-- Name: messages messages_chats_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
 --
 
 ALTER TABLE ONLY site.messages
-    ADD CONSTRAINT messages_listings_fk FOREIGN KEY (listing_id) REFERENCES site.listings(id);
-
-
---
--- Name: messages messages_users_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
---
-
-ALTER TABLE ONLY site.messages
-    ADD CONSTRAINT messages_users_fk FOREIGN KEY (sender_id) REFERENCES site.users(id);
-
-
---
--- Name: messages receiver_users_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
---
-
-ALTER TABLE ONLY site.messages
-    ADD CONSTRAINT receiver_users_fk FOREIGN KEY (receiver_id) REFERENCES site.categories(id);
+    ADD CONSTRAINT messages_chats_fk FOREIGN KEY (chat_id) REFERENCES site.chats(id);
 
 
 --
@@ -592,5 +630,5 @@ ALTER TABLE ONLY site.user_favorites
 -- PostgreSQL database dump complete
 --
 
-\unrestrict r7b8GPgmrYe2RXpPOneKFHhzbANCsLHRV1xKAEigBpNtGizA98nYYW4MpZXb2Wk
+\unrestrict O4FWwkQy0YNjLzTKZvpye1a6IIAfS5Q8NgNkwQ4VotWbriXRjt2hPEAfj46fxrH
 
