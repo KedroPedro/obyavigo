@@ -14,17 +14,14 @@ func (h *Handlers) CreateAd() http.Handler {
 			if handleError(w, err, http.StatusInternalServerError, "error while trying to get user id from context") {
 				return
 			}
-
 			err = r.ParseMultipartForm(70 << 20)
 			if handleError(w, err, http.StatusInternalServerError, "error while parsing multipart form") {
 				return
 			}
-
 			user, err := h.db.Psql.GetUserData(userID)
 			if handleError(w, err, http.StatusInternalServerError, "error while trying to get user data") {
 				return
 			}
-
 			adData := models.AdTemplate{
 				UserId:          *userID,
 				CategoryName:    r.FormValue("categoryName"),
@@ -35,7 +32,6 @@ func (h *Handlers) CreateAd() http.Handler {
 				ContactPhone:    user.PhoneNumber,
 				Condition:       r.FormValue("condition"),
 			}
-
 			if priceStr := r.FormValue("price"); priceStr != "" {
 				if price, err := strconv.Atoi(priceStr); err == nil {
 					adData.Price = price
@@ -44,31 +40,25 @@ func (h *Handlers) CreateAd() http.Handler {
 					return
 				}
 			}
-
 			files := r.MultipartForm.File["images"]
 			if len(files) == 0 {
 				sendToClient(w, http.StatusBadRequest, "no images uploaded")
 				return
 			}
-
 			if handleError(w, h.db.Psql.GetCreateAdDependencies(&adData), http.StatusInternalServerError, "error while trying to get dependencies for create new ad") {
 				return
 			}
-
 			adId, err := h.db.Psql.CreateAd(&adData)
 			if handleError(w, err, http.StatusInternalServerError, "error while trying to create new ad") {
 				return
 			}
-
 			ids, err := h.db.Mongo.UploadImages(r.Context(), files, adId.String())
 			if handleError(w, err, http.StatusInternalServerError, "error while trying to upload photos") {
 				return
 			}
-
 			if handleError(w, h.db.Psql.InsertImages(userID, adId, ids), http.StatusInternalServerError, "error while trying to insert images") {
 				return
 			}
-
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			json.NewEncoder(w).Encode(map[string]interface{}{
 				"success": true,

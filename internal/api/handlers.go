@@ -283,10 +283,10 @@ func (h *Handlers) GetAdminPanelPage() http.Handler {
 				return
 			}
 
-			if role != "admin" || role != "moderator" {
-				h.sendNotFound(w)
-				return
-			}
+		if role != "admin" && role != "moderator" {
+			h.sendNotFound(w)
+			return
+		}
 
 			err = h.tmpl.ExecuteTemplate(w, "admin-panel.html", nil)
 			if handleError(w, err, http.StatusInternalServerError, "error while executing admin panel template") {

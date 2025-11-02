@@ -1,10 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
-
-    
-
+    // Инициализация навигации
     initNavigation();
     
-
+    // Добавляем обработчики фильтров
+    const usersRoleFilter = document.getElementById('usersRoleFilter');
+    const usersSearch = document.getElementById('usersSearch');
+    
+    if (usersRoleFilter) {
+        usersRoleFilter.addEventListener('change', () => loadUsers());
+    }
+    
+    if (usersSearch) {
+        let debounceTimer;
+        usersSearch.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => loadUsers(), 500);
+        });
+    }
+    
+    // Загрузка данных
     loadDashboardData();
 });
 
@@ -31,7 +45,6 @@ function initNavigation() {
             
 
             const titles = {
-                ads: 'Объявления',
                 users: 'Пользователи',
                 moderation: 'Модерация',
                 reports: 'Жалобы',
@@ -48,9 +61,6 @@ function initNavigation() {
 
 function loadTabData(tab) {
     switch(tab) {
-        case 'ads':
-            loadAds();
-            break;
         case 'users':
             loadUsers();
             break;
@@ -61,97 +71,165 @@ function loadTabData(tab) {
             loadReports();
             break;
         case 'stats':
-
+            // Статистика уже загружена
             break;
     }
 }
 
 
 function loadDashboardData() {
-
-    document.getElementById('totalAds').textContent = '24,567';
-    document.getElementById('totalUsers').textContent = '18,932';
-    document.getElementById('pendingReports').textContent = '12';
-    document.getElementById('pendingModeration').textContent = '8';
+    // Загрузка статистики
+    fetch('/api/admin/stats/')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('totalAds').textContent = data.total_ads || '0';
+            document.getElementById('totalUsers').textContent = data.total_users || '0';
+            document.getElementById('pendingReports').textContent = data.pending_reports || '0';
+            document.getElementById('pendingModeration').textContent = data.pending_moderation || '0';
+        })
+        .catch(err => console.error('Error loading stats:', err));
     
-
-    loadAds();
+    // Загрузка объявлений на модерации
+    loadModeration();
 }
 
 
 function loadAds() {
     const tbody = document.getElementById('adsTableBody');
-    tbody.innerHTML = `
-        <tr>
-            <td>12345</td>
-            <td>iPhone 15 Pro Max 256GB</td>
-            <td>Алексей</td>
-            <td>3 200 BYN</td>
-            <td>Минск</td>
-            <td><span class="status active">Активное</span></td>
-            <td>
-                <button class="action-btn view">👁️</button>
-                <button class="action-btn reject">❌</button>
-            </td>
-        </tr>
-        <tr>
-            <td>12344</td>
-            <td>Квартира 2к, центр</td>
-            <td>Мария</td>
-            <td>320 000 BYN</td>
-            <td>Брест</td>
-            <td><span class="status pending">На модерации</span></td>
-            <td>
-                <button class="action-btn approve">✅</button>
-                <button class="action-btn reject">❌</button>
-            </td>
-        </tr>
-        <tr>
-            <td>12343</td>
-            <td>BMW X5 2020</td>
-            <td>Иван</td>
-            <td>89 000 BYN</td>
-            <td>Гомель</td>
-            <td><span class="status rejected">Отклонено</span></td>
-            <td>
-                <button class="action-btn view">👁️</button>
-                <button class="action-btn ban">🚫</button>
-            </td>
-        </tr>
-    `;
+    const statusFilter = document.getElementById('adsStatusFilter')?.value || 'all';
+    const searchQuery = document.getElementById('adsSearch')?.value || '';
     
+    tbody.innerHTML = '<tr><td colspan="7" class="loading">Загрузка...</td></tr>';
+    
+    fetch(`/api/admin/ads/?status=${statusFilter}&search=${encodeURIComponent(searchQuery)}`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.ads || data.ads.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="no-data">Нет данных</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = data.ads.map(ad => `
+                <tr>
+                    <td>${ad.id.substring(0, 8)}...</td>
+                    <td>${ad.title}</td>
+                    <td>${ad.user_id ? ad.user_id.substring(0, 8) + '...' : '-'}</td>
+                    <td>${ad.price} BYN</td>
+                    <td>${ad.location_name || '-'}</td>
+                    <td><span class="status ${ad.ad_status}">${getStatusText(ad.ad_status)}</span></td>
+                    <td>
+                        <button class="action-btn view" onclick="viewAd('${ad.id}')">👁️</button>
+                        ${ad.ad_status !== 'public' ? `<button class="action-btn approve" onclick="updateAdStatus('${ad.id}', 'public')">✅</button>` : ''}
+                        ${ad.ad_status !== 'rejected' ? `<button class="action-btn reject" onclick="updateAdStatus('${ad.id}', 'rejected')">❌</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        })
+        .catch(err => {
+            console.error('Error loading ads:', err);
+            tbody.innerHTML = '<tr><td colspan="7" class="no-data">Ошибка загрузки данных</td></tr>';
+        });
+}
 
-    addActionButtonListeners();
+function getStatusText(status) {
+    const statusMap = {
+        'public': 'Активное',
+        'draft': 'Черновик',
+        'rejected': 'Отклонено',
+        'pending': 'На модерации'
+    };
+    return statusMap[status] || status;
+}
+
+function viewAd(adId) {
+    window.open(`/ads/${adId}/`, '_blank');
+}
+
+function updateAdStatus(adId, status) {
+    showConfirmModal(status === 'public' ? 'approve' : 'reject', () => {
+        fetch(`/api/admin/ads/${adId}/status/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to update status');
+            return res.json();
+        })
+        .then(() => {
+            alert('Статус обновлен успешно');
+            loadAds();
+        })
+        .catch(err => {
+            console.error('Error updating ad status:', err);
+            alert('Ошибка при обновлении статуса');
+        });
+    });
 }
 
 
 function loadUsers() {
     const tbody = document.getElementById('usersTableBody');
-    tbody.innerHTML = `
-        <tr>
-            <td>1001</td>
-            <td>Алексей</td>
-            <td>alexey@mail.ru</td>
-            <td>+375291234567</td>
-            <td>15.05.2024</td>
-            <td><span class="status active">Активен</span></td>
-            <td>
-                <button class="action-btn ban">🚫</button>
-            </td>
-        </tr>
-        <tr>
-            <td>1002</td>
-            <td>Мария</td>
-            <td>maria@gmail.com</td>
-            <td>+375297654321</td>
-            <td>10.05.2024</td>
-            <td><span class="status banned">Забанен</span></td>
-            <td>
-                <button class="action-btn view">👁️</button>
-            </td>
-        </tr>
-    `;
-    addActionButtonListeners();
+    const roleFilter = document.getElementById('usersRoleFilter')?.value || 'all';
+    const searchQuery = document.getElementById('usersSearch')?.value || '';
+    
+    tbody.innerHTML = '<tr><td colspan="7" class="loading">Загрузка...</td></tr>';
+    
+    fetch(`/api/admin/users/?role=${roleFilter}&search=${encodeURIComponent(searchQuery)}`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.users || data.users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="no-data">Нет данных</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = data.users.map(user => `
+                <tr>
+                    <td>${user.id.substring(0, 8)}...</td>
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td><span class="status ${user.status}">${user.status === 'active' ? 'Активен' : 'Забанен'}</span></td>
+                    <td>${new Date(user.registration_date).toLocaleDateString('ru-RU')}</td>
+                    <td>
+                        ${user.status === 'active' ? 
+                            `<button class="action-btn ban" onclick="updateUserStatus('${user.id}', 'banned')">🚫 Забанить</button>` :
+                            `<button class="action-btn approve" onclick="updateUserStatus('${user.id}', 'active')">✅ Разбанить</button>`
+                        }
+                    </td>
+                </tr>
+            `).join('');
+        })
+        .catch(err => {
+            console.error('Error loading users:', err);
+            tbody.innerHTML = '<tr><td colspan="7" class="no-data">Ошибка загрузки данных</td></tr>';
+        });
+}
+
+function updateUserStatus(userId, status) {
+    showConfirmModal('ban', () => {
+        fetch(`/api/admin/users/${userId}/status/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to update status');
+            return res.json();
+        })
+        .then(() => {
+            alert('Статус пользователя обновлен успешно');
+            loadUsers();
+        })
+        .catch(err => {
+            console.error('Error updating user status:', err);
+            alert('Ошибка при обновлении статуса');
+        });
+    });
 }
 
 
@@ -179,59 +257,80 @@ function loadModeration() {
             </td>
         </tr>
     `;
-    addActionButtonListeners();
 }
 
 
 function loadReports() {
     const tbody = document.getElementById('reportsTableBody');
-    tbody.innerHTML = `
-        <tr>
-            <td>501</td>
-            <td>iPhone 15 Pro Max</td>
-            <td>Подозрение в мошенничестве</td>
-            <td>Сегодня, 15:20</td>
-            <td><span class="status pending">Новая</span></td>
-            <td>
-                <button class="action-btn view">👁️</button>
-                <button class="action-btn ban">🚫</button>
-            </td>
-        </tr>
-        <tr>
-            <td>500</td>
-            <td>Квартира в центре</td>
-            <td>Неверная информация</td>
-            <td>Вчера, 18:45</td>
-            <td><span class="status active">Рассмотрена</span></td>
-            <td>
-                <button class="action-btn view">👁️</button>
-            </td>
-        </tr>
-    `;
-    addActionButtonListeners();
-}
-
-
-function addActionButtonListeners() {
-    document.querySelectorAll('.action-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const action = this.className.includes('approve') ? 'approve' :
-                          this.className.includes('reject') ? 'reject' :
-                          this.className.includes('ban') ? 'ban' : 'view';
-            
-            if (action === 'view') {
-                alert('Просмотр объявления/пользователя');
+    const statusFilter = document.getElementById('reportsStatusFilter')?.value || 'all';
+    
+    tbody.innerHTML = '<tr><td colspan="6" class="loading">Загрузка...</td></tr>';
+    
+    fetch(`/api/admin/reports/?status=${statusFilter}`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.reports || data.reports.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="no-data">Нет жалоб</td></tr>';
                 return;
             }
             
-            showConfirmModal(action, () => {
+            tbody.innerHTML = data.reports.map(report => `
+                <tr>
+                    <td>${report.id.substring(0, 8)}...</td>
+                    <td>${getReportTypeText(report.complaint_type)}</td>
+                    <td>${report.listing_id ? report.listing_id.substring(0, 8) + '...' : '-'}</td>
+                    <td>${report.description || 'Нет описания'}</td>
+                    <td>${new Date(report.created_at).toLocaleDateString('ru-RU')}</td>
+                    <td>
+                        ${report.listing_id ? `<button class="action-btn view" onclick="viewAd('${report.listing_id}')">👁️</button>` : ''}
+                        ${report.status === 'pending' ? `<button class="action-btn approve" onclick="resolveReport('${report.id}')">✅ Решено</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        })
+        .catch(err => {
+            console.error('Error loading reports:', err);
+            tbody.innerHTML = '<tr><td colspan="6" class="no-data">Ошибка загрузки данных</td></tr>';
+        });
+}
 
-                console.log(`Выполнено действие: ${action}`);
-                alert(`Действие "${action}" выполнено успешно`);
-            });
+function getReportTypeText(type) {
+    const types = {
+        'spam': 'Спам',
+        'fraud': 'Мошенничество',
+        'fake': 'Поддельный товар',
+        'wrong_category': 'Неверная категория',
+        'offensive': 'Оскорбительный контент',
+        'sold': 'Товар уже продан',
+        'other': 'Другое'
+    };
+    return types[type] || type;
+}
+
+function resolveReport(reportId) {
+    showConfirmModal('approve', () => {
+        fetch(`/api/admin/reports/${reportId}/status/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: 'resolved' })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to resolve report');
+            return res.json();
+        })
+        .then(() => {
+            alert('Жалоба отмечена как решенная');
+            loadReports();
+        })
+        .catch(err => {
+            console.error('Error resolving report:', err);
+            alert('Ошибка при обработке жалобы');
         });
     });
 }
+
 
 
 function showConfirmModal(action, callback) {

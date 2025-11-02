@@ -28,6 +28,7 @@ type AdTemplate struct {
 }
 
 type AdPage struct {
+	AdId        uuid.UUID
 	UserID      uuid.UUID
 	AdStatus    string
 	Title       string

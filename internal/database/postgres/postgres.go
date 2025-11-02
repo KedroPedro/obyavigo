@@ -240,6 +240,7 @@ func (p *Postgres) GetAdInfo(adId *uuid.UUID) (*models.AdPage, error) {
 		return nil, fmt.Errorf("request 'GetAdInfo' not found")
 	}
 	var data models.AdPage
+	data.AdId = *adId
 	loc := make([]string, 4)
 	err := p.psql.QueryRow(query, adId).Scan(
 		&data.Title,

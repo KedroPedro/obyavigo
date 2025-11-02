@@ -46,6 +46,9 @@ function initAdPage() {
     });
   }
 
+  // Инициализация кнопки жалобы
+  initReportButton(adId);
+
 
   const showBtn = document.getElementById("showPhoneBtn");
   const phoneDisp = document.getElementById("phoneDisplay");
@@ -139,4 +142,92 @@ function updateFavoriteButton(favBtn, isFavorite) {
     favBtn.classList.remove("favorite-active");
     if (span) span.textContent = "В избранное";
   }
+}
+
+// Функционал жалоб
+function initReportButton(adId) {
+  const reportBtn = document.getElementById("reportBtn");
+  const reportModal = document.getElementById("reportModal");
+  const closeReportModal = document.getElementById("closeReportModal");
+  const cancelReportBtn = document.getElementById("cancelReportBtn");
+  const reportForm = document.getElementById("reportForm");
+  const reportDescription = document.getElementById("reportDescription");
+  const charCount = document.querySelector(".char-count");
+
+  if (!reportBtn || !reportModal) return;
+
+  // Открыть модальное окно
+  reportBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    reportModal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  });
+
+  // Закрыть модальное окно
+  const closeModal = () => {
+    reportModal.style.display = "none";
+    document.body.style.overflow = "";
+    reportForm.reset();
+    if (charCount) charCount.textContent = "0 / 500";
+  };
+
+  closeReportModal.addEventListener("click", closeModal);
+  cancelReportBtn.addEventListener("click", closeModal);
+  
+  // Закрыть при клике вне модального окна
+  reportModal.addEventListener("click", (e) => {
+    if (e.target === reportModal) {
+      closeModal();
+    }
+  });
+
+  // Счетчик символов
+  if (reportDescription && charCount) {
+    reportDescription.addEventListener("input", () => {
+      charCount.textContent = `${reportDescription.value.length} / 500`;
+    });
+  }
+
+  // Отправка формы
+  reportForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    const reportType = document.getElementById("reportType").value;
+    const description = reportDescription.value;
+
+    if (!reportType) {
+      alert("Пожалуйста, выберите причину жалобы");
+      return;
+    }
+
+    // Отправка жалобы
+    fetch("/api/reports/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ad_id: adId,
+        report_type: reportType,
+        description: description
+      })
+    })
+    .then((r) => {
+      if (!r.ok) {
+        if (r.status === 401) {
+          throw new Error("Необходимо войти в систему");
+        }
+        throw new Error("Не удалось отправить жалобу");
+      }
+      return r.json();
+    })
+    .then(() => {
+      alert("Жалоба успешно отправлена. Спасибо за обращение!");
+      closeModal();
+    })
+    .catch((err) => {
+      console.error("Ошибка при отправке жалобы:", err);
+      alert(err.message || "Произошла ошибка при отправке жалобы");
+    });
+  });
 }
