@@ -3,13 +3,14 @@ package api
 import (
 	"cmd/obyavigo/main.go/internal/models"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 )
 
-// GetAdminStats возвращает статистику для админ панели
 func (h *Handlers) GetAdminStats() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -29,19 +30,10 @@ func (h *Handlers) GetAdminStats() http.Handler {
 				return
 			}
 
-			stats := models.AdminStats{
-				TotalAds:          0,
-				TotalUsers:        0,
-				PendingReports:    0,
-				PendingModeration: 0,
+			stats, err := h.db.Psql.GetAdminStats()
+			if handleError(w, err, http.StatusInternalServerError, "error getting admin stats") {
+				return
 			}
-
-			// Получить статистику из БД
-			// TODO: Реализовать методы в БД
-			// stats.TotalAds = h.db.Psql.GetTotalAds()
-			// stats.TotalUsers = h.db.Psql.GetTotalUsers()
-			// stats.PendingReports = h.db.Psql.GetPendingReports()
-			// stats.PendingModeration = h.db.Psql.GetPendingModeration()
 
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(stats)
@@ -49,7 +41,6 @@ func (h *Handlers) GetAdminStats() http.Handler {
 	)
 }
 
-// GetAdminAds возвращает список объявлений для админ панели
 func (h *Handlers) GetAdminAds() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -69,31 +60,15 @@ func (h *Handlers) GetAdminAds() http.Handler {
 				return
 			}
 
-			page := parseIntParam(r, "page", 1, 0)
-			limit := parseIntParam(r, "limit", 20, 0)
-			status := r.URL.Query().Get("status")
-			search := r.URL.Query().Get("search")
+		page := parseIntParam(r, "page", 1, 0)
+		limit := parseIntParam(r, "limit", 20, 0)
+		status := r.URL.Query().Get("status")
+		search := r.URL.Query().Get("search")
 
-			filters := models.AdSearchFilters{
-				Page:        page,
-				Limit:       limit,
-				SearchQuery: search,
-			}
-
-			if status != "" && status != "all" {
-				// Фильтр по статусу
-				// TODO: добавить поле AdStatus в AdSearchFilters
-			}
-
-			ads, err := h.db.Psql.SearchAds(&filters)
-			if handleError(w, err, http.StatusInternalServerError, "error searching ads") {
-				return
-			}
-
-			totalCount, err := h.db.Psql.SearchAdsCount(&filters)
-			if handleError(w, err, http.StatusInternalServerError, "error getting ads count") {
-				return
-			}
+		ads, totalCount, err := h.db.Psql.GetAdminAds(page, limit, status, search)
+		if handleError(w, err, http.StatusInternalServerError, "error getting ads") {
+			return
+		}
 
 			response := map[string]interface{}{
 				"ads":        ads,
@@ -108,7 +83,6 @@ func (h *Handlers) GetAdminAds() http.Handler {
 	)
 }
 
-// UpdateAdStatus обновляет статус объявления (одобрить/отклонить)
 func (h *Handlers) UpdateAdStatus() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -149,11 +123,10 @@ func (h *Handlers) UpdateAdStatus() http.Handler {
 				return
 			}
 
-			// TODO: Реализовать метод UpdateAdStatus в БД
-			// err = h.db.Psql.UpdateAdStatus(&adID, req.Status)
-			// if handleError(w, err, http.StatusInternalServerError, "error updating ad status") {
-			// 	return
-			// }
+			err = h.db.Psql.UpdateAdStatus(&adID, req.Status)
+			if handleError(w, err, http.StatusInternalServerError, "error updating ad status") {
+				return
+			}
 
 			slog.Info("ad status updated",
 				slog.String("ad_id", adID.String()),
@@ -168,7 +141,6 @@ func (h *Handlers) UpdateAdStatus() http.Handler {
 	)
 }
 
-// GetAdminUsers возвращает список пользователей для админ панели
 func (h *Handlers) GetAdminUsers() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -190,17 +162,13 @@ func (h *Handlers) GetAdminUsers() http.Handler {
 
 			page := parseIntParam(r, "page", 1, 0)
 			limit := parseIntParam(r, "limit", 20, 0)
-			_ = r.URL.Query().Get("role")    // roleFilter - для будущей реализации
-			_ = r.URL.Query().Get("search") // search - для будущей реализации
+			roleFilter := r.URL.Query().Get("role")
+			search := r.URL.Query().Get("search")
 
-			// TODO: Реализовать метод GetUsers в БД
-			// users, err := h.db.Psql.GetUsers(page, limit, roleFilter, search)
-			// if handleError(w, err, http.StatusInternalServerError, "error getting users") {
-			// 	return
-			// }
-
-			// Заглушка
-			users := []models.User{}
+			users, err := h.db.Psql.GetUsers(page, limit, roleFilter, search)
+			if handleError(w, err, http.StatusInternalServerError, "error getting users") {
+				return
+			}
 
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(map[string]interface{}{
@@ -212,7 +180,6 @@ func (h *Handlers) GetAdminUsers() http.Handler {
 	)
 }
 
-// UpdateUserStatus обновляет статус пользователя (бан/разбан)
 func (h *Handlers) UpdateUserStatus() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -253,11 +220,10 @@ func (h *Handlers) UpdateUserStatus() http.Handler {
 				return
 			}
 
-			// TODO: Реализовать метод UpdateUserStatus в БД
-			// err = h.db.Psql.UpdateUserStatus(&targetUserID, req.Status)
-			// if handleError(w, err, http.StatusInternalServerError, "error updating user status") {
-			// 	return
-			// }
+			err = h.db.Psql.UpdateUserStatus(&targetUserID, req.Status)
+			if handleError(w, err, http.StatusInternalServerError, "error updating user status") {
+				return
+			}
 
 			slog.Info("user status updated",
 				slog.String("target_user_id", targetUserID.String()),
@@ -267,6 +233,64 @@ func (h *Handlers) UpdateUserStatus() http.Handler {
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(map[string]string{
 				"message": "status updated successfully",
+			})
+		},
+	)
+}
+
+func (h *Handlers) UpdateUserRole() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				sendJSONError(w, http.StatusUnauthorized, "unauthorized")
+				return
+			}
+
+			role, err := h.db.Psql.GetUserRole(userID)
+			if handleError(w, err, http.StatusInternalServerError, "error getting user role") {
+				return
+			}
+
+			if role != "admin" {
+				sendJSONError(w, http.StatusForbidden, "access denied")
+				return
+			}
+
+			targetUserIDStr := r.PathValue("id")
+			targetUserID, err := uuid.Parse(targetUserIDStr)
+			if err != nil {
+				sendJSONError(w, http.StatusBadRequest, "invalid user id")
+				return
+			}
+
+			var req struct {
+				Role string `json:"role"`
+			}
+
+			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+				sendJSONError(w, http.StatusBadRequest, "invalid request body")
+				return
+			}
+
+			if req.Role != "moderator" && req.Role != "user" {
+				sendJSONError(w, http.StatusBadRequest, "invalid role")
+				return
+			}
+
+			err = h.db.Psql.UpdateUserRole(&targetUserID, req.Role)
+			if handleError(w, err, http.StatusInternalServerError, "error updating user role") {
+				return
+			}
+
+			slog.Info("user role updated",
+				slog.String("target_user_id", targetUserID.String()),
+				slog.String("role", req.Role),
+				slog.String("admin_id", userID.String()))
+
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]string{
+				"message": "role updated successfully",
 			})
 		},
 	)

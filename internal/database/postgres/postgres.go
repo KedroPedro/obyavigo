@@ -898,3 +898,233 @@ func (p *Postgres) GetMessages(chatId string, offset string) (*[]models.Message,
 	}
 	return &messages, nil
 }
+
+func (p *Postgres) GetAdminStats() (*models.AdminStats, error) {
+	var stats models.AdminStats
+
+	if err := p.psql.QueryRow(`
+		SELECT
+			(SELECT COUNT(*) FROM site.listings WHERE ad_status != 'draft'),
+			(SELECT COUNT(*) FROM site.users WHERE status = 'active'),
+			(SELECT COUNT(*) FROM site.complaints WHERE status = 'pending'),
+			(SELECT COUNT(*) FROM site.listings WHERE ad_status = 'pending')
+	`).Scan(&stats.TotalAds, &stats.TotalUsers, &stats.PendingReports, &stats.PendingModeration); err != nil {
+		return nil, fmt.Errorf("error while getting admin stats: %w", err)
+	}
+
+	return &stats, nil
+}
+
+func (p *Postgres) UpdateAdStatus(adId *uuid.UUID, status string) error {
+	_, err := p.psql.Exec(`UPDATE site.listings SET ad_status = $1, updated_at = NOW() WHERE id = $2`, status, adId)
+	if err != nil {
+		return fmt.Errorf("error while updating ad status: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) UpdateUserStatus(userId *uuid.UUID, status string) error {
+	_, err := p.psql.Exec(`UPDATE site.users SET status = $1 WHERE id = $2`, status, userId)
+	if err != nil {
+		return fmt.Errorf("error while updating user status: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) UpdateUserRole(userId *uuid.UUID, role string) error {
+	query, ok := p.q["UpdateUserRole"]
+	if !ok {
+		return fmt.Errorf("request 'UpdateUserRole' not found")
+	}
+	_, err := p.psql.Exec(query, role, userId)
+	if err != nil {
+		return fmt.Errorf("error while updating user role: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) GetUsers(page, limit int, roleFilter, search string) ([]models.UserTemplate, error) {
+	query := `
+		SELECT id, username, email, phone_number, registration_date, status, role
+		FROM site.users
+		WHERE 1=1
+	`
+	var args []interface{}
+	argIndex := 1
+
+	if roleFilter != "" && roleFilter != "all" {
+		query += fmt.Sprintf(" AND role = $%d", argIndex)
+		args = append(args, roleFilter)
+		argIndex++
+	}
+
+	if search != "" {
+		query += fmt.Sprintf(" AND (email ILIKE $%d OR username ILIKE $%d)", argIndex, argIndex)
+		args = append(args, "%"+search+"%")
+		argIndex++
+	}
+
+	query += " ORDER BY registration_date DESC"
+	query += fmt.Sprintf(" LIMIT $%d OFFSET $%d", argIndex, argIndex+1)
+	args = append(args, limit, (page-1)*limit)
+
+	rows, err := p.psql.Query(query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("error while getting users: %w", err)
+	}
+	defer rows.Close()
+
+	var users []models.UserTemplate
+	for rows.Next() {
+		var user models.UserTemplate
+		if err := rows.Scan(&user.ID, &user.Username, &user.Email, &user.PhoneNumber, &user.RegistrationDate, &user.Status, &user.Role); err != nil {
+			return nil, fmt.Errorf("error while scanning user: %w", err)
+		}
+		users = append(users, user)
+	}
+
+	return users, nil
+}
+
+func (p *Postgres) GetReports(page, limit int, statusFilter string) ([]models.ComplaintTemplate, error) {
+	queryBase, ok := p.q["GetReportsBase"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetReportsBase' not found")
+	}
+
+	query := queryBase
+	var args []interface{}
+	argIndex := 1
+
+	if statusFilter != "" && statusFilter != "all" {
+		query += fmt.Sprintf(" AND c.status = $%d", argIndex)
+		args = append(args, statusFilter)
+		argIndex++
+	} else {
+		query += " AND c.status = 'pending'"
+	}
+
+	query += " ORDER BY c.created_at DESC"
+	query += fmt.Sprintf(" LIMIT $%d OFFSET $%d", argIndex, argIndex+1)
+	args = append(args, limit, (page-1)*limit)
+
+	rows, err := p.psql.Query(query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("error while getting reports: %w", err)
+	}
+	defer rows.Close()
+
+	var reports []models.ComplaintTemplate
+	for rows.Next() {
+		var report models.ComplaintTemplate
+		var complainantEmail string
+		if err := rows.Scan(
+			&report.ID,
+			&report.ListingID,
+			&report.TargetUserID,
+			&report.ComplainantID,
+			&report.ComplaintType,
+			&report.Description,
+			&report.Status,
+			&report.CreatedAt,
+			&report.UpdatedAt,
+			&report.AdminID,
+			&report.ResolutionComment,
+			&complainantEmail,
+		); err != nil {
+			return nil, fmt.Errorf("error while scanning report: %w", err)
+		}
+		reports = append(reports, report)
+	}
+
+	return reports, nil
+}
+
+func (p *Postgres) UpdateReportStatus(reportId *uuid.UUID, status, resolutionComment string, adminId *uuid.UUID) error {
+	query, ok := p.q["UpdateReportStatus"]
+	if !ok {
+		return fmt.Errorf("request 'UpdateReportStatus' not found")
+	}
+	_, err := p.psql.Exec(query, status, resolutionComment, adminId, reportId)
+	if err != nil {
+		return fmt.Errorf("error while updating report status: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) CreateReport(userId, adId *uuid.UUID, reportType, description string) error {
+	query, ok := p.q["CreateReport"]
+	if !ok {
+		return fmt.Errorf("request 'CreateReport' not found")
+	}
+	_, err := p.psql.Exec(query, adId, userId, reportType, description)
+	if err != nil {
+		return fmt.Errorf("error while creating report: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) GetAdminAds(page, limit int, status, search string) ([]map[string]interface{}, int, error) {
+	queryBase, ok := p.q["GetAdminAdsBase"]
+	if !ok {
+		return nil, 0, fmt.Errorf("request 'GetAdminAdsBase' not found")
+	}
+	countQueryBase, ok := p.q["GetAdminAdsCountBase"]
+	if !ok {
+		return nil, 0, fmt.Errorf("request 'GetAdminAdsCountBase' not found")
+	}
+
+	var args []interface{}
+	argIndex := 1
+	query := queryBase
+	countQuery := countQueryBase
+
+	if status != "" && status != "all" {
+		query += fmt.Sprintf(" AND l.ad_status = $%d", argIndex)
+		countQuery += fmt.Sprintf(" AND l.ad_status = $%d", argIndex)
+		args = append(args, status)
+		argIndex++
+	}
+
+	if search != "" {
+		query += fmt.Sprintf(" AND (l.title ILIKE $%d OR l.description ILIKE $%d)", argIndex, argIndex)
+		countQuery += fmt.Sprintf(" AND (l.title ILIKE $%d OR l.description ILIKE $%d)", argIndex, argIndex)
+		args = append(args, "%"+search+"%")
+		argIndex++
+	}
+
+	query += " ORDER BY l.created_at DESC"
+	query += fmt.Sprintf(" LIMIT $%d OFFSET $%d", argIndex, argIndex+1)
+	queryArgs := append(args, limit, (page-1)*limit)
+
+	rows, err := p.psql.Query(query, queryArgs...)
+	if err != nil {
+		return nil, 0, fmt.Errorf("error while getting admin ads: %w", err)
+	}
+	defer rows.Close()
+
+	var ads []map[string]interface{}
+	for rows.Next() {
+		var id, userId, title, userEmail, adStatus string
+		var createdAt time.Time
+		if err := rows.Scan(&id, &userId, &title, &createdAt, &userEmail, &adStatus); err != nil {
+			return nil, 0, fmt.Errorf("error while scanning admin ad: %w", err)
+		}
+		ads = append(ads, map[string]interface{}{
+			"id":         id,
+			"user_id":    userId,
+			"title":      title,
+			"created_at": createdAt.Format("2006-01-02T15:04:05Z"),
+			"user_email": userEmail,
+			"ad_status":  adStatus,
+		})
+	}
+
+	var totalCount int
+	err = p.psql.QueryRow(countQuery, args...).Scan(&totalCount)
+	if err != nil {
+		return nil, 0, fmt.Errorf("error while getting admin ads count: %w", err)
+	}
+
+	return ads, totalCount, nil
+}

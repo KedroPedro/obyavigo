@@ -4,7 +4,6 @@ class HeaderManager {
     this.modals = new Map();
     this.init();
   }
-
   init() {
     if (this.isInitialized) return;
     if (document.readyState === "loading") {
@@ -19,7 +18,6 @@ class HeaderManager {
       this.isInitialized = true;
     }
   }
-
   initializeComponents() {
     this.initHeader();
     this.initCategories();
@@ -28,13 +26,11 @@ class HeaderManager {
     this.initMobileMenu();
     this.initTheme();
   }
-
   setupEventListeners() {
     document.addEventListener("keydown", this.handleGlobalKeydown.bind(this));
     window.addEventListener("scroll", this.throttle(this.handleScroll.bind(this), 16));
     window.addEventListener("resize", this.debounce(this.handleResize.bind(this), 250));
   }
-
   throttle(func, limit) {
     let inThrottle;
     return function () {
@@ -47,7 +43,6 @@ class HeaderManager {
       }
     };
   }
-
   debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -59,13 +54,11 @@ class HeaderManager {
       timeout = setTimeout(later, wait);
     };
   }
-
   handleGlobalKeydown(e) {
     if (e.key === "Escape") {
       this.closeAllModals();
     }
   }
-
   handleScroll() {
     const header = document.getElementById("header");
     if (!header) return;
@@ -83,13 +76,11 @@ class HeaderManager {
     }
     this.lastScrollY = scrollY;
   }
-
   handleResize() {
     this.updateMobileMenuVisibility();
   }
-
   closeAllModals() {
-    const modalIds = ["searchOverlay", "mobileMenuOverlay", "chatOverlay", "lovedOverlay"]; 
+    const modalIds = ["searchOverlay", "mobileMenuOverlay", "chatOverlay", "lovedOverlay"];
     modalIds.forEach((id) => {
       const modal = document.getElementById(id);
       if (modal && modal.style.display === "flex") {
@@ -97,7 +88,6 @@ class HeaderManager {
       }
     });
   }
-
   closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -105,7 +95,6 @@ class HeaderManager {
       document.body.style.overflow = "";
     }
   }
-
   openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -113,25 +102,20 @@ class HeaderManager {
       document.body.style.overflow = "hidden";
     }
   }
-
   initHeader() {}
-
   navigateToAds(category, subcategory) {
     const params = new URLSearchParams();
     if (category) {
-
       const categoryName = this.getCategoryName(category);
       params.set("category", categoryName);
     }
     if (subcategory) params.set("subcategory", subcategory);
     window.location.href = `/ads/?${params.toString()}`;
   }
-
   initCategories() {
     const categoriesBtn = document.getElementById("categoriesBtn");
     const categoriesMenu = document.getElementById("categoriesMenu");
     if (!categoriesBtn || !categoriesMenu) return;
-
     const categoryNameMap = {
       services: "Услуги",
       auto: "Авто",
@@ -142,7 +126,6 @@ class HeaderManager {
       home: "Для дома",
       hobby: "Хобби",
     };
-
     const categoriesData = {
       services: ["Ремонт техники", "Красота и здоровье", "Образование", "Транспортные услуги", "Ремонт и строительство"],
       auto: ["Легковые автомобили", "Мотоциклы", "Грузовики", "Спецтехника", "Запчасти и аксессуары"],
@@ -153,7 +136,6 @@ class HeaderManager {
       home: ["Мебель", "Интерьер", "Посуда", "Текстиль", "Хозяйственные товары"],
       hobby: ["Спорт и отдых", "Книги и журналы", "Коллекционирование", "Музыкальные инструменты", "Туризм и рыбалка"],
     };
-
     const categoriesHtml = Object.keys(categoriesData)
       .map((category) => {
         const categoryName = categoryNameMap[category] || category;
@@ -168,7 +150,6 @@ class HeaderManager {
         `;
       })
       .join("");
-
     categoriesMenu.innerHTML = `
       <div class="categories-modal" role="dialog" aria-modal="true" aria-labelledby="categories-title">
         <div class="categories-modal-header">
@@ -178,10 +159,8 @@ class HeaderManager {
         <div class="categories-grid-overlay">${categoriesHtml}</div>
       </div>
     `;
-
     categoriesMenu.style.display = "none";
     categoriesBtn.setAttribute("aria-expanded", "false");
-
     categoriesBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       const isExpanded = categoriesMenu.style.display === "flex";
@@ -196,20 +175,16 @@ class HeaderManager {
         document.body.style.overflow = "hidden";
       }
     });
-
     const closeCategories = () => {
       categoriesMenu.style.display = "none";
       categoriesBtn.setAttribute("aria-expanded", "false");
       document.body.classList.remove("categories-open");
       document.body.style.overflow = "";
     };
-
     document.getElementById("closeCategories")?.addEventListener("click", closeCategories);
-
     categoriesMenu.addEventListener("click", (e) => {
       if (e.target === categoriesMenu) closeCategories();
     });
-
     categoriesMenu.addEventListener("click", (e) => {
       const target = e.target;
       if (!(target instanceof HTMLElement)) return;
@@ -230,7 +205,6 @@ class HeaderManager {
       }
     });
   }
-
   getCategoryName(key) {
     const names = {
       services: "Услуги",
@@ -244,7 +218,6 @@ class HeaderManager {
     };
     return names[key] || key;
   }
-
   initSearch() {
     const searchBtn = document.getElementById("searchBtn");
     const searchOverlay = document.getElementById("searchOverlay");
@@ -266,7 +239,6 @@ class HeaderManager {
       }
     });
   }
-
   initLoved() {
     const lovedBtn = document.getElementById("lovedBtn");
     const lovedOverlay = document.getElementById("lovedOverlay");
@@ -284,7 +256,6 @@ class HeaderManager {
       }
     });
   }
-
   initMobileMenu() {
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
     const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
@@ -314,7 +285,6 @@ class HeaderManager {
       });
     }
   }
-
   initTheme() {
     const themeToggleBtn = document.getElementById("themeToggleBtn");
     if (!themeToggleBtn) return;
@@ -334,7 +304,6 @@ class HeaderManager {
       }
     });
   }
-
   updateMobileMenuVisibility() {
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
     if (mobileMenuBtn) {
@@ -342,5 +311,4 @@ class HeaderManager {
     }
   }
 }
-
 const headerManager = new HeaderManager();

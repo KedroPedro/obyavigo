@@ -3,7 +3,6 @@ class AuthManager {
     this.currentForm = "login";
     this.init();
   }
-
   init() {
     document.addEventListener("DOMContentLoaded", () => {
       this.initTheme();
@@ -12,23 +11,18 @@ class AuthManager {
       this.setupKeyboardNavigation();
     });
   }
-
   initTheme() {
     const themeToggleBtn = document.getElementById("themeToggleBtn");
     if (!themeToggleBtn) return;
-
     const themeIcon = themeToggleBtn.querySelector(".theme-icon");
     const savedTheme = localStorage.getItem("theme") || "light";
-
     document.documentElement.setAttribute("data-theme", savedTheme);
     if (themeIcon) {
       themeIcon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
     }
-
     themeToggleBtn.addEventListener("click", () => {
       const currentTheme = document.documentElement.getAttribute("data-theme");
       const newTheme = currentTheme === "dark" ? "light" : "dark";
-
       document.documentElement.setAttribute("data-theme", newTheme);
       localStorage.setItem("theme", newTheme);
       if (themeIcon) {
@@ -36,7 +30,6 @@ class AuthManager {
       }
     });
   }
-
   initInputRestrictions() {
     const emailInputs = document.querySelectorAll(
       'input[type="email"], #loginEmail, #regEmail, #forgotEmail',
@@ -50,7 +43,6 @@ class AuthManager {
       });
     });
   }
-
   setupKeyboardNavigation() {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
@@ -58,7 +50,6 @@ class AuthManager {
       }
     });
   }
-
   isControlKey(e) {
     return (
       e.ctrlKey ||
@@ -77,20 +68,17 @@ class AuthManager {
   hasCyrillic(str) {
     return /[а-яА-ЯёЁ]/.test(str);
   }
-
   isValidName(name) {
     if (!name) return false;
     const re = /^[a-zA-Zа-яА-ЯёЁ\s\-']+$/;
     return re.test(name) && name.trim().length >= 2;
   }
-
   isValidEmail(email) {
     if (!email) return false;
     if (this.hasCyrillic(email)) return false;
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return re.test(email);
   }
-
   isValidBelarusPhone(phone) {
     if (!phone) return true;
     if (this.hasCyrillic(phone)) return false;
@@ -103,13 +91,11 @@ class AuthManager {
     }
     return false;
   }
-
   isValidPassword(password) {
     return (
       password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password)
     );
   }
-
   clearErrors(formId) {
     const form = document.getElementById(formId);
     if (!form) return;
@@ -120,20 +106,17 @@ class AuthManager {
       input.classList.remove("invalid", "valid");
     });
   }
-
   clearAllErrors() {
     ["loginForm", "registerForm", "forgotPasswordForm"].forEach((formId) => {
       this.clearErrors(formId);
     });
   }
-
   showError(elementId, message) {
     const element = document.getElementById(elementId);
     if (element) {
       element.textContent = message;
     }
   }
-
   initAuthForms() {
     const loginBtn = document.getElementById("loginBtn");
     const registerBtn = document.getElementById("registerBtn");
@@ -142,45 +125,37 @@ class AuthManager {
     const forgotPasswordForm = document.getElementById("forgotPasswordForm");
     const forgotPasswordLink = document.getElementById("forgotPasswordLink");
     const backToLoginBtn = document.getElementById("backToLoginBtn");
-
     if (loginBtn) {
       loginBtn.addEventListener("click", () => this.switchToForm("login"));
     }
-
     if (registerBtn) {
       registerBtn.addEventListener("click", () =>
         this.switchToForm("register"),
       );
     }
-
     if (forgotPasswordLink) {
       forgotPasswordLink.addEventListener("click", (e) => {
         e.preventDefault();
         this.switchToForm("forgot");
       });
     }
-
     if (backToLoginBtn) {
       backToLoginBtn.addEventListener("click", () =>
         this.switchToForm("login"),
       );
     }
-
     if (loginForm) {
       loginForm.addEventListener("submit", (e) => this.handleLogin(e));
     }
-
     if (registerForm) {
       registerForm.addEventListener("submit", (e) => this.handleRegister(e));
     }
-
     if (forgotPasswordForm) {
       forgotPasswordForm.addEventListener("submit", (e) =>
         this.handleForgotPassword(e),
       );
     }
   }
-
   switchToForm(formType) {
     const loginBtn = document.getElementById("loginBtn");
     const registerBtn = document.getElementById("registerBtn");
@@ -210,21 +185,16 @@ class AuthManager {
         if (forgotPasswordForm) forgotPasswordForm.classList.add("active");
         break;
     }
-
     this.clearAllErrors();
   }
-
   handleLogin(e) {
     e.preventDefault();
     this.clearErrors("loginForm");
-
     const emailInput = document.getElementById("loginEmail");
     const passwordInput = document.getElementById("loginPassword");
     let isValid = true;
-
     const email = emailInput.value.trim();
     const password = passwordInput.value;
-
     if (!email) {
       this.showError("loginEmailError", "Введите email или телефон");
       emailInput.classList.add("invalid");
@@ -245,7 +215,6 @@ class AuthManager {
       emailInput.classList.add("invalid");
       isValid = false;
     }
-
     if (!password) {
       this.showError("loginPasswordError", "Введите пароль");
       passwordInput.classList.add("invalid");
@@ -260,12 +229,10 @@ class AuthManager {
     } else {
       passwordInput.classList.add("valid");
     }
-
     if (isValid) {
       this.loginUser(email, password);
     }
   }
-
   async loginUser(email, password) {
     try {
       const response = await fetch("/api/auth/login/", {
@@ -278,10 +245,8 @@ class AuthManager {
           password: password,
         }),
       });
-
       const passwordInput = document.getElementById("loginPassword");
       const emailInput = document.getElementById("loginEmail");
-
       const result = await response.json();
       if (response.ok) {
         alert("Вход выполнен успешно");
@@ -303,19 +268,15 @@ class AuthManager {
       alert("Не удалось подключиться к серверу. Проверьте соединение.");
     }
   }
-
   handleRegister(e) {
     e.preventDefault();
     this.clearErrors("registerForm");
-
     const nameInput = document.getElementById("regName");
     const emailInput = document.getElementById("regEmail");
     const passwordInput = document.getElementById("regPassword");
     const passwordConfirmInput = document.getElementById("regPasswordConfirm");
     const termsCheckbox = document.getElementById("agreeTerms");
-
     let isValid = true;
-
     const name = nameInput.value.trim();
     if (!name) {
       this.showError("regNameError", "Введите ваше имя");
@@ -331,7 +292,6 @@ class AuthManager {
     } else {
       nameInput.classList.add("valid");
     }
-
     const email = emailInput.value.trim();
     if (!email) {
       this.showError("regEmailError", "Введите email");
@@ -348,7 +308,6 @@ class AuthManager {
     } else {
       emailInput.classList.add("valid");
     }
-
     const password = passwordInput.value;
     if (!password) {
       this.showError("regPasswordError", "Введите пароль");
@@ -364,7 +323,6 @@ class AuthManager {
     } else {
       passwordInput.classList.add("valid");
     }
-
     const passwordConfirm = passwordConfirmInput.value;
     if (!passwordConfirm) {
       this.showError("regPasswordConfirmError", "Повторите пароль");
@@ -377,7 +335,6 @@ class AuthManager {
     } else {
       passwordConfirmInput.classList.add("valid");
     }
-
     if (!termsCheckbox || !termsCheckbox.checked) {
       this.showError(
         "regPasswordConfirmError",
@@ -385,12 +342,10 @@ class AuthManager {
       );
       isValid = false;
     }
-
     if (isValid) {
       this.registerUser(name, email, password);
     }
   }
-
   async registerUser(name, email, password) {
     try {
       const response = await fetch("/api/auth/register/", {
@@ -404,10 +359,8 @@ class AuthManager {
           password: password,
         }),
       });
-
       const result = await response.json();
       const emailInput = document.getElementById("regEmail");
-
       if (response.ok) {
         alert("Регистрация успешна");
         window.location.href = "/";
@@ -425,14 +378,11 @@ class AuthManager {
       alert("Не удалось подключиться к серверу. Проверьте соединение.");
     }
   }
-
   handleForgotPassword(e) {
     e.preventDefault();
     this.clearErrors("forgotPasswordForm");
-
     const emailInput = document.getElementById("forgotEmail");
     const email = emailInput.value.trim();
-
     if (!email) {
       this.showError("forgotEmailError", "Введите email");
       emailInput.classList.add("invalid");
@@ -450,7 +400,6 @@ class AuthManager {
       this.forgotPassword(email);
     }
   }
-
   forgotPassword(email) {
     console.log("Восстановление пароля:", { email });
     alert("Ссылка для восстановления пароля отправлена на ваш email");

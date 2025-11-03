@@ -416,28 +416,16 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Заголовок</th>
-                                    <th>Автор</th>
+                                    <th>Автор (ID)</th>
+                                    <th>Email</th>
                                     <th>Дата</th>
                                     <th>Действия</th>
                                 </tr>
                             </thead>
                             <tbody id="moderationTableBody">
-                                {{range .Moderation}}
                                 <tr>
-                                    <td>{{.AdId}}</td>
-                                    <td>{{.Title}}</td>
-                                    <td>{{.UserId}}</td>
-                                    <td>{{.CreatedAt.Format "02.01.2006"}}</td>
-                                    <td>
-                                        <button class="btn-primary">Одобрить</button>
-                                        <button class="btn-danger">Отклонить</button>
-                                    </td>
+                                    <td colspan="6" class="no-data">Загрузка...</td>
                                 </tr>
-                                {{else}}
-                                <tr>
-                                    <td colspan="5" class="no-data">Нет данных</td>
-                                </tr>
-                                {{end}}
                             </tbody>
                         </table>
                     </div>
@@ -454,7 +442,8 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Тип</th>
-                                    <th>Объект</th>
+                                    <th>Объявление</th>
+                                    <th>Отправитель Email</th>
                                     <th>Причина</th>
                                     <th>Дата</th>
                                     <th>Действия</th>
@@ -462,7 +451,7 @@
                             </thead>
                             <tbody id="reportsTableBody">
                                 <tr>
-                                    <td colspan="6" class="no-data">Нет жалоб</td>
+                                    <td colspan="7" class="no-data">Загрузка...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -472,7 +461,7 @@
         </main>
     </div>
 
-    <!-- Modal -->
+    <!-- Confirmation Modal -->
     <div class="modal-overlay" id="confirmModal">
         <div class="modal">
             <h3 id="modalTitle">Подтверждение действия</h3>
@@ -480,6 +469,17 @@
             <div class="modal-actions">
                 <button class="btn-secondary" id="cancelBtn">Отмена</button>
                 <button class="btn-primary" id="confirmBtn">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal-overlay" id="detailsModal">
+        <div class="modal">
+            <h3 id="detailsModalTitle">Полная информация</h3>
+            <p id="detailsModalContent"></p>
+            <div class="modal-actions">
+                <button class="btn-primary" id="detailsCloseBtn">Закрыть</button>
             </div>
         </div>
     </div>

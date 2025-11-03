@@ -37,5 +37,11 @@
   "CreateChat": "INSERT INTO site.chats (customer_id, listing_id, seller_id) SELECT $1, $2, l.user_id FROM site.listings l WHERE l.id = $2;",
   "GetChatById": "SELECT * FROM site.chats WHERE id = $1;",
   "CreateMessage": "INSERT INTO site.messages (chat_id, sender_id, message_text) values ($1, $2, $3) ON CONFLICT DO NOTHING;",
-  "GetMessages": "SELECT * FROM messages WHERE chat_id = $1 ORDER BY created_at DESC LIMIT 50 OFFSET $3;"
+  "GetMessages": "SELECT * FROM messages WHERE chat_id = $1 ORDER BY created_at DESC LIMIT 50 OFFSET $3;",
+  "GetAdminAdsBase": "SELECT l.id, l.user_id, l.title, l.created_at, u.email as user_email, l.ad_status FROM site.listings l LEFT JOIN site.users u ON u.id = l.user_id WHERE 1=1",
+  "GetAdminAdsCountBase": "SELECT COUNT(*) FROM site.listings l WHERE 1=1",
+  "UpdateUserRole": "UPDATE site.users SET role = $1 WHERE id = $2;",
+  "CreateReport": "INSERT INTO site.complaints (listing_id, complainant_id, complaint_type, description, status, created_at) VALUES ($1, $2, $3, $4, 'pending', NOW());",
+  "GetReportsBase": "SELECT c.id, c.listing_id, c.target_user_id, c.complainant_id, c.complaint_type, c.description, c.status, c.created_at, c.updated_at, c.admin_id, c.resolution_comment, u.email as complainant_email FROM site.complaints c LEFT JOIN site.users u ON u.id = c.complainant_id WHERE 1=1",
+  "UpdateReportStatus": "UPDATE site.complaints SET status = $1, resolution_comment = $2, admin_id = $3, updated_at = NOW() WHERE id = $4;"
 }

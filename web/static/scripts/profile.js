@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
   initPasswordModal();
   initLogout();
 });
-
 function initHeader() {
   const header = document.getElementById("header");
   let lastScrollY = window.scrollY;
@@ -17,11 +16,9 @@ function initHeader() {
     lastScrollY = window.scrollY;
   });
 }
-
 function initCategories() {
   const categoriesBtn = document.getElementById("categoriesBtn");
   const categoriesMenu = document.getElementById("categoriesMenu");
-
   const categoriesData = {
     services: [
       "Ремонт техники",
@@ -62,7 +59,6 @@ function initCategories() {
       "Туризм и рыбалка",
     ],
   };
-
   categoriesMenu.innerHTML = Object.keys(categoriesData)
     .map(
       (category) => `
@@ -82,21 +78,17 @@ function initCategories() {
     `,
     )
     .join("");
-
   categoriesBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
     categoriesMenu.classList.toggle("show");
   });
-
   document.addEventListener("click", () => {
     categoriesMenu.classList.remove("show");
   });
-
   categoriesMenu?.addEventListener("click", (e) => {
     e.stopPropagation();
   });
 }
-
 function getCategoryName(key) {
   const names = {
     services: "Услуги",
@@ -110,23 +102,19 @@ function getCategoryName(key) {
   };
   return names[key] || key;
 }
-
 function initSearch() {
   const searchBtn = document.getElementById("searchBtn");
   const searchOverlay = document.getElementById("searchOverlay");
   const closeSearch = document.getElementById("closeSearch");
-
   searchBtn?.addEventListener("click", () => {
     searchOverlay.style.display = "flex";
     document.getElementById("searchInput").focus();
     document.body.style.overflow = "hidden";
   });
-
   closeSearch?.addEventListener("click", () => {
     searchOverlay.style.display = "none";
     document.body.style.overflow = "";
   });
-
   searchOverlay?.addEventListener("click", (e) => {
     if (e.target === searchOverlay) {
       searchOverlay.style.display = "none";
@@ -134,22 +122,18 @@ function initSearch() {
     }
   });
 }
-
 function initChat() {
   const messagesBtn = document.getElementById("messagesBtn");
   const chatOverlay = document.getElementById("chatOverlay");
   const closeChatBtn = document.getElementById("closeChatBtn");
-
   messagesBtn?.addEventListener("click", () => {
     chatOverlay.style.display = "flex";
     document.body.style.overflow = "hidden";
   });
-
   closeChatBtn?.addEventListener("click", () => {
     chatOverlay.style.display = "none";
     document.body.style.overflow = "";
   });
-
   chatOverlay?.addEventListener("click", (e) => {
     if (e.target === chatOverlay) {
       chatOverlay.style.display = "none";
@@ -157,22 +141,18 @@ function initChat() {
     }
   });
 }
-
 function initLoved() {
   const lovedBtn = document.getElementById("lovedBtn");
   const lovedOverlay = document.getElementById("lovedOverlay");
   const closeLovedBtn = document.getElementById("closeLovedBtn");
-
   lovedBtn?.addEventListener("click", () => {
     lovedOverlay.style.display = "flex";
     document.body.style.overflow = "hidden";
   });
-
   closeLovedBtn?.addEventListener("click", () => {
     lovedOverlay.style.display = "none";
     document.body.style.overflow = "";
   });
-
   lovedOverlay?.addEventListener("click", (e) => {
     if (e.target === lovedOverlay) {
       lovedOverlay.style.display = "none";
@@ -180,22 +160,18 @@ function initLoved() {
     }
   });
 }
-
 function initMobileMenu() {
   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
   const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
   const closeMobileMenu = document.getElementById("closeMobileMenu");
-
   mobileMenuBtn?.addEventListener("click", () => {
     mobileMenuOverlay.style.display = "flex";
     document.body.style.overflow = "hidden";
   });
-
   closeMobileMenu?.addEventListener("click", () => {
     mobileMenuOverlay.style.display = "none";
     document.body.style.overflow = "";
   });
-
   mobileMenuOverlay?.addEventListener("click", (e) => {
     if (e.target === mobileMenuOverlay) {
       mobileMenuOverlay.style.display = "none";
@@ -203,24 +179,20 @@ function initMobileMenu() {
     }
   });
 }
-
 function initProfileMenu() {
   const profileBtn = document.getElementById("profileBtn");
   const profileOverlay = document.getElementById("profileMenuOverlay");
-
   profileBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
     profileOverlay.style.display = "flex";
     document.body.style.overflow = "hidden";
   });
-
   profileOverlay?.addEventListener("click", (e) => {
     if (e.target === profileOverlay) {
       profileOverlay.style.display = "none";
       document.body.style.overflow = "";
     }
   });
-
   document.querySelector(".logout")?.addEventListener("click", (e) => {
     e.preventDefault();
     if (confirm("Вы уверены?")) {
@@ -232,12 +204,10 @@ function initProfileMenu() {
 function initTheme() {
   const themeToggleBtn = document.getElementById("themeToggleBtn");
   if (!themeToggleBtn) return;
-
   const savedTheme = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", savedTheme);
   themeToggleBtn.querySelector(".theme-icon").textContent =
     savedTheme === "dark" ? "☀️" : "🌙";
-
   themeToggleBtn.addEventListener("click", () => {
     const current = document.documentElement.getAttribute("data-theme");
     const newTheme = current === "dark" ? "light" : "dark";
@@ -258,50 +228,36 @@ function initTabs() {
       button.classList.add("active");
       const tabId = button.dataset.tab + "-tab";
       document.getElementById(tabId).classList.add("active");
-      
-      // Load user ads when switching to ads tab
       if (tabId === "ads-tab") {
         loadUserAds();
       }
-      
-      // Load liked ads when switching to loved tab
       if (tabId === "loved-tab") {
         loadLikedAds();
       }
     });
   });
 }
-
 function initProfileForm() {
   const form = document.getElementById("profileForm");
   if (!form) return;
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
-    
-    // Clear previous errors
     showError("nameError", "");
     showError("phoneError", "");
-    
     const username = document.getElementById("userName").value.trim();
     const phone = document.getElementById("userPhone").value.trim();
-    
-    // Validation
     if (!username) {
       showError("nameError", "Имя не может быть пустым");
       return;
     }
-    
     if (phone && !isValidBelarusPhone(phone)) {
       showError("phoneError", "Неверный формат белорусского номера");
       return;
     }
-    
-    // Prepare data
     const data = {
       username: username,
       phone_number: phone || null
     };
-    
     try {
       const response = await fetch("/api/profile/update/", {
         method: "POST",
@@ -311,12 +267,9 @@ function initProfileForm() {
         },
         body: JSON.stringify(data),
       });
-      
       const result = await response.json();
-      
       if (response.ok) {
         alert("Профиль успешно обновлён");
-        // Update profile name in sidebar
         const profileName = document.getElementById("profileName");
         if (profileName) {
           profileName.textContent = username;
@@ -330,7 +283,6 @@ function initProfileForm() {
     }
   });
 }
-
 function isValidBelarusPhone(phone) {
   if (!phone) return true;
   const cleaned = phone.replace(/\D/g, "");
@@ -342,12 +294,10 @@ function isValidBelarusPhone(phone) {
   }
   return false;
 }
-
 function showError(elementId, message) {
   const el = document.getElementById(elementId);
   if (el) el.textContent = message;
 }
-
 function initPasswordModal() {
   const modal = document.getElementById("passwordModal");
   if (!modal) return;
@@ -368,12 +318,9 @@ function initPasswordModal() {
     const oldPass = document.getElementById("oldPassword")?.value || "";
     const newPass = document.getElementById("newPassword").value;
     const confirmPass = document.getElementById("confirmPassword").value;
-    
-
     showError("oldPasswordError", "");
     showError("newPasswordError", "");
     showError("confirmPasswordError", "");
-    
     if (newPass !== confirmPass) {
       showError("confirmPasswordError", "Пароли не совпадают");
       return;
@@ -385,7 +332,6 @@ function initPasswordModal() {
       );
       return;
     }
-    
     try {
       const response = await fetch("/api/profile/change-password/", {
         method: "POST",
@@ -398,13 +344,10 @@ function initPasswordModal() {
           new_password: newPass,
         }),
       });
-      
       const data = await response.json();
-      
       if (response.ok) {
         alert("Пароль успешно изменён");
         modal.style.display = "none";
-
         if (document.getElementById("oldPassword")) document.getElementById("oldPassword").value = "";
         document.getElementById("newPassword").value = "";
         document.getElementById("confirmPassword").value = "";
@@ -417,13 +360,11 @@ function initPasswordModal() {
     }
   });
 }
-
 function isValidPassword(password) {
   return (
     password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password)
   );
 }
-
 function initLogout() {
   document.querySelector(".logout")?.addEventListener("click", (e) => {
     e.preventDefault();
@@ -432,7 +373,6 @@ function initLogout() {
     }
   });
 }
-
 document.getElementById("deleteAccountBtn")?.addEventListener("click", async () => {
   if (confirm("Вы уверены, что хотите удалить аккаунт. Это действие нельзя отменить")) {
     try {
@@ -443,7 +383,6 @@ document.getElementById("deleteAccountBtn")?.addEventListener("click", async () 
           "Content-Type": "application/json",
         },
       });
-      
       if (response.ok) {
         alert("Аккаунт удалён");
         window.location.href = "/auth/";
@@ -457,7 +396,6 @@ document.getElementById("deleteAccountBtn")?.addEventListener("click", async () 
     }
   }
 });
-
 function deleteAllCookies() {
   document.cookie.split(";").forEach((cookie) => {
     const eqPos = cookie.indexOf("=");
@@ -465,7 +403,6 @@ function deleteAllCookies() {
     document.cookie = name + "=; Max-Age=-1; path=/;";
   });
 }
-
 document.getElementById("logoutBtn").onclick = async () => {
   try {
     const response = await fetch("/api/logout/", {
@@ -475,7 +412,6 @@ document.getElementById("logoutBtn").onclick = async () => {
         "Content-Type": "application/json",
       },
     });
-
     if (response.ok) {
       window.location.href = "/auth/";
     } else {
@@ -485,32 +421,25 @@ document.getElementById("logoutBtn").onclick = async () => {
     console.error("Ошибка запроса выхода", e);
   }
 };
-
 let userAdsLoaded = false;
 let likedAdsLoaded = false;
-
 async function loadUserAds() {
   if (userAdsLoaded) return;
-  
   const adsList = document.getElementById("userAdsList");
-  
   try {
     const response = await fetch("/api/user/ads/", {
       credentials: "include",
     });
-    
     if (!response.ok) {
       throw new Error("Failed to load ads");
     }
-    
     const data = await response.json();
-    
     if (data.success && data.data && data.data.length > 0) {
       adsList.innerHTML = data.data.map(ad => `
         <div class="ad-card" onclick="window.location.href='/ads/${ad.adID}/'" style="cursor: pointer;">
           <div class="ad-image">
-            ${ad.imageID ? 
-              `<img src="/api/images/${ad.imageID}/" alt="${ad.title}" loading="lazy" />` : 
+            ${ad.imageID ?
+              `<img src="/api/images/${ad.imageID}/" alt="${ad.title}" loading="lazy" />` :
               `<img src="/static/pictures/logo.png" alt="${ad.title}" loading="lazy" />`
             }
             <span class="ad-status ${ad.status}">${getStatusText(ad.status)}</span>
@@ -542,7 +471,6 @@ async function loadUserAds() {
         </div>
       `;
     }
-    
     userAdsLoaded = true;
   } catch (error) {
     console.error("Error loading user ads:", error);
@@ -557,25 +485,17 @@ async function loadUserAds() {
     `;
   }
 }
-
 async function loadLikedAds() {
   if (likedAdsLoaded) return;
-  
   const adsList = document.getElementById("lovedAdsList");
-  
   try {
     const response = await fetch("/api/ads/?limit=100", {
       credentials: "include",
     });
-    
     if (!response.ok) {
       throw new Error("Failed to load liked ads");
     }
-    
     const data = await response.json();
-    
-    // Filter only favorited ads - you would need to check favorite status for each
-    // For now, we'll just show a placeholder
     adsList.innerHTML = `
       <div class="no-ads">
         <div class="no-ads-content">
@@ -585,7 +505,6 @@ async function loadLikedAds() {
         </div>
       </div>
     `;
-    
     likedAdsLoaded = true;
   } catch (error) {
     console.error("Error loading liked ads:", error);
@@ -600,7 +519,6 @@ async function loadLikedAds() {
     `;
   }
 }
-
 function getStatusText(status) {
   const statusMap = {
     'public': 'Активно',

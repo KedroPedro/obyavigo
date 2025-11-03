@@ -6,7 +6,6 @@ const REGIONS = {
   "Гродненская область": ["Гродно", "Лида", "Слоним", "Щучин", "Волковыск"],
   "Брестская область": ["Брест", "Пинск", "Барановичи", "Кобрин"],
 };
-
 const categories = [
   {
     id: "auto",
@@ -105,7 +104,6 @@ const categories = [
     ],
   },
 ];
-
 document.addEventListener("DOMContentLoaded", function () {
   initStepNavigation();
   initCategorySelection();
@@ -119,7 +117,6 @@ function initStepNavigation() {
   const prevButtons = document.querySelectorAll(".prev-btn");
   const steps = document.querySelectorAll(".step");
   const formSteps = document.querySelectorAll(".form-step");
-
   nextButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const currentStep = parseInt(button.closest(".form-step").dataset.step);
@@ -128,14 +125,12 @@ function initStepNavigation() {
       }
     });
   });
-
   prevButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const currentStep = parseInt(button.closest(".form-step").dataset.step);
       showStep(currentStep - 1);
     });
   });
-
   function showStep(stepNumber) {
     formSteps.forEach((step) => step.classList.remove("active"));
     steps.forEach((step) => step.classList.remove("active"));
@@ -153,7 +148,6 @@ function initStepNavigation() {
   }
 }
 function initCategorySelection() {
-
   const grid = document.getElementById("categoryGrid");
   grid.innerHTML = categories
     .map(
@@ -165,16 +159,13 @@ function initCategorySelection() {
     `,
     )
     .join("");
-
   const cards = document.querySelectorAll(".category-card");
   const subcategoriesSection = document.getElementById("subcategoriesSection");
   const subcategoriesGrid = document.getElementById("subcategoriesGrid");
-
   cards.forEach((card) => {
     card.addEventListener("click", () => {
       cards.forEach((c) => c.classList.remove("selected"));
       card.classList.add("selected");
-
       const categoryId = card.dataset.category;
       const category = categories.find((cat) => cat.id === categoryId);
       if (category && category.subcategories) {
@@ -187,7 +178,6 @@ function initCategorySelection() {
                 `,
           )
           .join("");
-
         subcategoriesSection.style.display = "block";
         const subcategoryCards = document.querySelectorAll(".subcategory-card");
         subcategoryCards.forEach((subCard) => {
@@ -211,7 +201,6 @@ function initCategorySelection() {
 }
 function validateStep(stepNumber) {
   clearAllErrors();
-
   if (stepNumber === 1) {
     const category = document.getElementById("createAdForm").dataset.category;
     if (!category) {
@@ -220,10 +209,8 @@ function validateStep(stepNumber) {
     }
     return true;
   }
-
   if (stepNumber === 2) {
     let isValid = true;
-
     const title = document.getElementById("adTitle").value.trim();
     if (!title) {
       showError("titleError", "Введите заголовок");
@@ -232,25 +219,21 @@ function validateStep(stepNumber) {
       showError("titleError", "Заголовок должен быть не менее 5 символов");
       isValid = false;
     }
-
     const price = document.getElementById("adPrice").value;
     if (!price || price <= 0) {
       showError("priceError", "Укажите корректную цену");
       isValid = false;
     }
-
     const region = document.getElementById("adRegion").value;
     if (!region) {
       showError("regionError", "Выберите регион");
       isValid = false;
     }
-
     const city = document.getElementById("adCity").value;
     if (!city) {
       showError("cityError", "Выберите город");
       isValid = false;
     }
-
     const desc = document.getElementById("adDescription").value.trim();
     if (!desc) {
       showError("descriptionError", "Введите описание");
@@ -262,28 +245,22 @@ function validateStep(stepNumber) {
       );
       isValid = false;
     }
-
     const condition = document.getElementById("adCondition").value;
     if (!condition) {
       showError("conditionError", "Выберите состояние товара");
       isValid = false;
     }
-
     return isValid;
   }
-
   if (stepNumber === 3) {
     let isValid = true;
-
     const rules = document.getElementById("agreeRules");
     if (!rules.checked) {
       showError("rulesError", "Необходимо согласие с правилами");
       isValid = false;
     }
-
     return isValid;
   }
-
   return true;
 }
 function initImageUpload() {
@@ -296,50 +273,38 @@ function initImageUpload() {
   ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
     dropZone.addEventListener(eventName, preventDefaults, false);
   });
-
   function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();
   }
-
   ["dragenter", "dragover"].forEach((eventName) => {
     dropZone.addEventListener(eventName, highlight, false);
   });
-
   ["dragleave", "drop"].forEach((eventName) => {
     dropZone.addEventListener(eventName, unhighlight, false);
   });
-
   function highlight() {
     dropZone.classList.add("dragover");
   }
-
   function unhighlight() {
     dropZone.classList.remove("dragover");
   }
-
   dropZone.addEventListener("drop", handleDrop, false);
-
   function handleDrop(e) {
     const dt = e.dataTransfer;
     const files = dt.files;
     handleFiles(files);
   }
-
   fileInput.addEventListener("change", () => {
     handleFiles(fileInput.files);
   });
-
   let uploadedImages = [];
-
   function handleFiles(files) {
     preview.innerHTML = "";
     uploadedImages = [];
     const validFiles = Array.from(files).slice(0, 10);
-
     validFiles.forEach((file) => {
       if (!file.type.match("image.*")) return;
-
       const reader = new FileReader();
       reader.onload = (e) => {
         uploadedImages.push(e.target.result);
@@ -355,21 +320,16 @@ function initImageUpload() {
 function initRegionCitySelection() {
   const regionSelect = document.getElementById("adRegion");
   const citySelect = document.getElementById("adCity");
-
   if (!regionSelect || !citySelect) {
     console.error("Region or city select not found!");
     return;
   }
-
   console.log("Region-city selection initialized");
   console.log("Available regions:", Object.keys(REGIONS));
-
   regionSelect.addEventListener("change", () => {
     const selectedRegion = regionSelect.value;
     console.log("Region changed to:", selectedRegion);
-    
     citySelect.innerHTML = '<option value="">Выберите город</option>';
-
     if (selectedRegion && REGIONS[selectedRegion]) {
       console.log("Adding cities:", REGIONS[selectedRegion]);
       REGIONS[selectedRegion].forEach((city) => {
@@ -382,7 +342,6 @@ function initRegionCitySelection() {
     }
     updatePreview();
   });
-
   citySelect.addEventListener("change", updatePreview);
 }
 function initPreview() {
@@ -395,28 +354,21 @@ function initPreview() {
   });
   updatePreview();
 }
-
 function updatePreview() {
   document.getElementById("previewTitle").textContent =
     document.getElementById("adTitle").value || "Заголовок объявления";
-
   const price = document.getElementById("adPrice").value;
   document.getElementById("previewPrice").textContent = price
     ? `${price} руб.`
     : "Цена не указана";
-
   const city = document.getElementById("adCity").value;
   document.getElementById("previewCity").textContent = city || "—";
-
   document.getElementById("previewDescription").textContent =
     document.getElementById("adDescription").value || "Описание...";
-
-
   const previewImagePlaceholder = document.querySelector(".preview-image-placeholder");
   if (previewImagePlaceholder) {
     const imagePreview = document.getElementById("imagePreview");
     const firstImage = imagePreview?.querySelector("img");
-    
     if (firstImage && firstImage.src) {
       previewImagePlaceholder.style.backgroundImage = `url(${firstImage.src})`;
       previewImagePlaceholder.style.backgroundSize = "cover";
@@ -439,12 +391,10 @@ function initDraftSaving() {
   const draft = localStorage.getItem("obyavigo_draft");
   if (draft) {
     const data = JSON.parse(draft);
-
     if (data.adRegion) {
       const regionSelect = document.getElementById("adRegion");
       if (regionSelect) {
         regionSelect.value = data.adRegion;
-
         const citySelect = document.getElementById("adCity");
         if (citySelect && REGIONS[data.adRegion]) {
           citySelect.innerHTML = '<option value="">Выберите город</option>';
@@ -457,7 +407,6 @@ function initDraftSaving() {
         }
       }
     }
-
     fields.forEach((field) => {
       const el = document.getElementById(field);
       if (el && data[field] !== undefined) {
@@ -478,12 +427,10 @@ function initDraftSaving() {
 function showError(elementId, message) {
   document.getElementById(elementId).textContent = message;
 }
-
 function clearAllErrors() {
   const errors = document.querySelectorAll(".error-message");
   errors.forEach((el) => (el.textContent = ""));
 }
-
 function isValidBelarusPhone(phone) {
   const cleaned = phone.replace(/\D/g, "");
   if (cleaned.length === 12 && cleaned.startsWith("375")) {
@@ -498,12 +445,8 @@ document
   .getElementById("createAdForm")
   .addEventListener("submit", function (e) {
     e.preventDefault();
-
     if (!validateStep(3)) return;
-
     const formData = new FormData();
-
-
     const categorySlug = this.dataset.category;
     const categoryNameMap = {
       auto: "Авто",
@@ -517,8 +460,6 @@ document
     };
     const categoryName = categoryNameMap[categorySlug] || "Другое";
     formData.append("categoryName", categoryName);
-
-
     const subcategorySlug = this.dataset.subcategory;
     if (subcategorySlug) {
       const category = categories.find((cat) => cat.id === categorySlug);
@@ -529,13 +470,9 @@ document
         formData.append("subcategoryName", subcategory.name);
       }
     }
-
-
     const cityValue = document.getElementById("adCity").value;
     const locationName = cityValue || "Не указан";
     formData.append("locationName", locationName);
-
-
     formData.append("title", document.getElementById("adTitle").value.trim());
     formData.append(
       "desc",
@@ -546,17 +483,13 @@ document
       Number(document.getElementById("adPrice").value.trim()) * 100,
     );
     formData.append("condition", document.getElementById("adCondition").value);
-
     const files = document.getElementById("adImages").files;
     for (let i = 0; i < files.length; i++) {
       formData.append("images", files[i]);
     }
-
-
     fetch("/api/create-ad/", {
       method: "POST",
       body: formData,
-
     })
       .then((response) => response.json())
       .then((data) => {

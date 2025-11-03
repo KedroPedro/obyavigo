@@ -1,10 +1,8 @@
-
 class LazyLoader {
     constructor() {
         this.imageObserver = null;
         this.init();
     }
-
     init() {
         if ('IntersectionObserver' in window) {
             this.imageObserver = new IntersectionObserver((entries, observer) => {
@@ -19,20 +17,17 @@ class LazyLoader {
                 rootMargin: '50px 0px',
                 threshold: 0.01
             });
-
             this.observeImages();
         } else {
             this.loadAllImages();
         }
     }
-
     observeImages() {
         const images = document.querySelectorAll('img[data-src]');
         images.forEach(img => {
             this.imageObserver.observe(img);
         });
     }
-
     loadImage(img) {
         const src = img.dataset.src;
         if (src) {
@@ -41,7 +36,6 @@ class LazyLoader {
             img.classList.add('loaded');
         }
     }
-
     loadAllImages() {
         const images = document.querySelectorAll('img[data-src]');
         images.forEach(img => {

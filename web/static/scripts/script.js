@@ -3,42 +3,35 @@ document.addEventListener("DOMContentLoaded", function () {
   initCategories();
   initSearch();
   initProfileMenu();
-
   initLoved();
   initMobileMenu();
   initTheme();
-
   loadDynamicContent();
 });
-
 function loadDynamicContent() {
   showSkeletons();
   setTimeout(() => {
     fetchStats();
     fetchCategories();
     fetchFeaturedAds();
-    fetchLovedItems(); // Имитация избранного
+    fetchLovedItems();
   }, 1000);
 }
-
 function showSkeletons() {
   const categoriesGrid = document.getElementById("categoriesGrid");
   const adsGrid = document.getElementById("adsGrid");
-
   categoriesGrid.innerHTML = `
         <div class="skeleton-card"></div>
         <div class="skeleton-card"></div>
         <div class="skeleton-card"></div>
         <div class="skeleton-card"></div>
     `;
-
   adsGrid.innerHTML = `
         <div class="skeleton-ad"></div>
         <div class="skeleton-ad"></div>
         <div class="skeleton-ad"></div>
     `;
 }
-
 function fetchStats() {
   const stats = {
     yearsOnMarket: "15 лет",
@@ -46,13 +39,11 @@ function fetchStats() {
     appRating: "4.9/5",
     dailyDeals: "3 200+",
   };
-
   document.getElementById("years-on-market").textContent = stats.yearsOnMarket;
   document.getElementById("cities-covered").textContent = stats.citiesCovered;
   document.getElementById("app-rating").textContent = stats.appRating;
   document.getElementById("daily-deals").textContent = stats.dailyDeals;
 }
-
 function fetchCategories() {
   const categoriesGrid = document.getElementById("categoriesGrid");
   const categories = [
@@ -65,7 +56,6 @@ function fetchCategories() {
     { name: "Для дома", image: "home" },
     { name: "Хобби", image: "hobby" },
   ];
-
   categoriesGrid.innerHTML = categories
     .map(
       (cat) => `
@@ -82,7 +72,6 @@ function fetchCategories() {
     )
     .join("");
 }
-
 function fetchFeaturedAds() {
   const adsGrid = document.getElementById("adsGrid");
   adsGrid.innerHTML = `
@@ -91,18 +80,15 @@ function fetchFeaturedAds() {
         <div class="skeleton-ad"></div>
     `;
 }
-
 function fetchLovedItems() {
   const lovedList = document.getElementById("lovedList");
   lovedList.innerHTML = `
         <div class="no-loved">Вы ещё ничего не добавили в избранное</div>
     `;
 }
-
 function initHeader() {
   const header = document.getElementById("header");
   let lastScrollY = window.scrollY;
-
   window.addEventListener("scroll", () => {
     if (window.scrollY > lastScrollY && window.scrollY > 100) {
       header.classList.add("hidden");
@@ -112,11 +98,9 @@ function initHeader() {
     lastScrollY = window.scrollY;
   });
 }
-
 function initCategories() {
   const categoriesBtn = document.getElementById("categoriesBtn");
   const categoriesMenu = document.getElementById("categoriesMenu");
-
   const categoriesData = {
     services: [
       "Ремонт техники",
@@ -157,7 +141,6 @@ function initCategories() {
       "Туризм и рыбалка",
     ],
   };
-
   categoriesMenu.innerHTML = Object.keys(categoriesData)
     .map(
       (category) => `
@@ -177,24 +160,20 @@ function initCategories() {
     `,
     )
     .join("");
-
   categoriesBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
     const isExpanded = categoriesMenu.classList.contains("show");
     categoriesBtn.setAttribute("aria-expanded", !isExpanded);
     categoriesMenu.classList.toggle("show");
   });
-
   document.addEventListener("click", () => {
     categoriesMenu.classList.remove("show");
     categoriesBtn.setAttribute("aria-expanded", "false");
   });
-
   categoriesMenu?.addEventListener("click", (e) => {
     e.stopPropagation();
   });
 }
-
 function getCategoryName(key) {
   const names = {
     services: "Услуги",
@@ -208,14 +187,12 @@ function getCategoryName(key) {
   };
   return names[key] || key;
 }
-
 function initSearch() {
   const searchBtn = document.getElementById("searchBtn");
   const searchOverlay = document.getElementById("searchOverlay");
   const searchModal = document.getElementById("searchModal");
   const closeSearch = document.getElementById("closeSearch");
   const searchInput = document.getElementById("searchInput");
-
   searchBtn?.addEventListener("click", () => {
     searchOverlay.style.display = "flex";
     document.body.style.overflow = "hidden";
@@ -223,56 +200,46 @@ function initSearch() {
       searchInput.focus();
     }, 300);
   });
-
   function closeSearchModal() {
     searchOverlay.style.display = "none";
     document.body.style.overflow = "";
   }
-
   closeSearch?.addEventListener("click", closeSearchModal);
   searchOverlay?.addEventListener("click", (e) => {
     if (e.target === searchOverlay) closeSearchModal();
   });
 }
-
 function initLoved() {
   const lovedBtn = document.getElementById("lovedBtn");
   const lovedOverlay = document.getElementById("lovedOverlay");
   const closeLovedBtn = document.getElementById("closeLovedBtn");
-
   lovedBtn?.addEventListener("click", () => {
     lovedOverlay.style.display = "flex";
     document.body.style.overflow = "hidden";
   });
-
   function closeLoved() {
     lovedOverlay.style.display = "none";
     document.body.style.overflow = "";
   }
-
   closeLovedBtn?.addEventListener("click", closeLoved);
   lovedOverlay?.addEventListener("click", (e) => {
     if (e.target === lovedOverlay) closeLoved();
   });
 }
-
 function initProfileMenu() {
   const profileBtn = document.getElementById("profileBtn");
   const profileOverlay = document.getElementById("profileMenuOverlay");
-
   profileBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
     profileOverlay.style.display = "flex";
     document.body.style.overflow = "hidden";
   });
-
   profileOverlay?.addEventListener("click", (e) => {
     if (e.target === profileOverlay) {
       profileOverlay.style.display = "none";
       document.body.style.overflow = "";
     }
   });
-
   document.querySelector(".logout")?.addEventListener("click", (e) => {
     e.preventDefault();
     if (confirm("Вы уверены, что хотите выйти?")) {
@@ -281,16 +248,13 @@ function initProfileMenu() {
     }
   });
 }
-
 function initTheme() {
   const themeToggleBtn = document.getElementById("themeToggleBtn");
   if (!themeToggleBtn) return;
-
   const savedTheme = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", savedTheme);
   const icon = themeToggleBtn.querySelector(".theme-icon");
   if (icon) icon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
-
   themeToggleBtn.addEventListener("click", () => {
     const current = document.documentElement.getAttribute("data-theme");
     const next = current === "dark" ? "light" : "dark";
@@ -299,28 +263,23 @@ function initTheme() {
     if (icon) icon.textContent = next === "dark" ? "☀️" : "🌙";
   });
 }
-
 function initMobileMenu() {
   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
   const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
   const closeMobileMenu = document.getElementById("closeMobileMenu");
-
   mobileMenuBtn?.addEventListener("click", () => {
     mobileMenuOverlay.style.display = "flex";
     document.body.style.overflow = "hidden";
   });
-
   function closeMobileMenuFn() {
     mobileMenuOverlay.style.display = "none";
     document.body.style.overflow = "";
   }
-
   closeMobileMenu?.addEventListener("click", closeMobileMenuFn);
   mobileMenuOverlay?.addEventListener("click", (e) => {
     if (e.target === mobileMenuOverlay) closeMobileMenuFn();
   });
 }
-
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     const modals = [

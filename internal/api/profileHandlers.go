@@ -125,3 +125,35 @@ func (h *Handlers) UpdateProfileHandler() http.Handler {
 		},
 	)
 }
+
+func (h *Handlers) GetUserProfileAPI() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				sendJSONError(w, http.StatusUnauthorized, "unauthorized")
+				return
+			}
+
+			userData, err := h.db.Psql.GetUserData(userID)
+			if handleError(w, err, http.StatusInternalServerError, "error getting user data") {
+				return
+			}
+
+			userRole, err := h.db.Psql.GetUserRole(userID)
+			if handleError(w, err, http.StatusInternalServerError, "error getting user role") {
+				return
+			}
+
+			response := map[string]interface{}{
+				"username":     userData.Username,
+				"email":        userData.Email,
+				"phone_number": userData.PhoneNumber,
+				"role":         userRole,
+			}
+
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(response)
+		},
+	)
+}

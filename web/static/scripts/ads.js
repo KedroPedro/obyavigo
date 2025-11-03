@@ -246,7 +246,6 @@ function syncUrlWithFilters() {
   setOrDelete("location", cityValue);
   let minPrice = document.getElementById("minPrice")?.value || "";
   let maxPrice = document.getElementById("maxPrice")?.value || "";
-  
   if (minPrice && maxPrice && parseFloat(minPrice) > parseFloat(maxPrice)) {
     const temp = minPrice;
     minPrice = maxPrice;
@@ -254,7 +253,6 @@ function syncUrlWithFilters() {
     document.getElementById("minPrice").value = minPrice;
     document.getElementById("maxPrice").value = maxPrice;
   }
-  
   setOrDelete("min_price", minPrice);
   setOrDelete("max_price", maxPrice);
   setOrDelete("sort", document.getElementById("sortFilter")?.value || "newest");
@@ -272,29 +270,23 @@ function syncUrlWithFilters() {
 function initLoadMore() {
   const loadMoreBtn = document.getElementById("loadMoreBtn");
   if (!loadMoreBtn) return;
-
   let currentPage = 1;
-
   loadMoreBtn.addEventListener("click", async () => {
     console.log("Загрузка дополнительных объявлений...");
     loadMoreBtn.textContent = "Загрузка...";
     loadMoreBtn.disabled = true;
-
     try {
       const params = new URLSearchParams(window.location.search);
       currentPage++;
       params.set("page", currentPage);
-
       const response = await fetch(`/api/ads?${params.toString()}`);
       const data = await response.json();
-
       if (data.success && data.data && data.data.length > 0) {
         const adsGrid = document.getElementById("adsGrid");
         data.data.forEach((ad) => {
           const adCard = createAdCard(ad);
           adsGrid.appendChild(adCard);
         });
-
         if (currentPage >= data.totalPages) {
           loadMoreBtn.style.display = "none";
         }
@@ -310,20 +302,16 @@ function initLoadMore() {
     }
   });
 }
-
 function createAdCard(ad) {
   const card = document.createElement("a");
   card.href = `/ads/${ad.adID}/`;
   card.className = "ad-card";
   card.style.cssText = "text-decoration: none; color: inherit";
-
   const createdDate = new Date(ad.createdAt);
   const formattedDate = createdDate.toLocaleDateString("ru-RU");
-
   const imageUrl = ad.imageID
     ? `/api/images/${ad.imageID}/`
     : "/static/pictures/logo.png";
-
   card.innerHTML = `
     <div class="ad-image">
       <img src="${imageUrl}" alt="${ad.title}" loading="lazy" />
@@ -342,6 +330,5 @@ function createAdCard(ad) {
       </div>
     </div>
   `;
-
   return card;
 }

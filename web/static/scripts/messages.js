@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function initChatsList() {
     loadChats();
 }
-
 function loadChats() {
     const chatsList = document.getElementById('chatsList');
     showChatsSkeletons();
@@ -17,7 +16,6 @@ function loadChats() {
         renderChats(chats);
     }, 1000);
 }
-
 function showChatsSkeletons() {
     const chatsList = document.getElementById('chatsList');
     chatsList.innerHTML = `
@@ -44,14 +42,11 @@ function showChatsSkeletons() {
         </div>
     `;
 }
-
 function generateMockChats() {
     return [];
 }
-
 function renderChats(chats) {
     const chatsList = document.getElementById('chatsList');
-    
     if (chats.length === 0) {
         chatsList.innerHTML = `
             <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
@@ -62,7 +57,6 @@ function renderChats(chats) {
         `;
         return;
     }
-    
     chatsList.innerHTML = chats.map(chat => `
         <div class="chat-item" data-chat-id="${chat.id}">
             <img src="${chat.avatar}" alt="${chat.name}" class="chat-avatar" onerror="this.src='./pictures/profile.png'">
@@ -76,8 +70,6 @@ function renderChats(chats) {
             </div>
         </div>
     `).join('');
-    
-
     document.querySelectorAll('.chat-item').forEach(item => {
         item.addEventListener('click', () => {
             const chatId = item.dataset.chatId;
@@ -85,13 +77,11 @@ function renderChats(chats) {
         });
     });
 }
-
 function formatTime(date) {
     const now = new Date();
     const diffTime = now - date;
     const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
     if (diffHours < 1) return 'только что';
     if (diffHours < 24) return `${diffHours}ч назад`;
     if (diffDays === 1) return 'вчера';
@@ -100,7 +90,6 @@ function formatTime(date) {
 }
 function initChatWindow() {
 }
-
 function openChat(chatId, chatData) {
     document.querySelectorAll('.chat-item').forEach(item => {
         item.classList.remove('active');
@@ -113,7 +102,6 @@ function openChat(chatId, chatData) {
     document.getElementById('chatUserStatus').textContent = chatData.online ? 'онлайн' : 'был(а) недавно';
     loadMessages(chatId);
 }
-
 function loadMessages(chatId) {
     const chatMessages = document.getElementById('chatMessages');
     showMessagesSkeletons();
@@ -122,7 +110,6 @@ function loadMessages(chatId) {
         renderMessages(messages);
     }, 500);
 }
-
 function showMessagesSkeletons() {
     const chatMessages = document.getElementById('chatMessages');
     chatMessages.innerHTML = `
@@ -139,14 +126,11 @@ function showMessagesSkeletons() {
         </div>
     `;
 }
-
 function generateMockMessages(chatId) {
     return [];
 }
-
 function renderMessages(messages) {
     const chatMessages = document.getElementById('chatMessages');
-    
     chatMessages.innerHTML = messages.map(message => `
         <div class="message ${message.own ? 'own' : ''}">
             ${!message.own ? `<img src="./pictures/profile.png" alt="Аватар" class="message-avatar" onerror="this.src='./pictures/profile.png'">` : ''}
@@ -159,14 +143,12 @@ function renderMessages(messages) {
     `).join('');
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
-
 function formatMessageTime(date) {
     return date.toLocaleTimeString('ru-RU', { 
         hour: '2-digit', 
         minute: '2-digit' 
     });
 }
-
 function getStatusIcon(status) {
     const icons = {
         sent: '✓',
@@ -178,37 +160,30 @@ function getStatusIcon(status) {
 function initMessageInput() {
     const messageInput = document.getElementById('chatMessageInput');
     const sendBtn = document.getElementById('chatSendBtn');
-    
     messageInput?.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
         }
     });
-    
     sendBtn?.addEventListener('click', sendMessage);
 }
-
 function sendMessage() {
     const messageInput = document.getElementById('chatMessageInput');
     const text = messageInput.value.trim();
-    
     if (!text) return;
     addMessageToChat(text, true);
     messageInput.value = '';
 }
-
 function addMessageToChat(text, isOwn) {
     const chatMessages = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isOwn ? 'own' : ''}`;
-    
     const now = new Date();
     const timeString = now.toLocaleTimeString('ru-RU', { 
         hour: '2-digit', 
         minute: '2-digit' 
     });
-    
     messageDiv.innerHTML = `
         ${!isOwn ? `<img src="./pictures/profile.png" alt="Аватар" class="message-avatar" onerror="this.src='./pictures/profile.png'">` : ''}
         <div class="message-content">
@@ -217,26 +192,21 @@ function addMessageToChat(text, isOwn) {
             ${isOwn ? '<div class="message-status">✓</div>' : ''}
         </div>
     `;
-    
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 function initSearch() {
     const searchInput = document.getElementById('chatsSearch');
-    
     searchInput?.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
         filterChats(query);
     });
 }
-
 function filterChats(query) {
     const chatItems = document.querySelectorAll('.chat-item');
-    
     chatItems.forEach(item => {
         const name = item.querySelector('.chat-user-name').textContent.toLowerCase();
         const message = item.querySelector('.chat-last-message').textContent.toLowerCase();
-        
         if (name.includes(query) || message.includes(query)) {
             item.style.display = 'flex';
         } else {
@@ -246,7 +216,6 @@ function filterChats(query) {
 }
 function initNewChat() {
     const newChatBtn = document.getElementById('newChatBtn');
-    
     newChatBtn?.addEventListener('click', () => {
         alert('potom');
     });

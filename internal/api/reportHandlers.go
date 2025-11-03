@@ -8,7 +8,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// CreateReport создает жалобу на объявление
 func (h *Handlers) CreateReport() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +28,6 @@ func (h *Handlers) CreateReport() http.Handler {
 				return
 			}
 
-			// Валидация
 			if req.AdId == "" || req.ReportType == "" {
 				sendJSONError(w, http.StatusBadRequest, "ad_id and report_type are required")
 				return
@@ -41,7 +39,6 @@ func (h *Handlers) CreateReport() http.Handler {
 				return
 			}
 
-			// Валидация типа жалобы
 			validTypes := map[string]bool{
 				"spam":           true,
 				"fraud":          true,
@@ -57,11 +54,10 @@ func (h *Handlers) CreateReport() http.Handler {
 				return
 			}
 
-			// TODO: Реализовать метод CreateReport в БД
-			// err = h.db.Psql.CreateReport(userID, &adID, req.ReportType, req.Description)
-			// if handleError(w, err, http.StatusInternalServerError, "error creating report") {
-			// 	return
-			// }
+			err = h.db.Psql.CreateReport(userID, &adID, req.ReportType, req.Description)
+			if handleError(w, err, http.StatusInternalServerError, "error creating report") {
+				return
+			}
 
 			slog.Info("report created",
 				slog.String("user_id", userID.String()),
@@ -77,7 +73,6 @@ func (h *Handlers) CreateReport() http.Handler {
 	)
 }
 
-// GetReports возвращает список жалоб для админ панели
 func (h *Handlers) GetReports() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -97,22 +92,14 @@ func (h *Handlers) GetReports() http.Handler {
 				return
 			}
 
-			page := parseIntParam(r, "page", 1, 0)
-			limit := parseIntParam(r, "limit", 20, 0)
-			status := r.URL.Query().Get("status")
+		page := parseIntParam(r, "page", 1, 0)
+		limit := parseIntParam(r, "limit", 20, 0)
+		status := r.URL.Query().Get("status")
 
-			_ = page
-			_ = limit
-			_ = status
-
-			// TODO: Реализовать метод GetReports в БД
-			// reports, err := h.db.Psql.GetReports(page, limit, status)
-			// if handleError(w, err, http.StatusInternalServerError, "error getting reports") {
-			// 	return
-			// }
-
-			// Заглушка
-			reports := []interface{}{}
+		reports, err := h.db.Psql.GetReports(page, limit, status)
+		if handleError(w, err, http.StatusInternalServerError, "error getting reports") {
+			return
+		}
 
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(map[string]interface{}{
@@ -124,7 +111,6 @@ func (h *Handlers) GetReports() http.Handler {
 	)
 }
 
-// UpdateReportStatus обновляет статус жалобы
 func (h *Handlers) UpdateReportStatus() http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -166,11 +152,10 @@ func (h *Handlers) UpdateReportStatus() http.Handler {
 				return
 			}
 
-			// TODO: Реализовать метод UpdateReportStatus в БД
-			// err = h.db.Psql.UpdateReportStatus(&reportID, req.Status, req.ResolutionComment, userID)
-			// if handleError(w, err, http.StatusInternalServerError, "error updating report status") {
-			// 	return
-			// }
+			err = h.db.Psql.UpdateReportStatus(&reportID, req.Status, req.ResolutionComment, userID)
+			if handleError(w, err, http.StatusInternalServerError, "error updating report status") {
+				return
+			}
 
 			slog.Info("report status updated",
 				slog.String("report_id", reportID.String()),
