@@ -1,12 +1,9 @@
 package api
 
 import (
-	"cmd/obyavigo/main.go/internal/models"
 	"encoding/json"
-	"fmt"
 	"log/slog"
 	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -60,15 +57,15 @@ func (h *Handlers) GetAdminAds() http.Handler {
 				return
 			}
 
-		page := parseIntParam(r, "page", 1, 0)
-		limit := parseIntParam(r, "limit", 20, 0)
-		status := r.URL.Query().Get("status")
-		search := r.URL.Query().Get("search")
+			page := parseIntParam(r, "page", 1, 0)
+			limit := parseIntParam(r, "limit", 20, 0)
+			status := r.URL.Query().Get("status")
+			search := r.URL.Query().Get("search")
 
-		ads, totalCount, err := h.db.Psql.GetAdminAds(page, limit, status, search)
-		if handleError(w, err, http.StatusInternalServerError, "error getting ads") {
-			return
-		}
+			ads, totalCount, err := h.db.Psql.GetAdminAds(page, limit, status, search)
+			if handleError(w, err, http.StatusInternalServerError, "error getting ads") {
+				return
+			}
 
 			response := map[string]interface{}{
 				"ads":        ads,

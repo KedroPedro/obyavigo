@@ -38,7 +38,7 @@
   "GetChatById": "SELECT * FROM site.chats WHERE id = $1;",
   "CreateMessage": "INSERT INTO site.messages (chat_id, sender_id, message_text) values ($1, $2, $3) ON CONFLICT DO NOTHING;",
   "GetMessages": "SELECT * FROM messages WHERE chat_id = $1 ORDER BY created_at DESC LIMIT 50 OFFSET $3;",
-  "GetAdminAdsBase": "SELECT l.id, l.user_id, l.title, l.created_at, u.email as user_email, l.ad_status FROM site.listings l LEFT JOIN site.users u ON u.id = l.user_id WHERE 1=1",
+  "GetAdminAdsBase": "SELECT l.id, l.user_id, l.title, l.created_at, u.email as user_email, l.status FROM site.listings l LEFT JOIN site.users u ON u.id = l.user_id WHERE 1=1",
   "GetAdminAdsCountBase": "SELECT COUNT(*) FROM site.listings l WHERE 1=1",
   "UpdateUserRole": "UPDATE site.users SET role = $1 WHERE id = $2;",
   "CreateReport": "INSERT INTO site.complaints (listing_id, complainant_id, complaint_type, description, status, created_at) VALUES ($1, $2, $3, $4, 'pending', NOW());",
