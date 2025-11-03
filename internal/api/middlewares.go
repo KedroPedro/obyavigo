@@ -38,6 +38,10 @@ func (h *Handlers) AuthMiddleware(next http.Handler) http.Handler {
 				return
 			}
 
+<<<<<<< HEAD
+=======
+			
+>>>>>>> c04cbe9c777b551f29c288a2c9d239c0b97177a5
 			status, err := h.db.Psql.GetUserStatus(id)
 			if err == nil && status == "banned" {
 				http.SetCookie(w, &http.Cookie{

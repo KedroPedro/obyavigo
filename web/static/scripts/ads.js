@@ -233,7 +233,7 @@ function syncUrlWithFilters() {
     else params.set(key, String(val));
   };
   
-  // Сохраняем поисковый запрос, если он есть
+  
   const searchQuery = params.get("q");
   
   setOrDelete(
@@ -271,7 +271,7 @@ function syncUrlWithFilters() {
     params.delete("condition");
   }
   
-  // Восстанавливаем поисковый запрос
+  
   if (searchQuery) {
     params.set("q", searchQuery);
   }

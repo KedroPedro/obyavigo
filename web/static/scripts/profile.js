@@ -569,7 +569,7 @@ function initAvatarUpload() {
       
       if (response.ok) {
         if (result.image_id) {
-          // Обновляем все аватары на странице
+          
           const avatarImages = document.querySelectorAll('.profile-img, .profile-avatar img, #profileAvatar');
           avatarImages.forEach(img => {
             if (img) {
@@ -639,7 +639,7 @@ async function deleteAd(adId, event) {
 
     if (response.ok) {
       alert('Объявление успешно удалено');
-      // Reload the ads list
+      
       userAdsLoaded = false;
       loadUserAds();
     } else {
