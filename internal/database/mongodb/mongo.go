@@ -291,6 +291,42 @@ func (m *Mongo) DeleteUserAvatar(ctx context.Context, userID string) error {
 	return cursor.Err()
 }
 
+// DeleteAdImages deletes all images associated with a specific ad
+func (m *Mongo) DeleteAdImages(ctx context.Context, adID string) error {
+	bucket, err := gridfs.NewBucket(
+		m.mng.Database("obyavigopics"),
+		options.GridFSBucket().SetName("fs"),
+	)
+	if err != nil {
+		return fmt.Errorf("failed to create GridFS bucket: %w", err)
+	}
+
+	filter := bson.M{"metadata.ad_id": adID}
+	cursor, err := bucket.Find(filter)
+	if err != nil {
+		return fmt.Errorf("failed to find ad images: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	for cursor.Next(ctx) {
+		var fileDoc bson.M
+		if err := cursor.Decode(&fileDoc); err != nil {
+			continue
+		}
+
+		fileID, ok := fileDoc["_id"].(primitive.Binary)
+		if !ok {
+			continue
+		}
+
+		if err := bucket.Delete(fileID); err != nil {
+			return fmt.Errorf("failed to delete image: %w", err)
+		}
+	}
+
+	return cursor.Err()
+}
+
 // DeleteUserImages deletes all images associated with a user (ads and avatar)
 func (m *Mongo) DeleteUserImages(ctx context.Context, userID string) error {
 	// Delete avatar
