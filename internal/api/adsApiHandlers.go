@@ -179,13 +179,10 @@ func (h *Handlers) DeleteAdAPI() http.Handler {
 				return
 			}
 
-			// Delete associated images from MongoDB
 			if err := h.db.Mongo.DeleteAdImages(r.Context(), adID.String()); err != nil {
-				// Log but continue with deletion
 				slog.Error("error deleting ad images", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
 			}
 
-			// Delete the ad
 			if err := h.db.Psql.DeleteAd(&adID); err != nil {
 				sendToClient(w, http.StatusInternalServerError, "error deleting ad")
 				return
