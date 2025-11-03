@@ -327,6 +327,30 @@ func (m *Mongo) DeleteAdImages(ctx context.Context, adID string) error {
 	return cursor.Err()
 }
 
+// DeleteImageByID deletes a single image by its UUID
+func (m *Mongo) DeleteImageByID(ctx context.Context, imageID string) error {
+	bucket, err := gridfs.NewBucket(
+		m.mng.Database("obyavigopics"),
+		options.GridFSBucket().SetName("fs"),
+	)
+	if err != nil {
+		return fmt.Errorf("failed to create GridFS bucket: %w", err)
+	}
+
+	uuidVal, err := uuid.Parse(imageID)
+	if err != nil {
+		return fmt.Errorf("invalid image UUID: %w", err)
+	}
+
+	binUUID := primitive.Binary{Subtype: 4, Data: uuidVal[:]}
+
+	if err := bucket.Delete(binUUID); err != nil {
+		return fmt.Errorf("failed to delete image: %w", err)
+	}
+
+	return nil
+}
+
 // DeleteUserImages deletes all images associated with a user (ads and avatar)
 func (m *Mongo) DeleteUserImages(ctx context.Context, userID string) error {
 	// Delete avatar

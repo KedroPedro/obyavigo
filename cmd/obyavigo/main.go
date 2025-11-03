@@ -55,6 +55,8 @@ func main() {
 	mux.Handle("GET /api/user/ads/", handler.AuthMiddleware(handler.GetUserAdsAPI()))
 	mux.Handle("DELETE /api/ads/{token}/", handler.AuthMiddleware(handler.DeleteAdAPI()))
 	mux.Handle("PUT /api/ads/{token}/", handler.AuthMiddleware(handler.UpdateAdAPI()))
+	mux.Handle("DELETE /api/ads/{token}/images/{imageId}/", handler.AuthMiddleware(handler.DeleteAdImageAPI()))
+	mux.Handle("POST /api/ads/{token}/images/", handler.AuthMiddleware(handler.UploadAdImagesAPI()))
 	mux.Handle("GET /api/user/profile/", handler.AuthMiddleware(handler.GetUserProfileAPI()))
 	mux.Handle("POST /api/favorites/{token}/", handler.AuthMiddleware(handler.AddToFavoritesAPI()))
 	mux.Handle("DELETE /api/favorites/{token}/", handler.AuthMiddleware(handler.RemoveFromFavoritesAPI()))

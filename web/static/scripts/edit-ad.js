@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
   loadAdData();
   initFormSubmit();
+  initImageUpload();
 });
+
+let currentImages = [];
 
 async function loadAdData() {
   const form = document.getElementById('editAdForm');
@@ -33,6 +36,12 @@ async function loadAdData() {
       document.getElementById('adCondition').value = ad.condition || '';
       document.getElementById('adDescription').value = ad.desc || '';
       document.getElementById('adPhone').value = ad.contactPhone || '';
+      
+      // Load existing images
+      if (ad.images && ad.images.length > 0) {
+        currentImages = ad.images;
+        displayCurrentImages();
+      }
     } else {
       throw new Error('Ad data not found');
     }
@@ -167,4 +176,83 @@ function isValidBelarusPhone(phone) {
   }
   
   return false;
+}
+
+function displayCurrentImages() {
+  const container = document.getElementById('currentImages');
+  container.innerHTML = '';
+  
+  currentImages.forEach((imageId) => {
+    const imageItem = document.createElement('div');
+    imageItem.className = 'image-item';
+    imageItem.innerHTML = `
+      <img src="/api/images/${imageId}/" alt="Ad image" />
+      <button type="button" class="delete-btn" onclick="deleteImage('${imageId}')">×</button>
+    `;
+    container.appendChild(imageItem);
+  });
+}
+
+async function deleteImage(imageId) {
+  const form = document.getElementById('editAdForm');
+  const adId = form.dataset.adId;
+  
+  if (!confirm('Удалить это изображение?')) {
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/ads/${adId}/images/${imageId}/`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    
+    if (response.ok) {
+      currentImages = currentImages.filter(id => id !== imageId);
+      displayCurrentImages();
+    } else {
+      alert('Ошибка при удалении изображения');
+    }
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    alert('Ошибка подключения к серверу');
+  }
+}
+
+function initImageUpload() {
+  const imageInput = document.getElementById('imageInput');
+  
+  imageInput.addEventListener('change', async function(e) {
+    const files = e.target.files;
+    if (files.length === 0) return;
+    
+    const form = document.getElementById('editAdForm');
+    const adId = form.dataset.adId;
+    
+    const formData = new FormData();
+    for (let file of files) {
+      formData.append('images', file);
+    }
+    
+    try {
+      const response = await fetch(`/api/ads/${adId}/images/`, {
+        method: 'POST',
+        credentials: 'include',
+        body: formData,
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok && result.image_ids) {
+        currentImages = currentImages.concat(result.image_ids);
+        displayCurrentImages();
+        imageInput.value = '';
+      } else {
+        alert(result.message || 'Ошибка при загрузке изображений');
+      }
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      alert('Ошибка подключения к серверу');
+    }
+  });
 }
