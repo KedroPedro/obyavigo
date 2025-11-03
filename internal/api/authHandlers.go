@@ -36,6 +36,11 @@ func (h *Handlers) AuthorizationHandler() http.Handler {
 				return
 			}
 
+			if authInfo.Status == "banned" {
+				sendToClient(w, http.StatusForbidden, "account is banned")
+				return
+			}
+
 			if !secure.CheckPasswordHash(user.Password, authInfo.PasswordHash) {
 				sendToClient(w, http.StatusUnauthorized, "incorrect password")
 				return

@@ -32,6 +32,7 @@ type AuhtInfo struct {
 	Id           uuid.UUID `db:"id" json:"id"`
 	PasswordHash string    `db:"password_hash" json:"password_hash"`
 	Confirmed    bool      `db:"confirmed" json:"confirmed"`
+	Status       string    `db:"status" json:"status"`
 }
 
 type UserData struct {

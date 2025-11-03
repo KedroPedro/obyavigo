@@ -270,7 +270,7 @@ func (h *Handlers) UpdateUserRole() http.Handler {
 				return
 			}
 
-			if req.Role != "moderator" && req.Role != "user" {
+			if req.Role != "moderator" && req.Role != "user" && req.Role != "admin" {
 				sendJSONError(w, http.StatusBadRequest, "invalid role")
 				return
 			}

@@ -183,19 +183,22 @@ function loadUsers() {
             }
             tbody.innerHTML = data.users.map(user => `
                 <tr>
-                    <td>${user.id.substring(0, 8)}...</td>
-                    <td>${user.username}</td>
-                    <td>${user.email}</td>
+                    <td>${createTruncatedText(user.id, 12, 'ID пользователя')}</td>
+                    <td>${createTruncatedText(user.username, 20, 'Имя пользователя')}</td>
+                    <td>${createTruncatedText(user.email, 30, 'Email')}</td>
                     <td>${user.role}</td>
                     <td><span class="status ${user.status}">${user.status === 'active' ? 'Активен' : 'Забанен'}</span></td>
-                    <td>${new Date(user.registration_date).toLocaleDateString('ru-RU')}</td>
+                    <td>${new Date(user.registrationDate).toLocaleDateString('ru-RU')}</td>
                     <td class="action-btns">
                         ${user.status === 'active' ? 
                             `<button class="action-btn ban" onclick="updateUserStatus('${user.id}', 'banned')">🚫 Забанить</button>` :
                             `<button class="action-btn approve" onclick="updateUserStatus('${user.id}', 'active')">✅ Разбанить</button>`
                         }
                         ${currentUserRole === 'admin' && user.role === 'user' ? 
-                            `<button class="btn-primary" onclick="grantModeratorRole('${user.id}')">⭐ Сделать модератором</button>` : ''
+                            `<button class=\"btn-primary\" onclick=\"grantModeratorRole('${user.id}')\">⭐ Сделать модератором</button>` : ''
+                        }
+                        ${currentUserRole === 'admin' && user.role !== 'admin' ? 
+                            `<button class=\"btn-warning\" onclick=\"grantAdminRole('${user.id}')\">👑 Сделать администратором</button>` : ''
                         }
                     </td>
                 </tr>
@@ -241,10 +244,10 @@ function loadModeration() {
             }
             tbody.innerHTML = data.ads.map(ad => `
                 <tr>
-                    <td>${ad.id ? ad.id.substring(0, 8) + '...' : '-'}</td>
+                    <td>${createTruncatedText(ad.id || '-', 12, 'ID объявления')}</td>
                     <td>${createTruncatedText(ad.title, 40, 'Заголовок')}</td>
-                    <td>${ad.user_id ? ad.user_id.substring(0, 8) + '...' : '-'}</td>
-                    <td>${ad.user_email || '-'}</td>
+                    <td>${createTruncatedText(ad.user_id || '-', 12, 'ID пользователя')}</td>
+                    <td>${createTruncatedText(ad.user_email || '-', 30, 'Email пользователя')}</td>
                     <td>${new Date(ad.created_at).toLocaleDateString('ru-RU')}</td>
                     <td class="action-btns">
                         <button class="action-btn view" onclick="viewAd('${ad.id}')" title="Перейти к объявлению">👁️</button>
@@ -272,10 +275,10 @@ function loadReports() {
             }
             tbody.innerHTML = data.reports.map(report => `
                 <tr>
-                    <td>${report.id.substring(0, 8)}...</td>
+                    <td>${createTruncatedText(report.id, 12, 'ID жалобы')}</td>
                     <td>${getReportTypeText(report.complaint_type)}</td>
-                    <td>${report.listing_id ? report.listing_id.substring(0, 8) + '...' : '-'}</td>
-                    <td>${report.complainant_email || '-'}</td>
+                    <td>${report.listing_id ? `<a href="/ads/${report.listing_id}/" target="_blank" style="color: var(--primary-color);">${report.listing_id.substring(0, 8)}...</a>` : '-'}</td>
+                    <td>${createTruncatedText(report.complainant_email || '-', 25, 'Email отправителя')}</td>
                     <td>${createTruncatedText(report.description, 40, 'Причина')}</td>
                     <td>${new Date(report.created_at).toLocaleDateString('ru-RU')}</td>
                     <td class="action-btns">
@@ -404,6 +407,29 @@ function grantModeratorRole(userId) {
         })
         .catch(err => {
             console.error('Error granting moderator role:', err);
+            alert('Ошибка при выдаче роли');
+        });
+    });
+}
+function grantAdminRole(userId) {
+    showConfirmModal('approve', () => {
+        fetch(`/api/admin/users/${userId}/role/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ role: 'admin' })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to grant admin role');
+            return res.json();
+        })
+        .then(() => {
+            alert('Роль администратора выдана успешно');
+            loadUsers();
+        })
+        .catch(err => {
+            console.error('Error granting admin role:', err);
             alert('Ошибка при выдаче роли');
         });
     });
