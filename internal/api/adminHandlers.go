@@ -1,12 +1,9 @@
 package api
 
 import (
-	"cmd/obyavigo/main.go/internal/models"
 	"encoding/json"
-	"fmt"
 	"log/slog"
 	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -273,7 +270,7 @@ func (h *Handlers) UpdateUserRole() http.Handler {
 				return
 			}
 
-			if req.Role != "moderator" && req.Role != "user" {
+			if req.Role != "moderator" && req.Role != "user" && req.Role != "admin" {
 				sendJSONError(w, http.StatusBadRequest, "invalid role")
 				return
 			}

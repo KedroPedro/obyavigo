@@ -97,14 +97,15 @@ type UserTemplate struct {
 
 type ComplaintTemplate struct {
 	ID                uuid.UUID  `json:"id"`
-	ListingID         *uuid.UUID `json:"listingId"`
-	TargetUserID      *uuid.UUID `json:"targetUserId"`
-	ComplainantID     uuid.UUID  `json:"complainantId"`
-	ComplaintType     string     `json:"complaintType"`
+	ListingID         *uuid.UUID `json:"listing_id"`
+	TargetUserID      *uuid.UUID `json:"target_user_id"`
+	ComplainantID     uuid.UUID  `json:"complainant_id"`
+	ComplainantEmail  string     `json:"complainant_email"`
+	ComplaintType     string     `json:"complaint_type"`
 	Description       string     `json:"description"`
 	Status            string     `json:"status"`
-	CreatedAt         time.Time  `json:"createdAt"`
-	UpdatedAt         *time.Time `json:"updatedAt"`
-	AdminID           *uuid.UUID `json:"adminId"`
-	ResolutionComment *string    `json:"resolutionComment"`
+	CreatedAt         time.Time  `json:"created_at"`
+	UpdatedAt         *time.Time `json:"updated_at"`
+	AdminID           *uuid.UUID `json:"admin_id"`
+	ResolutionComment *string    `json:"resolution_comment"`
 }

@@ -6,7 +6,7 @@
   "DeleteAccountByEmail": "DELETE FROM site.users WHERE users.email = $1;",
   "ConfirmAccount": "UPDATE site.email_confirmations SET confirmed = true, confirmed_at = CURRENT_TIMESTAMP, token = NULL WHERE token=$1;",
   "GetPasswordHashByEmail": "SELECT password_hash FROM site.users WHERE email = $1;",
-  "GetAuthInfoByEmail": "SELECT u.id ,u.password_hash, ec.confirmed FROM site.users u LEFT JOIN site.email_confirmations ec ON ec.user_id = u.id WHERE u.email = $1;",
+  "GetAuthInfoByEmail": "SELECT u.id ,u.password_hash, ec.confirmed, u.status FROM site.users u LEFT JOIN site.email_confirmations ec ON ec.user_id = u.id WHERE u.email = $1;",
   "CreateAd": "INSERT INTO site.listings (user_id, category_id, title, description, price, location_id, condition, contact_phone) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id;",
   "GetCreateAdDependencies": "SELECT (SELECT id FROM site.categories WHERE name = COALESCE($1, $2) AND (parent_id = (SELECT id FROM site.categories WHERE name = $2) OR $1 IS NULL)) AS category_id, (SELECT id FROM site.locations WHERE city = $3) AS location_id;",
   "InsertImage": "INSERT INTO site.listing_images (listing_id, image_id, position) VALUES %s;",
@@ -38,10 +38,11 @@
   "GetChatById": "SELECT * FROM site.chats WHERE id = $1;",
   "CreateMessage": "INSERT INTO site.messages (chat_id, sender_id, message_text) values ($1, $2, $3) ON CONFLICT DO NOTHING;",
   "GetMessages": "SELECT * FROM messages WHERE chat_id = $1 ORDER BY created_at DESC LIMIT 50 OFFSET $3;",
-  "GetAdminAdsBase": "SELECT l.id, l.user_id, l.title, l.created_at, u.email as user_email, l.ad_status FROM site.listings l LEFT JOIN site.users u ON u.id = l.user_id WHERE 1=1",
+  "GetAdminAdsBase": "SELECT l.id, l.user_id, l.title, l.created_at, u.email as user_email, l.status FROM site.listings l LEFT JOIN site.users u ON u.id = l.user_id WHERE 1=1",
   "GetAdminAdsCountBase": "SELECT COUNT(*) FROM site.listings l WHERE 1=1",
   "UpdateUserRole": "UPDATE site.users SET role = $1 WHERE id = $2;",
   "CreateReport": "INSERT INTO site.complaints (listing_id, complainant_id, complaint_type, description, status, created_at) VALUES ($1, $2, $3, $4, 'pending', NOW());",
   "GetReportsBase": "SELECT c.id, c.listing_id, c.target_user_id, c.complainant_id, c.complaint_type, c.description, c.status, c.created_at, c.updated_at, c.admin_id, c.resolution_comment, u.email as complainant_email FROM site.complaints c LEFT JOIN site.users u ON u.id = c.complainant_id WHERE 1=1",
-  "UpdateReportStatus": "UPDATE site.complaints SET status = $1, resolution_comment = $2, admin_id = $3, updated_at = NOW() WHERE id = $4;"
+  "UpdateReportStatus": "UPDATE site.complaints SET status = $1, resolution_comment = $2, admin_id = $3, updated_at = NOW() WHERE id = $4;",
+  "GetUserStatus": "SELECT status FROM site.users WHERE id = $1;"
 }

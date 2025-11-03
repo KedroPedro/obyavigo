@@ -160,8 +160,9 @@ func (p *Postgres) GetAuthInfoByEmail(email string) (*models.AuhtInfo, error) {
 	var id uuid.UUID
 	var passHash string
 	var confirmed bool
+	var status string
 
-	err := p.psql.QueryRow(query, email).Scan(&id, &passHash, &confirmed)
+	err := p.psql.QueryRow(query, email).Scan(&id, &passHash, &confirmed, &status)
 
 	if err != nil {
 		return nil, fmt.Errorf("error while trying to get user auth data by email: %w", err)
@@ -171,6 +172,7 @@ func (p *Postgres) GetAuthInfoByEmail(email string) (*models.AuhtInfo, error) {
 		Id:           id,
 		PasswordHash: passHash,
 		Confirmed:    confirmed,
+		Status:       status,
 	}, nil
 }
 
@@ -303,6 +305,19 @@ func (p *Postgres) GetUserRole(userId *uuid.UUID) (string, error) {
 		return "", fmt.Errorf("error while executing get user role request: %w", err)
 	}
 	return role, nil
+}
+
+func (p *Postgres) GetUserStatus(userId *uuid.UUID) (string, error) {
+	query, ok := p.q["GetUserStatus"]
+	if !ok {
+		return "", fmt.Errorf("request 'GetUserStatus' not found")
+	}
+	var status string
+	err := p.psql.QueryRow(query, userId).Scan(&status)
+	if err != nil {
+		return "", fmt.Errorf("error while executing get user status request: %w", err)
+	}
+	return status, nil
 }
 
 func (p *Postgres) GetUserData(userId *uuid.UUID) (*models.UserData, error) {
@@ -904,10 +919,10 @@ func (p *Postgres) GetAdminStats() (*models.AdminStats, error) {
 
 	if err := p.psql.QueryRow(`
 		SELECT
-			(SELECT COUNT(*) FROM site.listings WHERE ad_status != 'draft'),
+			(SELECT COUNT(*) FROM site.listings),
 			(SELECT COUNT(*) FROM site.users WHERE status = 'active'),
 			(SELECT COUNT(*) FROM site.complaints WHERE status = 'pending'),
-			(SELECT COUNT(*) FROM site.listings WHERE ad_status = 'pending')
+			(SELECT COUNT(*) FROM site.listings WHERE status = 'moderation')
 	`).Scan(&stats.TotalAds, &stats.TotalUsers, &stats.PendingReports, &stats.PendingModeration); err != nil {
 		return nil, fmt.Errorf("error while getting admin stats: %w", err)
 	}
@@ -916,7 +931,7 @@ func (p *Postgres) GetAdminStats() (*models.AdminStats, error) {
 }
 
 func (p *Postgres) UpdateAdStatus(adId *uuid.UUID, status string) error {
-	_, err := p.psql.Exec(`UPDATE site.listings SET ad_status = $1, updated_at = NOW() WHERE id = $2`, status, adId)
+	_, err := p.psql.Exec(`UPDATE site.listings SET status = $1, updated_at = NOW() WHERE id = $2`, status, adId)
 	if err != nil {
 		return fmt.Errorf("error while updating ad status: %w", err)
 	}
@@ -1017,7 +1032,6 @@ func (p *Postgres) GetReports(page, limit int, statusFilter string) ([]models.Co
 	var reports []models.ComplaintTemplate
 	for rows.Next() {
 		var report models.ComplaintTemplate
-		var complainantEmail string
 		if err := rows.Scan(
 			&report.ID,
 			&report.ListingID,
@@ -1030,7 +1044,7 @@ func (p *Postgres) GetReports(page, limit int, statusFilter string) ([]models.Co
 			&report.UpdatedAt,
 			&report.AdminID,
 			&report.ResolutionComment,
-			&complainantEmail,
+			&report.ComplainantEmail,
 		); err != nil {
 			return nil, fmt.Errorf("error while scanning report: %w", err)
 		}
@@ -1080,8 +1094,8 @@ func (p *Postgres) GetAdminAds(page, limit int, status, search string) ([]map[st
 	countQuery := countQueryBase
 
 	if status != "" && status != "all" {
-		query += fmt.Sprintf(" AND l.ad_status = $%d", argIndex)
-		countQuery += fmt.Sprintf(" AND l.ad_status = $%d", argIndex)
+		query += fmt.Sprintf(" AND l.status = $%d", argIndex)
+		countQuery += fmt.Sprintf(" AND l.status = $%d", argIndex)
 		args = append(args, status)
 		argIndex++
 	}
