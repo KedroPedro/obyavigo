@@ -77,9 +77,7 @@ func (m *Mail) SendPasswordReset(email, token string) error {
 
 	msg.Subject("Восстановление пароля - Obyavigo")
 	msg.SetBodyString(mail.TypeTextPlain,
-		"Для восстановления пароля перейдите по ссылке: https://localhost:443/reset-password?token="+token+"\n\n"+
-			"Если вы не запрашивали восстановление пароля, проигнорируйте это письмо.\n"+
-			"Ссылка действительна в течение 1 часа.")
+		"Для восстановления пароля перейдите по ссылке: https://localhost:443/reset-password?token="+token+"\n\n")
 
 	if err := m.client.DialAndSend(msg); err != nil {
 		return fmt.Errorf("failed to send mail: %w", err)
