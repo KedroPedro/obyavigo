@@ -56,7 +56,7 @@ func (m *Mail) SendRegConfirm(email string) (string, error) {
 
 	msg.Subject("Подтверждение регистрации аккаунта - Obyavigo")
 	msg.SetBodyString(mail.TypeTextPlain,
-		"Перейдите по этой ссылке для подтверждения регистрации: https://localhost:443/api/auth/confirm-email/"+cipheredMail+"/")
+		"Перейдите по этой ссылке для подтверждения регистрации: https://obyavigo.by/api/auth/confirm-email/"+cipheredMail)
 
 	if err := m.client.DialAndSend(msg); err != nil {
 		return "", fmt.Errorf("failed to send mail: %w", err)
@@ -77,9 +77,7 @@ func (m *Mail) SendPasswordReset(email, token string) error {
 
 	msg.Subject("Восстановление пароля - Obyavigo")
 	msg.SetBodyString(mail.TypeTextPlain,
-		"Для восстановления пароля перейдите по ссылке: https://localhost:443/reset-password?token="+token+"\n\n"+
-			"Если вы не запрашивали восстановление пароля, проигнорируйте это письмо.\n"+
-			"Ссылка действительна в течение 1 часа.")
+		"Для восстановления пароля перейдите по ссылке: https://obyavigo.by/reset-password?token="+token+"\n")
 
 	if err := m.client.DialAndSend(msg); err != nil {
 		return fmt.Errorf("failed to send mail: %w", err)

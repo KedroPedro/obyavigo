@@ -343,7 +343,7 @@ func (h *Handlers) GetEditAdPage() http.Handler {
 				return
 			}
 
-			// Check ownership
+			
 			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
 			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
 				return

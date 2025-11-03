@@ -30,14 +30,14 @@ async function loadAdData() {
     if (result.success && result.data) {
       const ad = result.data;
       
-      // Populate form fields
+      
       document.getElementById('adTitle').value = ad.title || '';
       document.getElementById('adPrice').value = ad.price || '';
       document.getElementById('adCondition').value = ad.condition || '';
       document.getElementById('adDescription').value = ad.desc || '';
       document.getElementById('adPhone').value = ad.contactPhone || '';
       
-      // Load existing images
+      
       if (ad.images && ad.images.length > 0) {
         currentImages = ad.images;
         displayCurrentImages();

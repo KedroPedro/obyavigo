@@ -75,10 +75,10 @@ func (h *Handlers) DeleteAccountHandler() http.Handler {
 				return
 			}
 
-			// Delete all user images from MongoDB (avatar and ad images)
+			
 			if err := h.db.Mongo.DeleteUserImages(r.Context(), userID.String()); err != nil {
 				slog.Error("error deleting user images", slog.String("user_id", userID.String()), slog.String("error", err.Error()))
-				// Continue with account deletion even if image deletion fails
+				
 			}
 
 			err = h.db.Psql.DeleteAccount(userID)
@@ -190,19 +190,19 @@ func (h *Handlers) UploadAvatarHandler() http.Handler {
 
 			fileHeader := r.MultipartForm.File["avatar"][0]
 
-			// Delete old avatar if exists
+			
 			oldAvatarID, _ := h.db.Psql.GetUserAvatar(userID)
 			if oldAvatarID != nil {
 				_ = h.db.Mongo.DeleteUserAvatar(r.Context(), userID.String())
 			}
 
-			// Upload new avatar
+			
 			avatarID, err := h.db.Mongo.UploadUserAvatar(r.Context(), fileHeader, userID.String())
 			if handleError(w, err, http.StatusInternalServerError, "error uploading avatar") {
 				return
 			}
 
-			// Update user profile with avatar ID
+			
 			if err := h.db.Psql.UpdateUserAvatar(userID, avatarID); err != nil {
 				sendToClient(w, http.StatusInternalServerError, "Ошибка при обновлении аватара")
 				return

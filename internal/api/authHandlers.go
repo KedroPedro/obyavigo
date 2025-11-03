@@ -46,10 +46,10 @@ func (h *Handlers) AuthorizationHandler() http.Handler {
 			return
 		}
 
-		// Update last login time
+		
 		if err := h.db.Psql.UpdateLastLogin(&authInfo.Id); err != nil {
-			// Log error but don't fail login
-			// handleError would return, so we just log it
+			
+			
 		}
 
 		token, err := h.jwt.GenerateJWTToken(&authInfo.Id)
@@ -81,30 +81,30 @@ func (h *Handlers) ForgotPasswordHandler() http.Handler {
 				return
 			}
 
-			// Check if email exists
+			
 			exists, err := h.db.Psql.CheckEmail(req.Email)
 			if handleError(w, err, http.StatusInternalServerError, "checking email error") {
 				return
 			}
 
-			// Always return success even if email doesn't exist (security best practice)
+			
 			if !exists {
 				sendToClient(w, http.StatusOK, "if email exists, reset link will be sent")
 				return
 			}
 
-			// Generate reset token
+			
 			token, err := secure.GenerateRandomToken(32)
 			if handleError(w, err, http.StatusInternalServerError, "token generation error") {
 				return
 			}
 
-			// Store token in database
+			
 			if err := h.db.Psql.CreatePasswordResetToken(req.Email, token); handleError(w, err, http.StatusInternalServerError, "error creating reset token") {
 				return
 			}
 
-			// Send email
+			
 			if err := h.mail.SendPasswordReset(req.Email, token); handleError(w, err, http.StatusInternalServerError, "error sending email") {
 				return
 			}
@@ -123,7 +123,7 @@ func (h *Handlers) ResetPasswordHandler() http.Handler {
 				return
 			}
 
-			// Validate token
+			
 			resetToken, err := h.db.Psql.GetPasswordResetToken(req.Token)
 			if handleError(w, err, http.StatusInternalServerError, "error validating token") {
 				return
@@ -134,20 +134,20 @@ func (h *Handlers) ResetPasswordHandler() http.Handler {
 				return
 			}
 
-			// Hash new password
+			
 			hashedPassword, err := secure.HashPassword(req.NewPassword)
 			if handleError(w, err, http.StatusInternalServerError, "error hashing password") {
 				return
 			}
 
-			// Update password
+			
 			if err := h.db.Psql.UpdatePassword(&resetToken.UserID, hashedPassword); handleError(w, err, http.StatusInternalServerError, "error updating password") {
 				return
 			}
 
-			// Delete used token
+			
 			if err := h.db.Psql.DeletePasswordResetToken(req.Token); err != nil {
-				// Log error but don't fail the request
+				
 			}
 
 			sendToClient(w, http.StatusOK, "password successfully reset")

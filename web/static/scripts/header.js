@@ -248,7 +248,7 @@ class HeaderManager {
       }
     });
     
-    // Обработка ввода в поле поиска с дебаунсингом
+    
     if (searchInput) {
       let searchTimeout;
       searchInput.addEventListener("input", (e) => {
@@ -266,7 +266,7 @@ class HeaderManager {
         }, 300);
       });
       
-      // Обработка нажатия Enter
+      
       searchInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           const query = e.target.value.trim();
@@ -328,7 +328,7 @@ class HeaderManager {
     searchSuggestions.innerHTML = resultsHtml + 
       '<div class="search-show-all">Нажмите Enter для полного поиска</div>';
     
-    // Добавляем обработчики кликов на результаты
+    
     const resultItems = searchSuggestions.querySelectorAll('.search-result-item');
     resultItems.forEach(item => {
       item.addEventListener('click', () => {
@@ -425,7 +425,7 @@ class HeaderManager {
       const data = await response.json();
       
       if (data.profile_picture_id) {
-        // Обновляем все аватары на странице
+        
         const avatarImages = document.querySelectorAll('.profile-img, .profile-avatar img, #profileAvatar');
         avatarImages.forEach(img => {
           if (img) {

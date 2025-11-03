@@ -215,7 +215,7 @@ func (m *Mongo) DownloadImagesByID(ctx context.Context, adID string) ([][]byte, 
 	return filesData, nil
 }
 
-// UploadUserAvatar uploads user avatar image
+
 func (m *Mongo) UploadUserAvatar(ctx context.Context, file *multipart.FileHeader, userID string) (string, error) {
 	bucket, err := gridfs.NewBucket(
 		m.mng.Database("obyavigopics"),
@@ -255,7 +255,7 @@ func (m *Mongo) UploadUserAvatar(ctx context.Context, file *multipart.FileHeader
 	return generatedUUID.String(), nil
 }
 
-// DeleteUserAvatar deletes user avatar by user ID
+
 func (m *Mongo) DeleteUserAvatar(ctx context.Context, userID string) error {
 	bucket, err := gridfs.NewBucket(
 		m.mng.Database("obyavigopics"),
@@ -291,7 +291,7 @@ func (m *Mongo) DeleteUserAvatar(ctx context.Context, userID string) error {
 	return cursor.Err()
 }
 
-// DeleteAdImages deletes all images associated with a specific ad
+
 func (m *Mongo) DeleteAdImages(ctx context.Context, adID string) error {
 	bucket, err := gridfs.NewBucket(
 		m.mng.Database("obyavigopics"),
@@ -327,7 +327,7 @@ func (m *Mongo) DeleteAdImages(ctx context.Context, adID string) error {
 	return cursor.Err()
 }
 
-// DeleteImageByID deletes a single image by its UUID
+
 func (m *Mongo) DeleteImageByID(ctx context.Context, imageID string) error {
 	bucket, err := gridfs.NewBucket(
 		m.mng.Database("obyavigopics"),
@@ -351,14 +351,14 @@ func (m *Mongo) DeleteImageByID(ctx context.Context, imageID string) error {
 	return nil
 }
 
-// DeleteUserImages deletes all images associated with a user (ads and avatar)
+
 func (m *Mongo) DeleteUserImages(ctx context.Context, userID string) error {
-	// Delete avatar
+	
 	if err := m.DeleteUserAvatar(ctx, userID); err != nil {
 		return fmt.Errorf("failed to delete user avatar: %w", err)
 	}
 
-	// Delete ad images
+	
 	bucket, err := gridfs.NewBucket(
 		m.mng.Database("obyavigopics"),
 		options.GridFSBucket().SetName("fs"),
@@ -367,7 +367,7 @@ func (m *Mongo) DeleteUserImages(ctx context.Context, userID string) error {
 		return fmt.Errorf("failed to create GridFS bucket: %w", err)
 	}
 
-	// Find all ads belonging to the user and delete their images
+	
 	filter := bson.M{"metadata.user_id": userID}
 	cursor, err := bucket.Find(filter)
 	if err != nil {
