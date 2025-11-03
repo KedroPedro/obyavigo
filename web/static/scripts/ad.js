@@ -30,16 +30,13 @@ function initAdPage() {
   }
   initReportButton(adId);
   const showBtn = document.getElementById("showPhoneBtn");
-  const phoneDisp = document.getElementById("phoneDisplay");
-  if (showBtn && phoneDisp) {
+  const phoneHidden = document.querySelector(".phone-hidden");
+  const phonePlaceholder = document.querySelector(".phone-placeholder");
+  if (showBtn && phoneHidden && phonePlaceholder) {
     showBtn.addEventListener("click", () => {
-      fetch(`/api/ads/${encodeURIComponent(adId)}/phone`)
-        .then((r) => r.text())
-        .then((phone) => {
-          phoneDisp.textContent = phone;
-          showBtn.style.display = "none";
-        })
-        .catch(() => alert("Не удалось загрузить номер телефона"));
+      phoneHidden.style.display = "inline";
+      phonePlaceholder.style.display = "none";
+      showBtn.style.display = "none";
     });
   }
 }
