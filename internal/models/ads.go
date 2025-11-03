@@ -28,21 +28,22 @@ type AdTemplate struct {
 }
 
 type AdPage struct {
-	AdId           uuid.UUID
-	UserID         uuid.UUID
-	AdStatus       string
-	Title          string
-	Price          float32
-	CreatedAt      time.Time
-	ViewsCount     int
-	Condition      string
-	Description    string
-	SellerName     string
-	Online         string
-	SellerPhone    string
-	SellerCity     string
-	SellerAvatarID *string
-	Images         []string
+	AdId           uuid.UUID  `json:"adID"`
+	UserID         uuid.UUID  `json:"userID"`
+	AdStatus       string     `json:"status"`
+	Title          string     `json:"title"`
+	Price          float32    `json:"price"`
+	CreatedAt      time.Time  `json:"createdAt"`
+	ViewsCount     int        `json:"viewsCount"`
+	Condition      string     `json:"condition"`
+	Description    string     `json:"desc"`
+	ContactPhone   string     `json:"contactPhone"`
+	SellerName     string     `json:"sellerName"`
+	Online         string     `json:"online"`
+	SellerPhone    string     `json:"sellerPhone"`
+	SellerCity     string     `json:"sellerCity"`
+	SellerAvatarID *string    `json:"sellerAvatarID,omitempty"`
+	Images         []string   `json:"images,omitempty"`
 }
 
 type AdsPageData struct {

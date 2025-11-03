@@ -249,6 +249,7 @@ func (p *Postgres) GetAdInfo(adId *uuid.UUID) (*models.AdPage, error) {
 		&data.ViewsCount,
 		&data.Condition,
 		&data.Description,
+		&data.ContactPhone,
 		&data.AdStatus,
 		&data.SellerName,
 		&data.Online,
@@ -1169,4 +1170,36 @@ func (p *Postgres) GetAdminAds(page, limit int, status, search string) ([]map[st
 	}
 
 	return ads, totalCount, nil
+}
+
+func (p *Postgres) DeleteAd(adId *uuid.UUID) error {
+	_, err := p.psql.Exec(`DELETE FROM site.listings WHERE id = $1`, adId)
+	if err != nil {
+		return fmt.Errorf("error while deleting ad: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) UpdateAd(adId *uuid.UUID, title, description string, price int, condition, contactPhone string) error {
+	_, err := p.psql.Exec(`
+		UPDATE site.listings 
+		SET title = $1, description = $2, price = $3, condition = $4, contact_phone = $5, updated_at = NOW()
+		WHERE id = $6
+	`, title, description, price*100, condition, contactPhone, adId)
+	if err != nil {
+		return fmt.Errorf("error while updating ad: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) CheckAdOwnership(userId, adId *uuid.UUID) (bool, error) {
+	var isOwner bool
+	err := p.psql.QueryRow(`SELECT user_id = $1 FROM site.listings WHERE id = $2`, userId, adId).Scan(&isOwner)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return false, nil
+		}
+		return false, fmt.Errorf("error while checking ad ownership: %w", err)
+	}
+	return isOwner, nil
 }

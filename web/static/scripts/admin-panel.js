@@ -94,10 +94,10 @@ function loadStats() {
     fetch('/api/admin/stats/')
         .then(res => res.json())
         .then(data => {
-            document.getElementById('totalAds').textContent = data.total_ads || '0';
-            document.getElementById('totalUsers').textContent = data.total_users || '0';
-            document.getElementById('pendingReports').textContent = data.pending_reports || '0';
-            document.getElementById('pendingModeration').textContent = data.pending_moderation || '0';
+            document.getElementById('totalAds').textContent = data.totalAds || '0';
+            document.getElementById('totalUsers').textContent = data.totalUsers || '0';
+            document.getElementById('pendingReports').textContent = data.pendingReports || '0';
+            document.getElementById('pendingModeration').textContent = data.pendingModeration || '0';
         })
         .catch(err => console.error('Error loading stats:', err));
 }
@@ -166,7 +166,8 @@ function updateAdStatus(adId, status) {
         })
         .then(() => {
             alert('Статус обновлен успешно');
-            loadAds();
+            loadModeration();
+            loadStats();
         })
         .catch(err => {
             console.error('Error updating ad status:', err);
