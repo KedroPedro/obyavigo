@@ -38,7 +38,6 @@ func (h *Handlers) AuthMiddleware(next http.Handler) http.Handler {
 				return
 			}
 
-			// check if user is banned; if so, clear cookie and proceed as guest
 			status, err := h.db.Psql.GetUserStatus(id)
 			if err == nil && status == "banned" {
 				http.SetCookie(w, &http.Cookie{
