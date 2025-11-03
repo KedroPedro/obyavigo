@@ -248,3 +248,106 @@ func (h *Handlers) UpdateAdAPI() http.Handler {
 		},
 	)
 }
+
+func (h *Handlers) DeleteAdImageAPI() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				sendToClient(w, http.StatusUnauthorized, "unauthorized")
+				return
+			}
+
+			adToken := r.PathValue("token")
+			adID, err := parseUUID(adToken)
+			if err != nil {
+				sendToClient(w, http.StatusBadRequest, "invalid ad id")
+				return
+			}
+
+			imageID := r.PathValue("imageId")
+			if imageID == "" {
+				sendToClient(w, http.StatusBadRequest, "image id is required")
+				return
+			}
+
+			// Check ownership
+			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
+			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
+				return
+			}
+
+			if !isOwner {
+				sendToClient(w, http.StatusForbidden, "you are not the owner of this ad")
+				return
+			}
+
+			// Delete the image
+			if err := h.db.Mongo.DeleteImageByID(r.Context(), imageID); err != nil {
+				slog.Error("error deleting image", slog.String("image_id", imageID), slog.String("error", err.Error()))
+				sendToClient(w, http.StatusInternalServerError, "error deleting image")
+				return
+			}
+
+			sendToClient(w, http.StatusOK, "image deleted successfully")
+		},
+	)
+}
+
+func (h *Handlers) UploadAdImagesAPI() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				sendToClient(w, http.StatusUnauthorized, "unauthorized")
+				return
+			}
+
+			adToken := r.PathValue("token")
+			adID, err := parseUUID(adToken)
+			if err != nil {
+				sendToClient(w, http.StatusBadRequest, "invalid ad id")
+				return
+			}
+
+			// Check ownership
+			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
+			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
+				return
+			}
+
+			if !isOwner {
+				sendToClient(w, http.StatusForbidden, "you are not the owner of this ad")
+				return
+			}
+
+			if err := r.ParseMultipartForm(10 << 20); err != nil {
+				sendToClient(w, http.StatusBadRequest, "failed to parse form")
+				return
+			}
+
+			files := r.MultipartForm.File["images"]
+			if len(files) == 0 {
+				sendToClient(w, http.StatusBadRequest, "no images provided")
+				return
+			}
+
+			// Upload images
+			imageIDs, err := h.db.Mongo.UploadImages(r.Context(), files, adID.String())
+			if err != nil {
+				slog.Error("error uploading images", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
+				sendToClient(w, http.StatusInternalServerError, "error uploading images")
+				return
+			}
+
+			response := map[string]interface{}{
+				"success":   true,
+				"message":   "images uploaded successfully",
+				"image_ids": imageIDs,
+			}
+
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			json.NewEncoder(w).Encode(response)
+		},
+	)
+}

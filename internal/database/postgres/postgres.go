@@ -1183,7 +1183,7 @@ func (p *Postgres) DeleteAd(adId *uuid.UUID) error {
 func (p *Postgres) UpdateAd(adId *uuid.UUID, title, description string, price int, condition, contactPhone string) error {
 	_, err := p.psql.Exec(`
 		UPDATE site.listings 
-		SET title = $1, description = $2, price = $3, condition = $4, contact_phone = $5, updated_at = NOW()
+		SET title = $1, description = $2, price = $3, condition = $4, contact_phone = $5, status = 'moderation', updated_at = NOW()
 		WHERE id = $6
 	`, title, description, price*100, condition, contactPhone, adId)
 	if err != nil {
