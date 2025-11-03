@@ -41,15 +41,21 @@ func (h *Handlers) AuthorizationHandler() http.Handler {
 				return
 			}
 
-			if !secure.CheckPasswordHash(user.Password, authInfo.PasswordHash) {
-				sendToClient(w, http.StatusUnauthorized, "incorrect password")
-				return
-			}
+		if !secure.CheckPasswordHash(user.Password, authInfo.PasswordHash) {
+			sendToClient(w, http.StatusUnauthorized, "incorrect password")
+			return
+		}
 
-			token, err := h.jwt.GenerateJWTToken(&authInfo.Id)
-			if handleError(w, err, http.StatusInternalServerError, "generate jwt token error") {
-				return
-			}
+		// Update last login time
+		if err := h.db.Psql.UpdateLastLogin(&authInfo.Id); err != nil {
+			// Log error but don't fail login
+			// handleError would return, so we just log it
+		}
+
+		token, err := h.jwt.GenerateJWTToken(&authInfo.Id)
+		if handleError(w, err, http.StatusInternalServerError, "generate jwt token error") {
+			return
+		}
 
 			http.SetCookie(w, &http.Cookie{
 				Name:     "auth_token",

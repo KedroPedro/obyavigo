@@ -32,12 +32,9 @@ func (h *Handlers) RegistrationHandler() http.Handler {
 				return
 			}
 
-			settings, _ := json.Marshal("{}")
-
-			user.RegistrationDate = time.Now()
-			user.Role = "user"
-			user.Status = "online"
-			user.Settings = settings
+		user.RegistrationDate = time.Now()
+		user.Role = "user"
+		user.Status = "active"
 
 			id, err := h.db.Psql.CreateNewUser(&user)
 			if handleError(w, err, http.StatusInternalServerError, "creating new user error") {

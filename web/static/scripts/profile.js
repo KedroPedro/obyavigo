@@ -525,7 +525,8 @@ function getStatusText(status) {
     'moderation': 'На модерации',
     'draft': 'Черновик',
     'archived': 'В архиве',
-    'blocked': 'Заблокировано'
+    'blocked': 'Заблокировано',
+    'rejected': 'Заблокировано'
   };
   return statusMap[status] || status;
 }
