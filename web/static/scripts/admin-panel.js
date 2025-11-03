@@ -246,7 +246,7 @@ function updateUserStatus(userId, status) {
 function loadModeration() {
     const tbody = document.getElementById('moderationTableBody');
     tbody.innerHTML = '<tr><td colspan="6" class="loading">Загрузка...</td></tr>';
-    fetch('/api/admin/ads/?status=pending')
+    fetch('/api/admin/ads/?status=moderation')
         .then(res => res.json())
         .then(data => {
             if (!data.ads || data.ads.length === 0) {

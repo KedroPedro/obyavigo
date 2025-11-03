@@ -28,20 +28,21 @@ type AdTemplate struct {
 }
 
 type AdPage struct {
-	AdId        uuid.UUID
-	UserID      uuid.UUID
-	AdStatus    string
-	Title       string
-	Price       float32
-	CreatedAt   time.Time
-	ViewsCount  int
-	Condition   string
-	Description string
-	SellerName  string
-	Online      string
-	SellerPhone string
-	SellerCity  string
-	Images      []string
+	AdId           uuid.UUID
+	UserID         uuid.UUID
+	AdStatus       string
+	Title          string
+	Price          float32
+	CreatedAt      time.Time
+	ViewsCount     int
+	Condition      string
+	Description    string
+	SellerName     string
+	Online         string
+	SellerPhone    string
+	SellerCity     string
+	SellerAvatarID *string
+	Images         []string
 }
 
 type AdsPageData struct {

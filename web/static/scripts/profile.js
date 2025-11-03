@@ -564,9 +564,14 @@ function initAvatarUpload() {
       const result = await response.json();
       
       if (response.ok) {
-        const avatarImg = document.getElementById('profileAvatar');
-        if (avatarImg && result.image_id) {
-          avatarImg.src = `/api/avatars/${result.image_id}/`;
+        if (result.image_id) {
+          // Обновляем все аватары на странице
+          const avatarImages = document.querySelectorAll('.profile-img, .profile-avatar img, #profileAvatar');
+          avatarImages.forEach(img => {
+            if (img) {
+              img.src = `/api/avatars/${result.image_id}/`;
+            }
+          });
         }
         alert('Фотография профиля успешно обновлена');
       } else {
