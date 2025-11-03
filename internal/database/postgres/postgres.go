@@ -1213,12 +1213,11 @@ func (p *Postgres) DeleteAdImage(imageId string) error {
 }
 
 func (p *Postgres) CreatePasswordResetToken(email, token string) error {
-	query := `
-		INSERT INTO site.password_reset_tokens (user_id, token, expires_at)
-		SELECT id, $1, $2
-		FROM site.users
-		WHERE email = $3
-	`
+	query, ok := p.q["CreatePasswordResetToken"]
+	if !ok {
+		return fmt.Errorf("request 'CreatePasswordResetToken' not found")
+	}
+
 	expiresAt := time.Now().Add(1 * time.Hour)
 	_, err := p.psql.Exec(query, token, expiresAt, email)
 	if err != nil {
@@ -1228,11 +1227,11 @@ func (p *Postgres) CreatePasswordResetToken(email, token string) error {
 }
 
 func (p *Postgres) GetPasswordResetToken(token string) (*models.PasswordResetToken, error) {
-	query := `
-		SELECT token, user_id, expires_at
-		FROM site.password_reset_tokens
-		WHERE token = $1 AND expires_at > NOW()
-	`
+	query, ok := p.q["GetPasswordResetToken"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetPasswordResetToken' not found")
+	}
+
 	var resetToken models.PasswordResetToken
 	err := p.psql.QueryRow(query, token).Scan(&resetToken.Token, &resetToken.UserID, &resetToken.ExpiresAt)
 	if err != nil {
@@ -1245,7 +1244,11 @@ func (p *Postgres) GetPasswordResetToken(token string) (*models.PasswordResetTok
 }
 
 func (p *Postgres) DeletePasswordResetToken(token string) error {
-	query := `DELETE FROM site.password_reset_tokens WHERE token = $1`
+	query, ok := p.q["DeletePasswordResetToken"]
+	if !ok {
+		return fmt.Errorf("request 'DeletePasswordResetToken' not found")
+	}
+
 	_, err := p.psql.Exec(query, token)
 	if err != nil {
 		return fmt.Errorf("error while deleting password reset token: %w", err)
@@ -1253,17 +1256,12 @@ func (p *Postgres) DeletePasswordResetToken(token string) error {
 	return nil
 }
 
-func (p *Postgres) UpdatePassword(userId *uuid.UUID, newPasswordHash string) error {
-	query := `UPDATE site.users SET password_hash = $1 WHERE id = $2`
-	_, err := p.psql.Exec(query, newPasswordHash, userId)
-	if err != nil {
-		return fmt.Errorf("error while updating password: %w", err)
-	}
-	return nil
-}
-
 func (p *Postgres) GetUserIdByEmail(email string) (*uuid.UUID, error) {
-	query := `SELECT id FROM site.users WHERE email = $1`
+	query, ok := p.q["GetUserIdByEmail"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetUserIdByEmail' not found")
+	}
+
 	var userId uuid.UUID
 	err := p.psql.QueryRow(query, email).Scan(&userId)
 	if err != nil {
