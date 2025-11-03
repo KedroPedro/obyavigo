@@ -91,7 +91,7 @@ func (h *Handlers) GetAvatarByID() http.Handler {
 			}
 
 			// Use avatars bucket instead of fs bucket
-			bucket, err := h.db.Mongo.GetBucket()
+			bucket, err := h.db.Mongo.GetAvatarBucket()
 			if err != nil {
 				http.Error(w, "Failed to access avatar storage", http.StatusInternalServerError)
 				return

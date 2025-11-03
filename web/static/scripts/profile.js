@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
   initProfileForm();
   initPasswordModal();
   initLogout();
+  initAvatarUpload();
+  loadUserProfile();
 });
 function initHeader() {
   const header = document.getElementById("header");
@@ -529,4 +531,76 @@ function getStatusText(status) {
     'rejected': 'Заблокировано'
   };
   return statusMap[status] || status;
+}
+
+function initAvatarUpload() {
+  const avatarUpload = document.getElementById('avatarUpload');
+  if (!avatarUpload) return;
+
+  avatarUpload.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Пожалуйста, выберите изображение');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Размер файла не должен превышать 5MB');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+      const response = await fetch('/api/profile/upload-avatar/', {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+      });
+
+      const result = await response.json();
+      
+      if (response.ok) {
+        const avatarImg = document.getElementById('profileAvatar');
+        if (avatarImg && result.image_id) {
+          avatarImg.src = `/api/avatars/${result.image_id}/`;
+        }
+        alert('Фотография профиля успешно обновлена');
+      } else {
+        alert(result.message || 'Ошибка при загрузке фотографии');
+      }
+    } catch (error) {
+      console.error('Ошибка при загрузке аватара:', error);
+      alert('Ошибка подключения к серверу');
+    }
+  });
+}
+
+async function loadUserProfile() {
+  try {
+    const response = await fetch('/api/user/profile/', {
+      credentials: 'include'
+    });
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+    
+    if (data.profile_picture_id) {
+      const avatarImg = document.getElementById('profileAvatar');
+      if (avatarImg) {
+        avatarImg.src = `/api/avatars/${data.profile_picture_id}/`;
+      }
+    }
+
+    const profileEmail = document.getElementById('profileEmail');
+    if (profileEmail && data.email) {
+      profileEmail.textContent = data.email;
+    }
+  } catch (error) {
+    console.error('Ошибка при загрузке профиля:', error);
+  }
 }

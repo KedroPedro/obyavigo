@@ -72,6 +72,17 @@ func (m *Mongo) GetBucket() (*gridfs.Bucket, error) {
 	return bucket, nil
 }
 
+func (m *Mongo) GetAvatarBucket() (*gridfs.Bucket, error) {
+	bucket, err := gridfs.NewBucket(
+		m.mng.Database("obyavigopics"),
+		options.GridFSBucket().SetName("avatars"),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("gridfs avatars bucket create error: %w", err)
+	}
+	return bucket, nil
+}
+
 func (m *Mongo) UploadImages(ctx context.Context, files []*multipart.FileHeader, adID string) ([]string, error) {
 	bucket, err := gridfs.NewBucket(
 		m.mng.Database("obyavigopics"),

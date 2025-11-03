@@ -350,7 +350,12 @@
                                 <img
                                     src="/static/pictures/profile.png"
                                     alt="Аватар"
+                                    id="profileAvatar"
                                 />
+                                <label for="avatarUpload" class="avatar-upload-btn" title="Изменить фото профиля">
+                                    📷
+                                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;" />
+                                </label>
                             </div>
                             <h2 class="profile-name" id="profileName">
                                 {{.Username}}
