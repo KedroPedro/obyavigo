@@ -436,18 +436,18 @@
                                     <div class="contact-item">
                                         <span>📞</span>
                                         <span id="phoneDisplay">
-                                            {{if .SellerPhone}}
+                                            {{if .ContactPhone}}
                                             <span
                                                 class="phone-hidden"
                                                 style="display: none"
-                                                >{{.SellerPhone}}</span
+                                                >{{.ContactPhone}}</span
                                             >
                                             <span class="phone-placeholder"
                                                 >Показать телефон</span
                                             >
                                             {{else}} Телефон не указан {{end}}
                                         </span>
-                                        {{if .SellerPhone}}
+                                        {{if .ContactPhone}}
                                         <button
                                             class="show-phone-btn"
                                             id="showPhoneBtn"

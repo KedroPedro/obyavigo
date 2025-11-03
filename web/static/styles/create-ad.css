@@ -308,9 +308,9 @@ select option {
 }
 
 .current-images-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    display: flex;
     gap: 15px;
+    flex-wrap: wrap;
 }
 
 .image-item {
@@ -318,7 +318,8 @@ select option {
     border-radius: 12px;
     overflow: hidden;
     border: 2px solid var(--border-color);
-    aspect-ratio: 1;
+    width: 120px;
+    height: 120px;
 }
 
 .image-item img {

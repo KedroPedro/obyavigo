@@ -1531,3 +1531,108 @@ img.loaded {
 .modal-overlay {
     contain: layout style paint;
 }
+
+/* Search results styles */
+.search-suggestions {
+    margin-top: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.search-result-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--card-bg);
+}
+
+.search-result-item:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary-color);
+    transform: translateX(5px);
+}
+
+.search-result-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    flex-shrink: 0;
+}
+
+.search-result-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-result-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.search-result-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 5px 0;
+}
+
+.search-result-location {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 5px 0 0 0;
+}
+
+.search-loading,
+.search-no-results,
+.search-error {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.search-error {
+    color: var(--primary-color);
+}
+
+.search-show-all {
+    text-align: center;
+    padding: 15px;
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+    .search-result-item {
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .search-result-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .search-result-title {
+        font-size: 0.95rem;
+    }
+    
+    .search-result-price {
+        font-size: 1rem;
+    }
+}

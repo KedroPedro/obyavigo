@@ -202,6 +202,15 @@ body {
     line-height: 1.5;
 }
 
+.reset-password-title {
+    text-align: center;
+    color: var(--text-color);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
 .auth-submit-btn {
     width: 100%;
     padding: 16px;
@@ -232,6 +241,10 @@ body {
     margin-top: 15px;
     padding: 0;
     transition: opacity 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    width: 100%;
 }
 
 .auth-back-btn:hover {

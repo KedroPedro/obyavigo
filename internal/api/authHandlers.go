@@ -71,3 +71,86 @@ func (h *Handlers) AuthorizationHandler() http.Handler {
 		},
 	)
 }
+
+func (h *Handlers) ForgotPasswordHandler() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			var req models.PasswordResetRequest
+
+			if err := json.NewDecoder(r.Body).Decode(&req); handleError(w, err, http.StatusInternalServerError, "invalid request body") {
+				return
+			}
+
+			// Check if email exists
+			exists, err := h.db.Psql.CheckEmail(req.Email)
+			if handleError(w, err, http.StatusInternalServerError, "checking email error") {
+				return
+			}
+
+			// Always return success even if email doesn't exist (security best practice)
+			if !exists {
+				sendToClient(w, http.StatusOK, "if email exists, reset link will be sent")
+				return
+			}
+
+			// Generate reset token
+			token, err := secure.GenerateRandomToken(32)
+			if handleError(w, err, http.StatusInternalServerError, "token generation error") {
+				return
+			}
+
+			// Store token in database
+			if err := h.db.Psql.CreatePasswordResetToken(req.Email, token); handleError(w, err, http.StatusInternalServerError, "error creating reset token") {
+				return
+			}
+
+			// Send email
+			if err := h.mail.SendPasswordReset(req.Email, token); handleError(w, err, http.StatusInternalServerError, "error sending email") {
+				return
+			}
+
+			sendToClient(w, http.StatusOK, "reset link sent to email")
+		},
+	)
+}
+
+func (h *Handlers) ResetPasswordHandler() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			var req models.ResetPasswordRequest
+
+			if err := json.NewDecoder(r.Body).Decode(&req); handleError(w, err, http.StatusInternalServerError, "invalid request body") {
+				return
+			}
+
+			// Validate token
+			resetToken, err := h.db.Psql.GetPasswordResetToken(req.Token)
+			if handleError(w, err, http.StatusInternalServerError, "error validating token") {
+				return
+			}
+
+			if resetToken == nil {
+				sendToClient(w, http.StatusBadRequest, "invalid or expired token")
+				return
+			}
+
+			// Hash new password
+			hashedPassword, err := secure.HashPassword(req.NewPassword)
+			if handleError(w, err, http.StatusInternalServerError, "error hashing password") {
+				return
+			}
+
+			// Update password
+			if err := h.db.Psql.UpdatePassword(&resetToken.UserID, hashedPassword); handleError(w, err, http.StatusInternalServerError, "error updating password") {
+				return
+			}
+
+			// Delete used token
+			if err := h.db.Psql.DeletePasswordResetToken(req.Token); err != nil {
+				// Log error but don't fail the request
+			}
+
+			sendToClient(w, http.StatusOK, "password successfully reset")
+		},
+	)
+}

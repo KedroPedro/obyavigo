@@ -1203,3 +1203,74 @@ func (p *Postgres) CheckAdOwnership(userId, adId *uuid.UUID) (bool, error) {
 	}
 	return isOwner, nil
 }
+
+func (p *Postgres) DeleteAdImage(imageId string) error {
+	_, err := p.psql.Exec(`DELETE FROM site.listing_images WHERE image_id = $1`, imageId)
+	if err != nil {
+		return fmt.Errorf("error while deleting image record: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) CreatePasswordResetToken(email, token string) error {
+	query := `
+		INSERT INTO site.password_reset_tokens (user_id, token, expires_at)
+		SELECT id, $1, $2
+		FROM site.users
+		WHERE email = $3
+	`
+	expiresAt := time.Now().Add(1 * time.Hour)
+	_, err := p.psql.Exec(query, token, expiresAt, email)
+	if err != nil {
+		return fmt.Errorf("error while creating password reset token: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) GetPasswordResetToken(token string) (*models.PasswordResetToken, error) {
+	query := `
+		SELECT token, user_id, expires_at
+		FROM site.password_reset_tokens
+		WHERE token = $1 AND expires_at > NOW()
+	`
+	var resetToken models.PasswordResetToken
+	err := p.psql.QueryRow(query, token).Scan(&resetToken.Token, &resetToken.UserID, &resetToken.ExpiresAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("error while getting password reset token: %w", err)
+	}
+	return &resetToken, nil
+}
+
+func (p *Postgres) DeletePasswordResetToken(token string) error {
+	query := `DELETE FROM site.password_reset_tokens WHERE token = $1`
+	_, err := p.psql.Exec(query, token)
+	if err != nil {
+		return fmt.Errorf("error while deleting password reset token: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) UpdatePassword(userId *uuid.UUID, newPasswordHash string) error {
+	query := `UPDATE site.users SET password_hash = $1 WHERE id = $2`
+	_, err := p.psql.Exec(query, newPasswordHash, userId)
+	if err != nil {
+		return fmt.Errorf("error while updating password: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) GetUserIdByEmail(email string) (*uuid.UUID, error) {
+	query := `SELECT id FROM site.users WHERE email = $1`
+	var userId uuid.UUID
+	err := p.psql.QueryRow(query, email).Scan(&userId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("error while getting user id by email: %w", err)
+	}
+	return &userId, nil
+}

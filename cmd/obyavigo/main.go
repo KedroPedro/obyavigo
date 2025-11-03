@@ -43,6 +43,8 @@ func main() {
 
 	mux.Handle("POST /api/auth/register/", handler.RegistrationHandler())
 	mux.Handle("POST /api/auth/login/", handler.AuthMiddleware(handler.AuthorizationHandler()))
+	mux.Handle("POST /api/auth/forgot-password/", handler.ForgotPasswordHandler())
+	mux.Handle("POST /api/auth/reset-password/", handler.ResetPasswordHandler())
 	mux.Handle("POST /api/create-ad/", handler.AuthMiddleware(handler.CreateAd()))
 	mux.Handle("POST /api/logout/", handler.UserLogout())
 	mux.Handle("POST /api/profile/change-password/", handler.AuthMiddleware(handler.ChangePasswordHandler()))
@@ -77,6 +79,7 @@ func main() {
 	mux.Handle("GET /messages/", handler.AuthMiddleware(handler.GetMessagesPage()))
 	mux.Handle("GET /create-ad/", handler.AuthMiddleware(handler.GetCreateAdPage()))
 	mux.Handle("GET /auth/", handler.AuthMiddleware(handler.GetAuthPage()))
+	mux.Handle("GET /reset-password/", handler.GetResetPasswordPage())
 	mux.Handle("GET /ads/", handler.AuthMiddleware(handler.GetAdsPage()))
 	mux.Handle("GET /ads/{token}/", handler.AuthMiddleware(handler.GetAdPage()))
 	mux.Handle("GET /edit-ad/{token}/", handler.AuthMiddleware(handler.GetEditAdPage()))
