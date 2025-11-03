@@ -58,6 +58,7 @@ function loadTabData(tab) {
             loadReports();
             break;
         case 'stats':
+            loadStats();
             break;
     }
 }
@@ -89,7 +90,7 @@ function createTruncatedText(text, maxLength, title) {
     const truncated = text.substring(0, maxLength) + '...';
     return `<span class="truncate-text" onclick="showDetailsModal('${title}', ${JSON.stringify(text).replace(/"/g, '&quot;')})">${truncated}</span>`;
 }
-function loadDashboardData() {
+function loadStats() {
     fetch('/api/admin/stats/')
         .then(res => res.json())
         .then(data => {
@@ -99,6 +100,10 @@ function loadDashboardData() {
             document.getElementById('pendingModeration').textContent = data.pending_moderation || '0';
         })
         .catch(err => console.error('Error loading stats:', err));
+}
+
+function loadDashboardData() {
+    loadStats();
     loadModeration();
 }
 function loadAds() {
@@ -285,8 +290,8 @@ function loadReports() {
                         ${report.listing_id ? `<button class="action-btn view" onclick="viewAd('${report.listing_id}')" title="Перейти к объявлению">👁️</button>` : ''}
                         ${report.status === 'pending' ? `
                             <button class="action-btn reject" onclick="rejectReport('${report.id}')">❌ Отклонить</button>
-                            <button class="action-btn ban" onclick="blockAdFromReport('${report.listing_id}')">🚫 Заблокировать объявление</button>
-                            <button class="btn-danger" onclick="blockAdAndUserFromReport('${report.listing_id}', '${report.target_user_id}')">🚨 Заблокировать объявление и пользователя</button>
+                            <button class="action-btn ban" onclick="blockAdFromReport('${report.id}', '${report.listing_id}')">🚫 Заблокировать объявление</button>
+                            <button class="btn-danger" onclick="blockAdAndUserFromReport('${report.id}', '${report.listing_id}', '${report.ad_owner_id}')">🚨 Заблокировать объявление и пользователя</button>
                         ` : '<span class="status resolved">Решено</span>'}
                     </td>
                 </tr>
@@ -333,18 +338,25 @@ function rejectReport(reportId) {
         });
     });
 }
-function blockAdFromReport(adId) {
+function blockAdFromReport(reportId, adId) {
     showConfirmModal('ban', () => {
-        fetch(`/api/admin/ads/${adId}/status/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status: 'rejected' })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error('Failed to block ad');
-            return res.json();
+        Promise.all([
+            fetch(`/api/admin/ads/${adId}/status/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'rejected' })
+            }),
+            fetch(`/api/admin/reports/${reportId}/status/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'resolved', resolution_comment: 'Ad blocked' })
+            })
+        ])
+        .then(responses => {
+            if (!responses[0].ok || !responses[1].ok) {
+                throw new Error('Failed to block ad');
+            }
+            return Promise.all(responses.map(r => r.json()));
         })
         .then(() => {
             alert('Объявление заблокировано');
@@ -357,7 +369,7 @@ function blockAdFromReport(adId) {
         });
     });
 }
-function blockAdAndUserFromReport(adId, userId) {
+function blockAdAndUserFromReport(reportId, adId, userId) {
     showConfirmModal('ban', () => {
         Promise.all([
             fetch(`/api/admin/ads/${adId}/status/`, {
@@ -369,10 +381,15 @@ function blockAdAndUserFromReport(adId, userId) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: 'banned' })
+            }),
+            fetch(`/api/admin/reports/${reportId}/status/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'resolved', resolution_comment: 'Ad and user blocked' })
             })
         ])
         .then(responses => {
-            if (!responses[0].ok || !responses[1].ok) {
+            if (!responses[0].ok || !responses[1].ok || !responses[2].ok) {
                 throw new Error('Failed to block ad and user');
             }
             return Promise.all(responses.map(r => r.json()));

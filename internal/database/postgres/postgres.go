@@ -58,8 +58,6 @@ func (p *Postgres) CreateNewUser(u *models.User) (*uuid.UUID, error) {
 		u.RegistrationDate,
 		u.LastLogin,
 		u.ProfilePictureID,
-		u.Bio,
-		u.Settings,
 	).Scan(&id)
 
 	if err != nil {
@@ -331,7 +329,6 @@ func (p *Postgres) GetUserData(userId *uuid.UUID) (*models.UserData, error) {
 		&data.Username,
 		&data.Email,
 		&data.PhoneNumber,
-		&data.Settings,
 	)
 	return &data, nil
 }
@@ -825,6 +822,23 @@ func (p *Postgres) UpdateUserProfile(userId *uuid.UUID, username string, phoneNu
 	return nil
 }
 
+func (p *Postgres) UpdateUserAvatar(userId *uuid.UUID, avatarID string) error {
+	_, err := p.psql.Exec(`UPDATE site.users SET profile_picture_id = $1 WHERE id = $2`, avatarID, userId)
+	if err != nil {
+		return fmt.Errorf("error while updating user avatar: %w", err)
+	}
+	return nil
+}
+
+func (p *Postgres) GetUserAvatar(userId *uuid.UUID) (*string, error) {
+	var avatarID *string
+	err := p.psql.QueryRow(`SELECT profile_picture_id FROM site.users WHERE id = $1`, userId).Scan(&avatarID)
+	if err != nil {
+		return nil, fmt.Errorf("error while getting user avatar: %w", err)
+	}
+	return avatarID, nil
+}
+
 func (p *Postgres) CreateChat(chat *models.Chat) error {
 	query, ok := p.q["CreateChat"]
 	if !ok {
@@ -958,6 +972,18 @@ func (p *Postgres) UpdateUserRole(userId *uuid.UUID, role string) error {
 	return nil
 }
 
+func (p *Postgres) UpdateLastLogin(userId *uuid.UUID) error {
+	query, ok := p.q["UpdateLastLogin"]
+	if !ok {
+		return fmt.Errorf("request 'UpdateLastLogin' not found")
+	}
+	_, err := p.psql.Exec(query, userId)
+	if err != nil {
+		return fmt.Errorf("error while updating last login: %w", err)
+	}
+	return nil
+}
+
 func (p *Postgres) GetUsers(page, limit int, roleFilter, search string) ([]models.UserTemplate, error) {
 	query := `
 		SELECT id, username, email, phone_number, registration_date, status, role
@@ -1045,6 +1071,7 @@ func (p *Postgres) GetReports(page, limit int, statusFilter string) ([]models.Co
 			&report.AdminID,
 			&report.ResolutionComment,
 			&report.ComplainantEmail,
+			&report.AdOwnerID,
 		); err != nil {
 			return nil, fmt.Errorf("error while scanning report: %w", err)
 		}

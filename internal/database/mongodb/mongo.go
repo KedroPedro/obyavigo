@@ -203,3 +203,122 @@ func (m *Mongo) DownloadImagesByID(ctx context.Context, adID string) ([][]byte, 
 
 	return filesData, nil
 }
+
+// UploadUserAvatar uploads user avatar image
+func (m *Mongo) UploadUserAvatar(ctx context.Context, file *multipart.FileHeader, userID string) (string, error) {
+	bucket, err := gridfs.NewBucket(
+		m.mng.Database("obyavigopics"),
+		options.GridFSBucket().SetName("avatars"),
+	)
+	if err != nil {
+		return "", fmt.Errorf("gridfs bucket create error: %w", err)
+	}
+
+	f, err := file.Open()
+	if err != nil {
+		return "", fmt.Errorf("cannot open avatar file: %w", err)
+	}
+	defer f.Close()
+
+	generatedUUID := uuid.New()
+	binUUID := primitive.Binary{Subtype: 4, Data: generatedUUID[:]}
+
+	uploadOpts := options.GridFSUpload().
+		SetMetadata(bson.M{
+			"user_id":    userID,
+			"length":     file.Size,
+			"uploadDate": time.Now(),
+		})
+
+	uploadStream, err := bucket.OpenUploadStreamWithID(binUUID, "", uploadOpts)
+	if err != nil {
+		return "", fmt.Errorf("open upload stream: %w", err)
+	}
+
+	_, err = io.Copy(uploadStream, f)
+	uploadStream.Close()
+	if err != nil {
+		return "", fmt.Errorf("copy avatar data: %w", err)
+	}
+
+	return generatedUUID.String(), nil
+}
+
+// DeleteUserAvatar deletes user avatar by user ID
+func (m *Mongo) DeleteUserAvatar(ctx context.Context, userID string) error {
+	bucket, err := gridfs.NewBucket(
+		m.mng.Database("obyavigopics"),
+		options.GridFSBucket().SetName("avatars"),
+	)
+	if err != nil {
+		return fmt.Errorf("failed to create GridFS bucket: %w", err)
+	}
+
+	filter := bson.M{"metadata.user_id": userID}
+	cursor, err := bucket.Find(filter)
+	if err != nil {
+		return fmt.Errorf("failed to find avatar by userID: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	for cursor.Next(ctx) {
+		var fileDoc bson.M
+		if err := cursor.Decode(&fileDoc); err != nil {
+			return fmt.Errorf("failed to decode file info: %w", err)
+		}
+
+		fileID, ok := fileDoc["_id"].(primitive.Binary)
+		if !ok {
+			continue
+		}
+
+		if err := bucket.Delete(fileID); err != nil {
+			return fmt.Errorf("failed to delete avatar: %w", err)
+		}
+	}
+
+	return cursor.Err()
+}
+
+// DeleteUserImages deletes all images associated with a user (ads and avatar)
+func (m *Mongo) DeleteUserImages(ctx context.Context, userID string) error {
+	// Delete avatar
+	if err := m.DeleteUserAvatar(ctx, userID); err != nil {
+		return fmt.Errorf("failed to delete user avatar: %w", err)
+	}
+
+	// Delete ad images
+	bucket, err := gridfs.NewBucket(
+		m.mng.Database("obyavigopics"),
+		options.GridFSBucket().SetName("fs"),
+	)
+	if err != nil {
+		return fmt.Errorf("failed to create GridFS bucket: %w", err)
+	}
+
+	// Find all ads belonging to the user and delete their images
+	filter := bson.M{"metadata.user_id": userID}
+	cursor, err := bucket.Find(filter)
+	if err != nil {
+		return fmt.Errorf("failed to find user images: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	for cursor.Next(ctx) {
+		var fileDoc bson.M
+		if err := cursor.Decode(&fileDoc); err != nil {
+			continue
+		}
+
+		fileID, ok := fileDoc["_id"].(primitive.Binary)
+		if !ok {
+			continue
+		}
+
+		if err := bucket.Delete(fileID); err != nil {
+			return fmt.Errorf("failed to delete image: %w", err)
+		}
+	}
+
+	return cursor.Err()
+}

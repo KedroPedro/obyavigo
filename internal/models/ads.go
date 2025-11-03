@@ -108,4 +108,5 @@ type ComplaintTemplate struct {
 	UpdatedAt         *time.Time `json:"updated_at"`
 	AdminID           *uuid.UUID `json:"admin_id"`
 	ResolutionComment *string    `json:"resolution_comment"`
+	AdOwnerID         *uuid.UUID `json:"ad_owner_id"`
 }
