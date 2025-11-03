@@ -3,6 +3,7 @@ package api
 import (
 	"cmd/obyavigo/main.go/internal/models"
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"strconv"
 )
@@ -139,6 +140,111 @@ func (h *Handlers) GetUserAdsAPI() http.Handler {
 
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			json.NewEncoder(w).Encode(response)
+		},
+	)
+}
+
+func (h *Handlers) DeleteAdAPI() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				sendToClient(w, http.StatusUnauthorized, "unauthorized")
+				return
+			}
+
+			token := r.PathValue("token")
+			adID, err := parseUUID(token)
+			if err != nil {
+				sendToClient(w, http.StatusBadRequest, "invalid ad id")
+				return
+			}
+
+			// Check ownership
+			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
+			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
+				return
+			}
+
+			if !isOwner {
+				sendToClient(w, http.StatusForbidden, "you are not the owner of this ad")
+				return
+			}
+
+			// Delete associated images from MongoDB
+			if err := h.db.Mongo.DeleteAdImages(r.Context(), adID.String()); err != nil {
+				// Log but continue with deletion
+				slog.Error("error deleting ad images", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
+			}
+
+			// Delete the ad
+			if err := h.db.Psql.DeleteAd(&adID); err != nil {
+				sendToClient(w, http.StatusInternalServerError, "error deleting ad")
+				return
+			}
+
+			sendToClient(w, http.StatusOK, "ad deleted successfully")
+		},
+	)
+}
+
+type UpdateAdRequest struct {
+	Title        string `json:"title"`
+	Description  string `json:"description"`
+	Price        int    `json:"price"`
+	Condition    string `json:"condition"`
+	ContactPhone string `json:"contact_phone"`
+}
+
+func (h *Handlers) UpdateAdAPI() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				sendToClient(w, http.StatusUnauthorized, "unauthorized")
+				return
+			}
+
+			token := r.PathValue("token")
+			adID, err := parseUUID(token)
+			if err != nil {
+				sendToClient(w, http.StatusBadRequest, "invalid ad id")
+				return
+			}
+
+			// Check ownership
+			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
+			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
+				return
+			}
+
+			if !isOwner {
+				sendToClient(w, http.StatusForbidden, "you are not the owner of this ad")
+				return
+			}
+
+			var req UpdateAdRequest
+			if err := json.NewDecoder(r.Body).Decode(&req); handleError(w, err, http.StatusBadRequest, "invalid request body") {
+				return
+			}
+
+			if req.Title == "" {
+				sendToClient(w, http.StatusBadRequest, "title is required")
+				return
+			}
+
+			if req.Price < 0 {
+				sendToClient(w, http.StatusBadRequest, "price must be positive")
+				return
+			}
+
+			// Update the ad
+			if err := h.db.Psql.UpdateAd(&adID, req.Title, req.Description, req.Price, req.Condition, req.ContactPhone); err != nil {
+				sendToClient(w, http.StatusInternalServerError, "error updating ad")
+				return
+			}
+
+			sendToClient(w, http.StatusOK, "ad updated successfully")
 		},
 	)
 }

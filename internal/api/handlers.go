@@ -326,3 +326,44 @@ func (h *Handlers) GetLikedAdsPage() http.Handler {
 		},
 	)
 }
+
+func (h *Handlers) GetEditAdPage() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				http.Redirect(w, r, "/auth/", http.StatusPermanentRedirect)
+				return
+			}
+
+			token := r.PathValue("token")
+			adID, err := uuid.Parse(token)
+			if err != nil {
+				h.sendNotFound(w)
+				return
+			}
+
+			// Check ownership
+			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
+			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
+				return
+			}
+
+			if !isOwner {
+				h.sendNotFound(w)
+				return
+			}
+
+			data := struct {
+				AdID string
+			}{
+				AdID: adID.String(),
+			}
+
+			err = h.tmpl.ExecuteTemplate(w, "edit-ad.html", data)
+			if handleError(w, err, http.StatusInternalServerError, "error while executing edit ad template") {
+				h.sendNotFound(w)
+			}
+		},
+	)
+}

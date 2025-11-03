@@ -438,15 +438,15 @@ async function loadUserAds() {
     const data = await response.json();
     if (data.success && data.data && data.data.length > 0) {
       adsList.innerHTML = data.data.map(ad => `
-        <div class="ad-card" onclick="window.location.href='/ads/${ad.adID}/'" style="cursor: pointer;">
-          <div class="ad-image">
+        <div class="ad-card" style="position: relative;">
+          <div class="ad-image" onclick="window.location.href='/ads/${ad.adID}/'" style="cursor: pointer;">
             ${ad.imageID ?
               `<img src="/api/images/${ad.imageID}/" alt="${ad.title}" loading="lazy" />` :
               `<img src="/static/pictures/logo.png" alt="${ad.title}" loading="lazy" />`
             }
             <span class="ad-status ${ad.status}">${getStatusText(ad.status)}</span>
           </div>
-          <div class="ad-content">
+          <div class="ad-content" onclick="window.location.href='/ads/${ad.adID}/'" style="cursor: pointer;">
             <h3 class="ad-title">${ad.title}</h3>
             <p class="ad-description">${ad.desc}</p>
             <div class="ad-meta">
@@ -458,6 +458,10 @@ async function loadUserAds() {
               <span class="ad-date">${new Date(ad.createdAt).toLocaleDateString('ru-RU')}</span>
               <span class="ad-views">👁️ ${ad.viewsCount}</span>
             </div>
+          </div>
+          <div class="ad-actions" style="display: flex; gap: 10px; padding: 10px; border-top: 1px solid #eee;">
+            <button class="btn-edit" onclick="editAd('${ad.adID}', event)" style="flex: 1; padding: 8px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">✏️ Редактировать</button>
+            <button class="btn-delete" onclick="deleteAd('${ad.adID}', event)" style="flex: 1; padding: 8px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Удалить</button>
           </div>
         </div>
       `).join("");
@@ -607,5 +611,42 @@ async function loadUserProfile() {
     }
   } catch (error) {
     console.error('Ошибка при загрузке профиля:', error);
+  }
+}
+
+function editAd(adId, event) {
+  event.stopPropagation();
+  window.location.href = `/edit-ad/${adId}/`;
+}
+
+async function deleteAd(adId, event) {
+  event.stopPropagation();
+  
+  if (!confirm('Вы уверены, что хотите удалить это объявление? Это действие нельзя отменить.')) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/ads/${adId}/`, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert('Объявление успешно удалено');
+      // Reload the ads list
+      userAdsLoaded = false;
+      loadUserAds();
+    } else {
+      alert(data.message || 'Ошибка при удалении объявления');
+    }
+  } catch (error) {
+    console.error('Ошибка при удалении объявления:', error);
+    alert('Ошибка подключения к серверу');
   }
 }
