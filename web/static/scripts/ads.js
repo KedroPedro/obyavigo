@@ -51,6 +51,7 @@ const REGIONS = {
     console.log("[ADS] Initializing filters...");
     initFilters();
     initLoadMore();
+    initSearchQuery();
   };
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);
@@ -231,6 +232,10 @@ function syncUrlWithFilters() {
     if (val === undefined || val === null || val === "") params.delete(key);
     else params.set(key, String(val));
   };
+  
+  // Сохраняем поисковый запрос, если он есть
+  const searchQuery = params.get("q");
+  
   setOrDelete(
     "category",
     document.getElementById("categoryFilter")?.value || "",
@@ -265,6 +270,12 @@ function syncUrlWithFilters() {
   } else {
     params.delete("condition");
   }
+  
+  // Восстанавливаем поисковый запрос
+  if (searchQuery) {
+    params.set("q", searchQuery);
+  }
+  
   history.replaceState(null, "", `${location.pathname}?${params.toString()}`);
 }
 function initLoadMore() {
@@ -331,4 +342,25 @@ function createAdCard(ad) {
     </div>
   `;
   return card;
+}
+
+function initSearchQuery() {
+  const params = new URLSearchParams(window.location.search);
+  const searchQuery = params.get("q");
+  const searchQueryDisplay = document.getElementById("searchQueryDisplay");
+  const searchQueryText = document.getElementById("searchQueryText");
+  const clearSearchBtn = document.getElementById("clearSearchBtn");
+  
+  if (searchQuery && searchQueryDisplay && searchQueryText) {
+    searchQueryText.textContent = searchQuery;
+    searchQueryDisplay.style.display = "block";
+    
+    if (clearSearchBtn) {
+      clearSearchBtn.addEventListener("click", () => {
+        const newParams = new URLSearchParams(window.location.search);
+        newParams.delete("q");
+        window.location.href = `${window.location.pathname}?${newParams.toString()}`;
+      });
+    }
+  }
 }

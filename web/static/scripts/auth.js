@@ -400,9 +400,32 @@ class AuthManager {
       this.forgotPassword(email);
     }
   }
-  forgotPassword(email) {
-    console.log("Восстановление пароля:", { email });
-    alert("Ссылка для восстановления пароля отправлена на ваш email");
+  async forgotPassword(email) {
+    try {
+      const response = await fetch("/api/auth/forgot-password/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(
+          "Если email зарегистрирован, на него будет отправлена ссылка для восстановления пароля",
+        );
+        this.switchToForm("login");
+      } else {
+        const errorMessage =
+          result.error || result.message || "Неизвестная ошибка";
+        alert("Ошибка: " + errorMessage);
+      }
+    } catch (error) {
+      console.error("Ошибка сети:", error);
+      alert("Не удалось подключиться к серверу. Проверьте соединение.");
+    }
   }
 }
 new AuthManager();

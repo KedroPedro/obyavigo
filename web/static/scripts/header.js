@@ -224,21 +224,124 @@ class HeaderManager {
     const searchOverlay = document.getElementById("searchOverlay");
     const closeSearch = document.getElementById("closeSearch");
     const searchInput = document.getElementById("searchInput");
+    const searchSuggestions = document.getElementById("searchSuggestions");
     if (!searchBtn || !searchOverlay) return;
+    
     searchBtn.addEventListener("click", () => {
       this.openModal("searchOverlay");
       setTimeout(() => {
         if (searchInput) searchInput.focus();
       }, 300);
     });
+    
     closeSearch?.addEventListener("click", () => {
       this.closeModal("searchOverlay");
+      if (searchInput) searchInput.value = "";
+      if (searchSuggestions) searchSuggestions.innerHTML = "";
     });
+    
     searchOverlay.addEventListener("click", (e) => {
       if (e.target === searchOverlay) {
         this.closeModal("searchOverlay");
+        if (searchInput) searchInput.value = "";
+        if (searchSuggestions) searchSuggestions.innerHTML = "";
       }
     });
+    
+    // Обработка ввода в поле поиска с дебаунсингом
+    if (searchInput) {
+      let searchTimeout;
+      searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.trim();
+        
+        clearTimeout(searchTimeout);
+        
+        if (query.length < 2) {
+          if (searchSuggestions) searchSuggestions.innerHTML = "";
+          return;
+        }
+        
+        searchTimeout = setTimeout(() => {
+          this.performSearch(query);
+        }, 300);
+      });
+      
+      // Обработка нажатия Enter
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const query = e.target.value.trim();
+          if (query.length > 0) {
+            this.navigateToSearch(query);
+          }
+        }
+      });
+    }
+  }
+  
+  async performSearch(query) {
+    const searchSuggestions = document.getElementById("searchSuggestions");
+    if (!searchSuggestions) return;
+    
+    try {
+      searchSuggestions.innerHTML = '<div class="search-loading">Поиск...</div>';
+      
+      const response = await fetch(`/api/ads/?q=${encodeURIComponent(query)}&limit=5`);
+      
+      if (!response.ok) {
+        throw new Error("Ошибка поиска");
+      }
+      
+      const result = await response.json();
+      
+      if (!result.success || !result.data || result.data.length === 0) {
+        searchSuggestions.innerHTML = '<div class="search-no-results">Ничего не найдено</div>';
+        return;
+      }
+      
+      this.displaySearchResults(result.data);
+    } catch (error) {
+      console.error("Ошибка при поиске:", error);
+      searchSuggestions.innerHTML = '<div class="search-error">Ошибка при поиске. Попробуйте позже.</div>';
+    }
+  }
+  
+  displaySearchResults(ads) {
+    const searchSuggestions = document.getElementById("searchSuggestions");
+    if (!searchSuggestions) return;
+    
+    const resultsHtml = ads.map(ad => {
+      const imageUrl = ad.imageID ? `/api/images/${ad.imageID}/` : '/static/pictures/logo.png';
+      const price = ad.price > 0 ? `${ad.price} BYN` : 'Договорная';
+      
+      return `
+        <div class="search-result-item" data-ad-id="${ad.adID}" role="option">
+          <img src="${imageUrl}" alt="${ad.title}" class="search-result-image" onerror="this.src='/static/pictures/logo.png'">
+          <div class="search-result-info">
+            <h4 class="search-result-title">${ad.title}</h4>
+            <p class="search-result-price">${price}</p>
+            <p class="search-result-location">${ad.locationName || ''}</p>
+          </div>
+        </div>
+      `;
+    }).join("");
+    
+    searchSuggestions.innerHTML = resultsHtml + 
+      '<div class="search-show-all">Нажмите Enter для полного поиска</div>';
+    
+    // Добавляем обработчики кликов на результаты
+    const resultItems = searchSuggestions.querySelectorAll('.search-result-item');
+    resultItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const adId = item.getAttribute('data-ad-id');
+        if (adId) {
+          window.location.href = `/ad/${adId}/`;
+        }
+      });
+    });
+  }
+  
+  navigateToSearch(query) {
+    window.location.href = `/ads/?q=${encodeURIComponent(query)}`;
   }
   initLoved() {
     const lovedBtn = document.getElementById("lovedBtn");

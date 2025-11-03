@@ -41,3 +41,18 @@ type UserData struct {
 	PhoneNumber string
 	Settings    json.RawMessage
 }
+
+type PasswordResetRequest struct {
+	Email string `json:"email"`
+}
+
+type PasswordResetToken struct {
+	Token     string    `db:"token"`
+	UserID    uuid.UUID `db:"user_id"`
+	ExpiresAt time.Time `db:"expires_at"`
+}
+
+type ResetPasswordRequest struct {
+	Token       string `json:"token"`
+	NewPassword string `json:"new_password"`
+}

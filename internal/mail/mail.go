@@ -64,3 +64,26 @@ func (m *Mail) SendRegConfirm(email string) (string, error) {
 
 	return cipheredMail, nil
 }
+
+func (m *Mail) SendPasswordReset(email, token string) error {
+	msg := mail.NewMsg()
+
+	if err := msg.From("obyavigo@gmail.com"); err != nil {
+		return fmt.Errorf("failed to set From address: %w", err)
+	}
+	if err := msg.To(email); err != nil {
+		return fmt.Errorf("failed to set To address: %w", err)
+	}
+
+	msg.Subject("Восстановление пароля - Obyavigo")
+	msg.SetBodyString(mail.TypeTextPlain,
+		"Для восстановления пароля перейдите по ссылке: https://localhost:443/reset-password?token="+token+"\n\n"+
+			"Если вы не запрашивали восстановление пароля, проигнорируйте это письмо.\n"+
+			"Ссылка действительна в течение 1 часа.")
+
+	if err := m.client.DialAndSend(msg); err != nil {
+		return fmt.Errorf("failed to send mail: %w", err)
+	}
+
+	return nil
+}

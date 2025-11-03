@@ -367,3 +367,15 @@ func (h *Handlers) GetEditAdPage() http.Handler {
 		},
 	)
 }
+
+func (h *Handlers) GetResetPasswordPage() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path != "/reset-password" && r.URL.Path != "/reset-password/" {
+				h.sendNotFound(w)
+				return
+			}
+			h.tmpl.ExecuteTemplate(w, "reset-password.html", nil)
+		},
+	)
+}

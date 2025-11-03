@@ -108,6 +108,14 @@ func (h *Handlers) GetAdByIDAPI() http.Handler {
 				}
 			}
 
+			// Get ad images
+			imageIDs, err := h.db.Psql.GetAdImageIDs(&adID)
+			if err != nil {
+				slog.Error("error getting ad images", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
+				imageIDs = []string{}
+			}
+			adData.Images = imageIDs
+
 			response := map[string]interface{}{
 				"success": true,
 				"data":    adData,
@@ -282,11 +290,17 @@ func (h *Handlers) DeleteAdImageAPI() http.Handler {
 				return
 			}
 
-			// Delete the image
+			// Delete the image from MongoDB
 			if err := h.db.Mongo.DeleteImageByID(r.Context(), imageID); err != nil {
-				slog.Error("error deleting image", slog.String("image_id", imageID), slog.String("error", err.Error()))
+				slog.Error("error deleting image from MongoDB", slog.String("image_id", imageID), slog.String("error", err.Error()))
 				sendToClient(w, http.StatusInternalServerError, "error deleting image")
 				return
+			}
+
+			// Delete the image record from PostgreSQL
+			if err := h.db.Psql.DeleteAdImage(imageID); err != nil {
+				slog.Error("error deleting image record from PostgreSQL", slog.String("image_id", imageID), slog.String("error", err.Error()))
+				// Image deleted from MongoDB but not from PostgreSQL - not critical
 			}
 
 			sendToClient(w, http.StatusOK, "image deleted successfully")
@@ -332,11 +346,22 @@ func (h *Handlers) UploadAdImagesAPI() http.Handler {
 				return
 			}
 
-			// Upload images
+			// Upload images to MongoDB
 			imageIDs, err := h.db.Mongo.UploadImages(r.Context(), files, adID.String())
 			if err != nil {
 				slog.Error("error uploading images", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
 				sendToClient(w, http.StatusInternalServerError, "error uploading images")
+				return
+			}
+
+			// Insert image records to PostgreSQL
+			if err := h.db.Psql.InsertImages(userID, &adID, imageIDs); err != nil {
+				slog.Error("error inserting image records", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
+				// Try to clean up uploaded images from MongoDB
+				for _, imgID := range imageIDs {
+					h.db.Mongo.DeleteImageByID(r.Context(), imgID)
+				}
+				sendToClient(w, http.StatusInternalServerError, "error saving image records")
 				return
 			}
 
