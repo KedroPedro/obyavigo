@@ -108,7 +108,6 @@ func (h *Handlers) GetAdByIDAPI() http.Handler {
 				}
 			}
 
-			
 			imageIDs, err := h.db.Psql.GetAdImageIDs(&adID)
 			if err != nil {
 				slog.Error("error getting ad images", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
@@ -168,7 +167,6 @@ func (h *Handlers) DeleteAdAPI() http.Handler {
 				return
 			}
 
-			
 			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
 			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
 				return
@@ -179,20 +177,10 @@ func (h *Handlers) DeleteAdAPI() http.Handler {
 				return
 			}
 
-<<<<<<< HEAD
 			if err := h.db.Mongo.DeleteAdImages(r.Context(), adID.String()); err != nil {
 				slog.Error("error deleting ad images", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
 			}
 
-=======
-			
-			if err := h.db.Mongo.DeleteAdImages(r.Context(), adID.String()); err != nil {
-				
-				slog.Error("error deleting ad images", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
-			}
-
-			
->>>>>>> c04cbe9c777b551f29c288a2c9d239c0b97177a5
 			if err := h.db.Psql.DeleteAd(&adID); err != nil {
 				sendToClient(w, http.StatusInternalServerError, "error deleting ad")
 				return
@@ -227,7 +215,6 @@ func (h *Handlers) UpdateAdAPI() http.Handler {
 				return
 			}
 
-			
 			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
 			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
 				return
@@ -253,7 +240,6 @@ func (h *Handlers) UpdateAdAPI() http.Handler {
 				return
 			}
 
-			
 			if err := h.db.Psql.UpdateAd(&adID, req.Title, req.Description, req.Price, req.Condition, req.ContactPhone); err != nil {
 				sendToClient(w, http.StatusInternalServerError, "error updating ad")
 				return
@@ -286,7 +272,6 @@ func (h *Handlers) DeleteAdImageAPI() http.Handler {
 				return
 			}
 
-			
 			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
 			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
 				return
@@ -297,17 +282,15 @@ func (h *Handlers) DeleteAdImageAPI() http.Handler {
 				return
 			}
 
-			
 			if err := h.db.Mongo.DeleteImageByID(r.Context(), imageID); err != nil {
 				slog.Error("error deleting image from MongoDB", slog.String("image_id", imageID), slog.String("error", err.Error()))
 				sendToClient(w, http.StatusInternalServerError, "error deleting image")
 				return
 			}
 
-			
 			if err := h.db.Psql.DeleteAdImage(imageID); err != nil {
 				slog.Error("error deleting image record from PostgreSQL", slog.String("image_id", imageID), slog.String("error", err.Error()))
-				
+
 			}
 
 			sendToClient(w, http.StatusOK, "image deleted successfully")
@@ -331,7 +314,6 @@ func (h *Handlers) UploadAdImagesAPI() http.Handler {
 				return
 			}
 
-			
 			isOwner, err := h.db.Psql.CheckAdOwnership(userID, &adID)
 			if handleError(w, err, http.StatusInternalServerError, "error checking ad ownership") {
 				return
@@ -353,7 +335,6 @@ func (h *Handlers) UploadAdImagesAPI() http.Handler {
 				return
 			}
 
-			
 			imageIDs, err := h.db.Mongo.UploadImages(r.Context(), files, adID.String())
 			if err != nil {
 				slog.Error("error uploading images", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
@@ -361,10 +342,9 @@ func (h *Handlers) UploadAdImagesAPI() http.Handler {
 				return
 			}
 
-			
 			if err := h.db.Psql.InsertImages(userID, &adID, imageIDs); err != nil {
 				slog.Error("error inserting image records", slog.String("ad_id", adID.String()), slog.String("error", err.Error()))
-				
+
 				for _, imgID := range imageIDs {
 					h.db.Mongo.DeleteImageByID(r.Context(), imgID)
 				}

@@ -2,9 +2,9 @@
 -- PostgreSQL database dump
 --
 
-\restrict O4FWwkQy0YNjLzTKZvpye1a6IIAfS5Q8NgNkwQ4VotWbriXRjt2hPEAfj46fxrH
+\restrict vfDaLqC7kFxuknK9dVSke5kDzqBOdITaIoDPsRExxBbXSd6fjQxiQVhonTw4qcq
 
--- Dumped from database version 17.6
+-- Dumped from database version 18.0
 -- Dumped by pg_dump version 18.0
 
 SET statement_timeout = 0;
@@ -73,14 +73,14 @@ ALTER TABLE site.chats OWNER TO postgres;
 --
 
 CREATE TABLE site.complaints (
-    id uuid NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     complainant_id uuid NOT NULL,
     listing_id uuid,
     target_user_id uuid,
     complaint_type text NOT NULL,
     description text,
     status text NOT NULL,
-    created_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at timestamp with time zone,
     admin_id uuid,
     resolution_comment text
@@ -176,6 +176,21 @@ CREATE TABLE site.messages (
 ALTER TABLE site.messages OWNER TO postgres;
 
 --
+-- Name: password_reset_tokens; Type: TABLE; Schema: site; Owner: postgres
+--
+
+CREATE TABLE site.password_reset_tokens (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    token text NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    expires_at timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE site.password_reset_tokens OWNER TO postgres;
+
+--
 -- Name: user_favorites; Type: TABLE; Schema: site; Owner: postgres
 --
 
@@ -203,9 +218,7 @@ CREATE TABLE site.users (
     phone_number text,
     registration_date timestamp with time zone NOT NULL,
     last_login time with time zone,
-    profile_picture_id text,
-    bio text,
-    settings jsonb NOT NULL
+    profile_picture_id text
 );
 
 
@@ -289,6 +302,7 @@ COPY site.complaints (id, complainant_id, listing_id, target_user_id, complaint_
 
 COPY site.email_confirmations (id, user_id, token, created_at, expires_at, confirmed, confirmed_at) FROM stdin;
 fb983ef3-574a-4240-9743-cd8cca86d3a4	93721bbe-d0de-433c-8546-eae0e1a8e064	\N	2025-10-27 22:12:53.494372+03	2025-10-28 22:12:53.494372+03	t	2025-10-27 22:13:31.115297+03
+e555e96b-3e0d-4037-a4d0-7c3cb9f281b8	dacd6f80-8db7-4cea-9605-9b2d5fe4a784	\N	2025-11-03 15:55:10.441226+03	2025-11-04 15:55:10.441226+03	t	2025-11-03 15:55:31.754007+03
 \.
 
 
@@ -297,11 +311,6 @@ fb983ef3-574a-4240-9743-cd8cca86d3a4	93721bbe-d0de-433c-8546-eae0e1a8e064	\N	202
 --
 
 COPY site.listing_images (id, listing_id, image_id, "position", uploaded_at) FROM stdin;
-5a5a391d-523c-4ddb-8275-ba8132eb50e9	83b068f7-206d-4659-bcbd-d81f544ad6b6	ae65bfe9-13c1-4ada-850d-fab3a4c3a370	0	2025-10-27 22:24:08.515684+03
-e383525e-7549-4e26-a5a5-982cb4af2e96	83b068f7-206d-4659-bcbd-d81f544ad6b6	e869142a-356b-4caf-a327-eba364dff9a6	1	2025-10-27 22:24:08.515684+03
-e7551347-50d6-4820-a8f3-08ebe899f1f5	83b068f7-206d-4659-bcbd-d81f544ad6b6	c1751dc3-d2e6-42fc-bd24-cc12f570e2bd	2	2025-10-27 22:24:08.515684+03
-05c0003f-5bf7-4dbf-b478-082f7a2af7cf	83b068f7-206d-4659-bcbd-d81f544ad6b6	6a44ff4f-20c2-4091-8871-1eb4f28ee3f7	3	2025-10-27 22:24:08.515684+03
-3cce8d3b-1a72-40b0-aff1-3cd342ef31a6	83b068f7-206d-4659-bcbd-d81f544ad6b6	7ae31958-4b8c-4922-8846-2c0616e84f81	4	2025-10-27 22:24:08.515684+03
 \.
 
 
@@ -310,7 +319,6 @@ e7551347-50d6-4820-a8f3-08ebe899f1f5	83b068f7-206d-4659-bcbd-d81f544ad6b6	c1751d
 --
 
 COPY site.listings (id, user_id, category_id, title, description, price, location_id, condition, status, created_at, updated_at, expiration_date, views_count, contact_phone) FROM stdin;
-83b068f7-206d-4659-bcbd-d81f544ad6b6	93721bbe-d0de-433c-8546-eae0e1a8e064	2ebc2d48-ad9b-4156-bcac-d1600f180327	afdfdsaf	asdfsadfsadasdfsadfsadasdfsadfsadasdfsadfsadasdfsadfsadasdfsadfsadasdfsadfsad	321400	cf8f67a1-4328-44bb-9971-a7d4c6924d84	new	public	2025-10-27 22:24:08.499737+03	\N	\N	0	
 \.
 
 
@@ -361,11 +369,19 @@ COPY site.messages (id, sender_id, message_text, created_at, chat_id) FROM stdin
 
 
 --
+-- Data for Name: password_reset_tokens; Type: TABLE DATA; Schema: site; Owner: postgres
+--
+
+COPY site.password_reset_tokens (id, user_id, token, created_at, expires_at) FROM stdin;
+8fb12abe-a5ed-4238-8445-e3712968f228	93721bbe-d0de-433c-8546-eae0e1a8e064	bbccefae6914eaced55b70ca03981c5f4409980342685c8d9014c249913213cf	2025-11-03 19:55:35.360844+03	2025-11-03 20:55:35.360675+03
+\.
+
+
+--
 -- Data for Name: user_favorites; Type: TABLE DATA; Schema: site; Owner: postgres
 --
 
 COPY site.user_favorites (id, user_id, listing_id, created_at) FROM stdin;
-7698223c-094a-4cba-9968-1f19ebdc3998	93721bbe-d0de-433c-8546-eae0e1a8e064	83b068f7-206d-4659-bcbd-d81f544ad6b6	2025-10-27 22:59:22.845384+03
 \.
 
 
@@ -373,8 +389,9 @@ COPY site.user_favorites (id, user_id, listing_id, created_at) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: site; Owner: postgres
 --
 
-COPY site.users (id, username, email, password_hash, role, status, phone_number, registration_date, last_login, profile_picture_id, bio, settings) FROM stdin;
-93721bbe-d0de-433c-8546-eae0e1a8e064	Матвей	zyazyulyam@bk.ru	$2a$14$FShrhSRN.eYmulPI0TRphu6df56JI/mwvXjdvCUBhALNPHkr6UMya	user	online	+375291110235	2025-10-27 22:12:52.094949+03	\N	\N	\N	"{}"
+COPY site.users (id, username, email, password_hash, role, status, phone_number, registration_date, last_login, profile_picture_id) FROM stdin;
+dacd6f80-8db7-4cea-9605-9b2d5fe4a784	asdfzxcv	1238216@mtp.by	$2a$14$kalCti72XY3QX8ZlMJZhDuvbF4/6Wj/Vv6csJT1eHC/GyXUx84amC	user	active	\N	2025-11-03 15:55:08.655264+03	\N	\N
+93721bbe-d0de-433c-8546-eae0e1a8e064	Матвей	zyazyulyam@bk.ru	$2a$14$aQi2fICu8nqjn/yf1KqQR.HHsl5taUacynjc4NWytbMsL4NE.VrMC	admin	active	+375291110235	2025-10-27 22:12:52.094949+03	19:57:34.828474+03	54f2af9e-bd39-469f-b120-900dd34bee1b
 \.
 
 
@@ -499,6 +516,22 @@ ALTER TABLE ONLY site.messages
 
 
 --
+-- Name: password_reset_tokens password_reset_tokens_pkey; Type: CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.password_reset_tokens
+    ADD CONSTRAINT password_reset_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: password_reset_tokens password_reset_tokens_token_unique; Type: CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.password_reset_tokens
+    ADD CONSTRAINT password_reset_tokens_token_unique UNIQUE (token);
+
+
+--
 -- Name: complaints uniqcomplaints; Type: CONSTRAINT; Schema: site; Owner: postgres
 --
 
@@ -528,6 +561,20 @@ ALTER TABLE ONLY site.user_favorites
 
 ALTER TABLE ONLY site.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_password_reset_tokens_expires_at; Type: INDEX; Schema: site; Owner: postgres
+--
+
+CREATE INDEX idx_password_reset_tokens_expires_at ON site.password_reset_tokens USING btree (expires_at);
+
+
+--
+-- Name: idx_password_reset_tokens_token; Type: INDEX; Schema: site; Owner: postgres
+--
+
+CREATE INDEX idx_password_reset_tokens_token ON site.password_reset_tokens USING btree (token);
 
 
 --
@@ -611,6 +658,14 @@ ALTER TABLE ONLY site.messages
 
 
 --
+-- Name: password_reset_tokens password_reset_tokens_user_fk; Type: FK CONSTRAINT; Schema: site; Owner: postgres
+--
+
+ALTER TABLE ONLY site.password_reset_tokens
+    ADD CONSTRAINT password_reset_tokens_user_fk FOREIGN KEY (user_id) REFERENCES site.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: user_favorites user_favorites_listing_id_fkey; Type: FK CONSTRAINT; Schema: site; Owner: postgres
 --
 
@@ -630,5 +685,5 @@ ALTER TABLE ONLY site.user_favorites
 -- PostgreSQL database dump complete
 --
 
-\unrestrict O4FWwkQy0YNjLzTKZvpye1a6IIAfS5Q8NgNkwQ4VotWbriXRjt2hPEAfj46fxrH
+\unrestrict vfDaLqC7kFxuknK9dVSke5kDzqBOdITaIoDPsRExxBbXSd6fjQxiQVhonTw4qcq
 
