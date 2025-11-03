@@ -414,7 +414,7 @@
                             <div class="ad-author" id="adAuthor">
                                 <div class="author-info">
                                     <img
-                                        src="/static/pictures/profile.png"
+                                        src="{{if .SellerAvatarID}}/api/avatars/{{.SellerAvatarID}}/{{else}}/static/pictures/profile.png{{end}}"
                                         alt="Продавец"
                                         class="author-avatar"
                                     />

@@ -257,6 +257,7 @@ func (p *Postgres) GetAdInfo(adId *uuid.UUID) (*models.AdPage, error) {
 		&loc[1],
 		&loc[2],
 		&loc[3],
+		&data.SellerAvatarID,
 	)
 	data.SellerCity = strings.Join(loc, " ")
 	data.Price /= 100
@@ -936,7 +937,7 @@ func (p *Postgres) GetAdminStats() (*models.AdminStats, error) {
 			(SELECT COUNT(*) FROM site.listings),
 			(SELECT COUNT(*) FROM site.users WHERE status = 'active'),
 			(SELECT COUNT(*) FROM site.complaints WHERE status = 'pending'),
-			(SELECT COUNT(*) FROM site.listings WHERE status = 'pending')
+			(SELECT COUNT(*) FROM site.listings WHERE status = 'moderation')
 	`).Scan(&stats.TotalAds, &stats.TotalUsers, &stats.PendingReports, &stats.PendingModeration); err != nil {
 		return nil, fmt.Errorf("error while getting admin stats: %w", err)
 	}

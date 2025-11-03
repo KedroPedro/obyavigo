@@ -25,6 +25,7 @@ class HeaderManager {
     this.initLoved();
     this.initMobileMenu();
     this.initTheme();
+    this.loadUserAvatar();
   }
   setupEventListeners() {
     document.addEventListener("keydown", this.handleGlobalKeydown.bind(this));
@@ -308,6 +309,29 @@ class HeaderManager {
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
     if (mobileMenuBtn) {
       mobileMenuBtn.style.display = window.innerWidth <= 768 ? "block" : "none";
+    }
+  }
+  async loadUserAvatar() {
+    try {
+      const response = await fetch('/api/user/profile/', {
+        credentials: 'include'
+      });
+
+      if (!response.ok) return;
+
+      const data = await response.json();
+      
+      if (data.profile_picture_id) {
+        // Обновляем все аватары на странице
+        const avatarImages = document.querySelectorAll('.profile-img, .profile-avatar img, #profileAvatar');
+        avatarImages.forEach(img => {
+          if (img) {
+            img.src = `/api/avatars/${data.profile_picture_id}/`;
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Ошибка при загрузке аватара:', error);
     }
   }
 }
