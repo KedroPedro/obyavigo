@@ -202,8 +202,14 @@ function loadUsers() {
                         ${currentUserRole === 'admin' && user.role === 'user' ? 
                             `<button class=\"btn-primary\" onclick=\"grantModeratorRole('${user.id}')\">⭐ Сделать модератором</button>` : ''
                         }
-                        ${currentUserRole === 'admin' && user.role !== 'admin' ? 
-                            `<button class=\"btn-warning\" onclick=\"grantAdminRole('${user.id}')\">👑 Сделать администратором</button>` : ''
+                        ${currentUserRole === 'admin' && user.role === 'moderator' ? 
+                            `<button class=\"btn-primary\" onclick=\"grantAdminRole('${user.id}')\">👑 Сделать администратором</button>` : ''
+                        }
+                        ${currentUserRole === 'admin' && user.role === 'moderator' ? 
+                            `<button class=\"btn-warning\" onclick=\"demoteToUser('${user.id}')\">⬇️ Понизить до пользователя</button>` : ''
+                        }
+                        ${currentUserRole === 'admin' && user.role === 'admin' ? 
+                            `<button class=\"btn-warning\" onclick=\"demoteToUser('${user.id}')\">⬇️ Понизить до пользователя</button>` : ''
                         }
                     </td>
                 </tr>
@@ -448,6 +454,29 @@ function grantAdminRole(userId) {
         .catch(err => {
             console.error('Error granting admin role:', err);
             alert('Ошибка при выдаче роли');
+        });
+    });
+}
+function demoteToUser(userId) {
+    showConfirmModal('ban', () => {
+        fetch(`/api/admin/users/${userId}/role/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ role: 'user' })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to demote user');
+            return res.json();
+        })
+        .then(() => {
+            alert('Пользователь понижен до обычной роли');
+            loadUsers();
+        })
+        .catch(err => {
+            console.error('Error demoting user:', err);
+            alert('Ошибка при понижении роли');
         });
     });
 }

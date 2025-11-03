@@ -151,15 +151,15 @@ func (h *Handlers) GetUserProfileAPI() http.Handler {
 				return
 			}
 
-			avatarID, _ := h.db.Psql.GetUserAvatar(userID)
+		avatarID, _ := h.db.Psql.GetUserAvatar(userID)
 
-			response := map[string]interface{}{
-				"username":     userData.Username,
-				"email":        userData.Email,
-				"phone_number": userData.PhoneNumber,
-				"role":         userRole,
-				"avatar_id":    avatarID,
-			}
+		response := map[string]interface{}{
+			"username":            userData.Username,
+			"email":               userData.Email,
+			"phone_number":        userData.PhoneNumber,
+			"role":                userRole,
+			"profile_picture_id": avatarID,
+		}
 
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(response)
@@ -208,12 +208,12 @@ func (h *Handlers) UploadAvatarHandler() http.Handler {
 				return
 			}
 
-			slog.Info("avatar uploaded", slog.String("user_id", userID.String()), slog.String("avatar_id", avatarID))
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(map[string]string{
-				"message":   "Аватар успешно загружен",
-				"avatar_id": avatarID,
-			})
+		slog.Info("avatar uploaded", slog.String("user_id", userID.String()), slog.String("avatar_id", avatarID))
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{
+			"message":  "Аватар успешно загружен",
+			"image_id": avatarID,
+		})
 		},
 	)
 }
