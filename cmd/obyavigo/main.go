@@ -51,6 +51,9 @@ func main() {
 	mux.Handle("POST /api/profile/update/", handler.AuthMiddleware(handler.UpdateProfileHandler()))
 	mux.Handle("POST /api/profile/upload-avatar/", handler.AuthMiddleware(handler.UploadAvatarHandler()))
 	mux.Handle("POST /api/profile/delete-account/", handler.AuthMiddleware(handler.DeleteAccountHandler()))
+	mux.Handle("POST /api/chats/", handler.AuthMiddleware(handler.CreateChat()))
+	mux.Handle("GET /api/chats/", handler.AuthMiddleware(handler.GetUserChats()))
+	mux.Handle("GET /api/chats/{chatId}/messages/", handler.AuthMiddleware(handler.GetMessages()))
 	mux.Handle("GET /api/auth/confirm-email/{token}/", handler.ConfirmRegistrationHandler())
 	mux.Handle("GET /api/ads/", handler.AuthMiddleware(handler.GetAdsAPI()))
 	mux.Handle("GET /api/ads/{token}/", handler.AuthMiddleware(handler.GetAdByIDAPI()))
@@ -74,6 +77,7 @@ func main() {
 	mux.Handle("POST /api/reports/", handler.AuthMiddleware(handler.CreateReport()))
 	mux.Handle("GET /api/admin/reports/", handler.AuthMiddleware(handler.GetReports()))
 	mux.Handle("POST /api/admin/reports/{id}/status/", handler.AuthMiddleware(handler.UpdateReportStatus()))
+	mux.Handle("GET /api/messenger/ws-token/", handler.AuthMiddleware(handler.GetWSToken()))
 	mux.Handle("GET /", handler.AuthMiddleware(handler.GetMainPage()))
 	mux.Handle("GET /profile/", handler.AuthMiddleware(handler.GetProfilePage()))
 	mux.Handle("GET /messages/", handler.AuthMiddleware(handler.GetMessagesPage()))
@@ -85,6 +89,7 @@ func main() {
 	mux.Handle("GET /edit-ad/{token}/", handler.AuthMiddleware(handler.GetEditAdPage()))
 	mux.Handle("GET /admin-panel/", handler.AuthMiddleware(handler.GetAdminPanelPage()))
 	mux.Handle("GET /liked-ads/", handler.AuthMiddleware(handler.GetLikedAdsPage()))
+	mux.Handle("/ws/chat/", handler.ChatWebSocketHandler())
 	mux.Handle("GET /static/", handler.NoDirListing(http.StripPrefix("/static/", fs)))
 
 	go func() {

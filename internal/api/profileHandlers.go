@@ -75,10 +75,9 @@ func (h *Handlers) DeleteAccountHandler() http.Handler {
 				return
 			}
 
-			
 			if err := h.db.Mongo.DeleteUserImages(r.Context(), userID.String()); err != nil {
 				slog.Error("error deleting user images", slog.String("user_id", userID.String()), slog.String("error", err.Error()))
-				
+
 			}
 
 			err = h.db.Psql.DeleteAccount(userID)
@@ -151,15 +150,16 @@ func (h *Handlers) GetUserProfileAPI() http.Handler {
 				return
 			}
 
-		avatarID, _ := h.db.Psql.GetUserAvatar(userID)
+			avatarID, _ := h.db.Psql.GetUserAvatar(userID)
 
-		response := map[string]interface{}{
-			"username":            userData.Username,
-			"email":               userData.Email,
-			"phone_number":        userData.PhoneNumber,
-			"role":                userRole,
-			"profile_picture_id": avatarID,
-		}
+			response := map[string]interface{}{
+				"username":           userData.Username,
+				"email":              userData.Email,
+				"phone_number":       userData.PhoneNumber,
+				"role":               userRole,
+				"user_id":            userID.String(),
+				"profile_picture_id": avatarID,
+			}
 
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(response)
@@ -190,30 +190,27 @@ func (h *Handlers) UploadAvatarHandler() http.Handler {
 
 			fileHeader := r.MultipartForm.File["avatar"][0]
 
-			
 			oldAvatarID, _ := h.db.Psql.GetUserAvatar(userID)
 			if oldAvatarID != nil {
 				_ = h.db.Mongo.DeleteUserAvatar(r.Context(), userID.String())
 			}
 
-			
 			avatarID, err := h.db.Mongo.UploadUserAvatar(r.Context(), fileHeader, userID.String())
 			if handleError(w, err, http.StatusInternalServerError, "error uploading avatar") {
 				return
 			}
 
-			
 			if err := h.db.Psql.UpdateUserAvatar(userID, avatarID); err != nil {
 				sendToClient(w, http.StatusInternalServerError, "Ошибка при обновлении аватара")
 				return
 			}
 
-		slog.Info("avatar uploaded", slog.String("user_id", userID.String()), slog.String("avatar_id", avatarID))
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{
-			"message":  "Аватар успешно загружен",
-			"image_id": avatarID,
-		})
+			slog.Info("avatar uploaded", slog.String("user_id", userID.String()), slog.String("avatar_id", avatarID))
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]string{
+				"message":  "Аватар успешно загружен",
+				"image_id": avatarID,
+			})
 		},
 	)
 }

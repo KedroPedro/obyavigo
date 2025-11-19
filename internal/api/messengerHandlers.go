@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
+	"strconv"
+	"time"
 
 	"cmd/obyavigo/main.go/internal/models"
 
@@ -17,8 +19,10 @@ type CreateChatRequest struct {
 }
 
 type MessageJSON struct {
-	ChatID string `json:"chat_id"`
-	Text   string `json:"text"`
+	ChatID    string     `json:"chat_id"`
+	Text      string     `json:"text"`
+	SenderID  string     `json:"sender_id,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 
 func (h *Handlers) CreateChat() http.Handler {
@@ -26,7 +30,7 @@ func (h *Handlers) CreateChat() http.Handler {
 		func(w http.ResponseWriter, r *http.Request) {
 			userID, err := userIDFromCtx(r)
 			if err != nil {
-				http.Redirect(w, r, "/auth/", http.StatusPermanentRedirect)
+				sendJSONError(w, http.StatusUnauthorized, "unauthorized")
 				return
 			}
 
@@ -35,17 +39,48 @@ func (h *Handlers) CreateChat() http.Handler {
 				return
 			}
 
+			if req.ListingId == uuid.Nil {
+				sendJSONError(w, http.StatusBadRequest, "listing_id is required")
+				return
+			}
+
 			chat := &models.Chat{
 				ListingId:  &req.ListingId,
 				CustomerId: userID,
 			}
 
-			err = h.db.Psql.CreateChat(chat)
+			createdChat, err := h.db.Psql.CreateChat(chat)
 			if handleError(w, err, http.StatusInternalServerError, "error while creating chat") {
 				return
 			}
 
-			http.Redirect(w, r, "/messages/", http.StatusPermanentRedirect)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusCreated)
+			json.NewEncoder(w).Encode(map[string]string{
+				"chat_id": createdChat.ChatId.String(),
+			})
+		},
+	)
+}
+
+func (h *Handlers) GetUserChats() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			userID, err := userIDFromCtx(r)
+			if err != nil {
+				sendJSONError(w, http.StatusUnauthorized, "unauthorized")
+				return
+			}
+
+			chats, err := h.db.Psql.GetUserChats(userID)
+			if handleError(w, err, http.StatusInternalServerError, "error while getting chats") {
+				return
+			}
+
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"chats": chats,
+			})
 		},
 	)
 }
@@ -75,11 +110,28 @@ func (h *Handlers) ChatWebSocketHandler() websocket.Handler {
 					break
 				}
 
-				chat, err := h.db.Psql.GetChatById(msgJSON.ChatID)
+				chatID, err := uuid.Parse(msgJSON.ChatID)
+				if err != nil {
+					slog.Error("invalid chat id", slog.String("chat_id", msgJSON.ChatID))
+					break
+				}
+
+				chat, err := h.db.Psql.GetChatById(chatID)
 				if err != nil {
 					slog.Error("error while trying to get chat by id", slog.String("error", err.Error()))
 					break
 				}
+
+				if chat.CustomerId == nil || chat.SellerId == nil {
+					slog.Error("chat participants not found", slog.String("chat_id", msgJSON.ChatID))
+					break
+				}
+
+				if userID.String() != chat.CustomerId.String() && userID.String() != chat.SellerId.String() {
+					slog.Warn("user tried to send message to foreign chat", slog.String("user_id", userID.String()), slog.String("chat_id", msgJSON.ChatID))
+					break
+				}
+
 				toID := chat.CustomerId
 				if userID.String() == chat.CustomerId.String() {
 					toID = chat.SellerId
@@ -96,6 +148,9 @@ func (h *Handlers) ChatWebSocketHandler() websocket.Handler {
 					break
 				}
 
+				msgJSON.SenderID = userID.String()
+				msgJSON.CreatedAt = msg.CreatedAt
+
 				val, ok := h.ws.Load(toID.String())
 				if ok {
 					toConn, ok := val.(*websocket.Conn)
@@ -104,12 +159,17 @@ func (h *Handlers) ChatWebSocketHandler() websocket.Handler {
 						h.ws.Delete(toID.String())
 						continue
 					}
-					err = websocket.Message.Send(toConn, msgJSON)
+					err = websocket.JSON.Send(toConn, msgJSON)
 					if err != nil {
 						slog.Error("error sending message", slog.String("error", err.Error()))
 						h.ws.Delete(toID.String())
 						toConn.Close()
 					}
+				}
+
+				sendErr := websocket.JSON.Send(ws, msgJSON)
+				if sendErr != nil {
+					slog.Error("error sending message back to sender", slog.String("error", sendErr.Error()))
 				}
 			}
 		},
@@ -121,45 +181,63 @@ func (h *Handlers) GetMessages() http.Handler {
 		func(w http.ResponseWriter, r *http.Request) {
 			userID, err := userIDFromCtx(r)
 			if err != nil {
-				http.Redirect(w, r, "/auth/", http.StatusPermanentRedirect)
+				sendJSONError(w, http.StatusUnauthorized, "unauthorized")
 				return
 			}
 
-			chatId := r.URL.Query().Get("chatId")
-			offset := r.URL.Query().Get("offset")
+			chatIdParam := r.PathValue("chatId")
+			chatUUID, err := uuid.Parse(chatIdParam)
+			if err != nil {
+				sendJSONError(w, http.StatusBadRequest, "invalid chat id")
+				return
+			}
 
-			chat, err := h.db.Psql.GetChatById(chatId)
+			chat, err := h.db.Psql.GetChatById(chatUUID)
+			if handleError(w, err, http.StatusBadRequest, "error while trying to get chat by id") {
+				return
+			}
 
 			role, err := h.db.Psql.GetUserRole(userID)
 			if handleError(w, err, http.StatusForbidden, "error while trying to get user role") {
 				return
 			}
 
-			if role != "admin" && role != "moderator" {
-				if chat.CustomerId.String() != userID.String() || chat.SellerId.String() != userID.String() {
-					w.WriteHeader(http.StatusForbidden)
-					return
-				}
-			}
-
-			if handleError(w, err, http.StatusBadRequest, "error while trying to get chat by id") {
+			if role != "admin" && role != "moderator" &&
+				(chat.CustomerId == nil || chat.SellerId == nil ||
+					(chat.CustomerId.String() != userID.String() && chat.SellerId.String() != userID.String())) {
+				w.WriteHeader(http.StatusForbidden)
 				return
 			}
 
-			msgs, err := h.db.Psql.GetMessages(chatId, offset)
+			limit := parseIntParam(r, "limit", 50, 100)
+			offset := 0
+			if rawOffset := r.URL.Query().Get("offset"); rawOffset != "" {
+				if parsed, convErr := strconv.Atoi(rawOffset); convErr == nil && parsed >= 0 {
+					offset = parsed
+				}
+			}
+
+			if chat.ChatId == nil {
+				sendJSONError(w, http.StatusInternalServerError, "chat id is missing")
+				return
+			}
+
+			msgs, err := h.db.Psql.GetMessages(*chat.ChatId, limit, offset)
 			if handleError(w, err, http.StatusBadRequest, "get messages error") {
 				return
 			}
 
 			type MessagesResponse struct {
-				Messages *[]models.Message `json:"messages"`
-				Offset   string            `json:"offset"`
+				Messages   []models.Message `json:"messages"`
+				NextOffset int              `json:"next_offset"`
+				HasMore    bool             `json:"has_more"`
 			}
 
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(&MessagesResponse{
-				Messages: msgs,
-				Offset:   offset,
+				Messages:   msgs,
+				NextOffset: offset + len(msgs),
+				HasMore:    len(msgs) == limit,
 			})
 		},
 	)

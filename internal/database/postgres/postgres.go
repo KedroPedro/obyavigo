@@ -841,24 +841,26 @@ func (p *Postgres) GetUserAvatar(userId *uuid.UUID) (*string, error) {
 	return avatarID, nil
 }
 
-func (p *Postgres) CreateChat(chat *models.Chat) error {
+func (p *Postgres) CreateChat(chat *models.Chat) (*models.Chat, error) {
 	query, ok := p.q["CreateChat"]
 	if !ok {
-		return fmt.Errorf("request 'CreateChat' not found")
+		return nil, fmt.Errorf("request 'CreateChat' not found")
 	}
 
-	_, err := p.psql.Exec(
+	var chatID uuid.UUID
+	err := p.psql.QueryRow(
 		query,
 		chat.CustomerId,
 		chat.ListingId,
-	)
+	).Scan(&chatID)
 	if err != nil {
-		return fmt.Errorf("error while trying to create new chat: %w", err)
+		return nil, fmt.Errorf("error while trying to create new chat: %w", err)
 	}
-	return nil
+
+	return p.GetChatById(chatID)
 }
 
-func (p *Postgres) GetChatById(chatID string) (*models.Chat, error) {
+func (p *Postgres) GetChatById(chatID uuid.UUID) (*models.Chat, error) {
 	query, ok := p.q["GetChatById"]
 	if !ok {
 		return nil, fmt.Errorf("request 'GetChatId' not found")
@@ -889,45 +891,108 @@ func (p *Postgres) CreateMessage(msg *models.Message) error {
 		return fmt.Errorf("request 'CreateMessage' not found")
 	}
 
-	_, err := p.psql.Exec(
+	var messageID uuid.UUID
+	var createdAt time.Time
+	err := p.psql.QueryRow(
 		query,
 		msg.ChatId,
 		msg.SenderId,
 		msg.Text,
-	)
+	).Scan(&messageID, &createdAt)
 	if err != nil {
-		return fmt.Errorf("error while trying to create new message")
+		return fmt.Errorf("error while trying to create new message: %w", err)
 	}
+	msg.Id = &messageID
+	msg.CreatedAt = &createdAt
 	return nil
 }
 
-func (p *Postgres) GetMessages(chatId string, offset string) (*[]models.Message, error) {
+func (p *Postgres) GetMessages(chatId uuid.UUID, limit, offset int) ([]models.Message, error) {
 	query, ok := p.q["GetMessages"]
 	if !ok {
 		return nil, fmt.Errorf("request 'GetMessages' not found")
 	}
 
-	rows, err := p.psql.Query(
-		query,
-		chatId,
-		offset,
-	)
-	defer rows.Close()
-
+	rows, err := p.psql.Query(query, chatId, limit, offset)
 	if err != nil {
 		return nil, fmt.Errorf("error while trying to execute query: %w", err)
 	}
+	defer rows.Close()
 
 	var messages []models.Message
 
 	for rows.Next() {
 		var m models.Message
-		if err := rows.Scan(&m.Id, &m.SenderId, &m.Text, &m.CreatedAt, &m.ChatId); err != nil {
+		var id uuid.UUID
+		var senderID uuid.UUID
+		var createdAt time.Time
+		var chatUUID uuid.UUID
+
+		if err := rows.Scan(&id, &senderID, &m.Text, &createdAt, &chatUUID); err != nil {
 			return nil, err
 		}
+		m.Id = &id
+		m.SenderId = &senderID
+		m.CreatedAt = &createdAt
+		m.ChatId = &chatUUID
 		messages = append(messages, m)
 	}
-	return &messages, nil
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return messages, nil
+}
+
+func (p *Postgres) GetUserChats(userId *uuid.UUID) ([]models.ChatPreview, error) {
+	query, ok := p.q["GetUserChats"]
+	if !ok {
+		return nil, fmt.Errorf("request 'GetUserChats' not found")
+	}
+
+	rows, err := p.psql.Query(query, userId)
+	if err != nil {
+		return nil, fmt.Errorf("error while trying to execute query: %w", err)
+	}
+	defer rows.Close()
+
+	var chats []models.ChatPreview
+
+	for rows.Next() {
+		var chat models.ChatPreview
+		var avatarID sql.NullString
+		var lastMessageTime sql.NullTime
+
+		if err := rows.Scan(
+			&chat.ChatId,
+			&chat.ListingId,
+			&chat.LastMessage,
+			&lastMessageTime,
+			&chat.CompanionId,
+			&chat.CompanionName,
+			&avatarID,
+			&chat.ListingTitle,
+		); err != nil {
+			return nil, err
+		}
+
+		if avatarID.Valid {
+			value := avatarID.String
+			chat.CompanionAvatarId = &value
+		}
+
+		if lastMessageTime.Valid {
+			t := lastMessageTime.Time
+			chat.LastMessageTime = &t
+		}
+
+		chats = append(chats, chat)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return chats, nil
 }
 
 func (p *Postgres) GetAdminStats() (*models.AdminStats, error) {
