@@ -44,7 +44,7 @@ function initAdPage() {
     contactBtn.addEventListener("click", (e) => {
       e.preventDefault();
       localStorage.setItem("chat_ad_id", adId);
-      window.location.href = "/messages";
+      window.location.href = "/messages/";
     });
   }
 

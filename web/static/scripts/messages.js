@@ -40,6 +40,7 @@ const MessagesApp = (() => {
     async function loadInitialData() {
         await fetchCurrentUser();
         await loadChats();
+        await handlePendingChatCreation();
         await initWebSocket();
     }
 
@@ -53,9 +54,12 @@ const MessagesApp = (() => {
         }
     }
 
-    async function loadChats() {
+    async function loadChats(options = {}) {
+        const { showSkeleton = true } = options;
         const chatsList = document.getElementById('chatsList');
-        showChatsSkeletons(chatsList);
+        if (showSkeleton) {
+            showChatsSkeletons(chatsList);
+        }
         try {
             const response = await fetch('/api/chats/');
             if (!response.ok) {
@@ -64,6 +68,7 @@ const MessagesApp = (() => {
             const data = await response.json();
             state.chats = data.chats || [];
             renderChats();
+            return state.chats;
         } catch (error) {
             console.error(error);
             chatsList.innerHTML = `
@@ -71,6 +76,41 @@ const MessagesApp = (() => {
                     <p>Не удалось загрузить чаты. Попробуйте позже.</p>
                 </div>
             `;
+            return [];
+        }
+    }
+
+    async function handlePendingChatCreation() {
+        const listingId = localStorage.getItem('chat_ad_id');
+        if (!listingId) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/chats/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ listing_id: listingId }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                const message = errorData?.message || 'Не удалось создать чат';
+                throw new Error(message);
+            }
+
+            const data = await response.json();
+            await loadChats({ showSkeleton: false });
+            if (data?.chat_id) {
+                openChat(data.chat_id);
+            }
+        } catch (error) {
+            console.error('Ошибка при создании чата', error);
+            alert(error.message || 'Не удалось открыть чат с продавцом');
+        } finally {
+            localStorage.removeItem('chat_ad_id');
         }
     }
 
@@ -89,6 +129,7 @@ const MessagesApp = (() => {
         chatsList.innerHTML = state.chats
             .map((chat) => {
                 const isActive = state.selectedChatId === chat.chat_id;
+                const companionName = escapeHTML(chat.companion_name || 'Пользователь');
                 const lastMessage = chat.last_message || 'Начните диалог';
                 const lastMessageTime = chat.last_message_time
                     ? formatRelativeTime(chat.last_message_time)
@@ -100,11 +141,11 @@ const MessagesApp = (() => {
                 return `
                     <div class="chat-item ${isActive ? 'active' : ''}" data-chat-id="${chat.chat_id}" data-chat-name="${chat.companion_name}">
                         <div class="chat-avatar">
-                            <img src="${avatarSrc}" alt="${chat.companion_name}" onerror="this.src='/static/pictures/profile.png'">
+                            <img src="${avatarSrc}" alt="${companionName}" onerror="this.src='/static/pictures/profile.png'">
                         </div>
                         <div class="chat-info">
                             <div class="chat-header">
-                                <h4 class="chat-name">${chat.companion_name}</h4>
+                                <h4 class="chat-name">${companionName}</h4>
                                 <span class="chat-time">${lastMessageTime}</span>
                             </div>
                             <div class="chat-preview">
