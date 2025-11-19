@@ -9,6 +9,10 @@ const MessagesApp = (() => {
         pendingMessages: [],
         messagesCache: new Map(),
         messagesMeta: new Map(),
+        messageIds: new Set(),
+        lastRenderTime: 0,
+        renderThrottle: 100,
+        renderTimeout: null
     };
 
     function init() {
@@ -177,6 +181,8 @@ const MessagesApp = (() => {
 
     function openChat(chatId) {
         if (!chatId) return;
+        clearTimeout(state.renderTimeout);
+        
         state.selectedChatId = chatId;
         document.querySelectorAll('.chat-item').forEach((item) => {
             item.classList.toggle('active', item.getAttribute('data-chat-id') === chatId);
@@ -214,6 +220,16 @@ const MessagesApp = (() => {
                 nextOffset: data.next_offset || 0,
                 hasMore: data.has_more,
             });
+            Array.from(state.messageIds).forEach(id => {
+                if (id.startsWith(chatId)) {
+                    state.messageIds.delete(id);
+                }
+            });
+            data.messages?.forEach(message => {
+                const messageId = message.message_id || `${message.chat_id}_${message.sender_id}_${message.created_at}_${message.text.substring(0, 20)}`;
+                state.messageIds.add(messageId);
+            });
+            
             renderMessages(chatId);
         } catch (error) {
             console.error(error);
@@ -239,28 +255,48 @@ const MessagesApp = (() => {
             `;
             return;
         }
+        const sortedMessages = [...messages].sort((a, b) => 
+            new Date(a.created_at) - new Date(b.created_at)
+        );
+        const fragment = document.createDocumentFragment();
+        
+        sortedMessages.forEach((message) => {
+            const isOwn = currentUserId && message.sender_id === currentUserId;
+            const time = message.created_at ? formatMessageTime(message.created_at) : '';
+            const isTemp = message.isTemp;
+            
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${isOwn ? 'own' : ''} ${isTemp ? 'sending' : ''}`;
+            messageElement.setAttribute('data-message-id', message.message_id || `temp_${message.created_at}`);
+            
+            messageElement.innerHTML = `
+                ${!isOwn ? `<img src="/static/pictures/profile.png" alt="Аватар" class="message-avatar">` : ''}
+                <div class="message-content">
+                    <p class="message-text">${escapeHTML(message.text)}</p>
+                    <div class="message-time">${time} ${isTemp ? '⏳' : ''}</div>
+                </div>
+            `;
+            
+            fragment.appendChild(messageElement);
+        });
 
-        chatMessages.innerHTML = messages
-            .map((message) => {
-                const isOwn = currentUserId && message.sender_id === currentUserId;
-                const time = message.created_at ? formatMessageTime(message.created_at) : '';
-                return `
-                    <div class="message ${isOwn ? 'own' : ''}">
-                        ${
-                            !isOwn
-                                ? `<img src="/static/pictures/profile.png" alt="Аватар" class="message-avatar">`
-                                : ''
-                        }
-                        <div class="message-content">
-                            <p class="message-text">${escapeHTML(message.text)}</p>
-                            <div class="message-time">${time}</div>
-                        </div>
-                    </div>
-                `;
-            })
-            .join('');
-
+        chatMessages.innerHTML = '';
+        chatMessages.appendChild(fragment);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function throttleRenderMessages(chatId) {
+        const now = Date.now();
+        if (now - state.lastRenderTime > state.renderThrottle) {
+            renderMessages(chatId);
+            state.lastRenderTime = now;
+        } else {
+            clearTimeout(state.renderTimeout);
+            state.renderTimeout = setTimeout(() => {
+                renderMessages(chatId);
+                state.lastRenderTime = Date.now();
+            }, state.renderThrottle);
+        }
     }
 
     function showMessagesSkeletons() {
@@ -285,15 +321,27 @@ const MessagesApp = (() => {
         if (state.ws && state.ws.readyState === WebSocket.CONNECTING) {
             return;
         }
+        
         try {
             const tokenResponse = await fetch('/api/messenger/ws-token/');
             if (!tokenResponse.ok) {
                 throw new Error('Не удалось получить токен для WebSocket');
             }
             const { token } = await tokenResponse.json();
-            const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-            const wsUrl = `${protocol}${window.location.host}/ws/chat/?token=${encodeURIComponent(token)}`;
+            const isLocalhost = window.location.hostname === 'localhost' || 
+                               window.location.hostname === '127.0.0.1';
+            
+            let wsUrl;
+            if (isLocalhost) {
+                const port = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
+                const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+                wsUrl = `${protocol}localhost:${port}/ws/chat/?token=${encodeURIComponent(token)}`;
+            } else {
+                const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+                wsUrl = `${protocol}${window.location.host}/ws/chat/?token=${encodeURIComponent(token)}`;
+            }
 
+            console.log('Connecting to WebSocket:', wsUrl);
             if (state.ws) {
                 try {
                     state.ws.close();
@@ -305,7 +353,14 @@ const MessagesApp = (() => {
             state.ws = new WebSocket(wsUrl);
             state.wsReady = false;
 
+            state.ws.onopen = () => {
+                console.log('WebSocket connected successfully');
+                state.wsReady = true;
+                flushPendingMessages();
+            };
+
             state.ws.onmessage = (event) => {
+                console.log('WebSocket message received:', event.data);
                 try {
                     const message = JSON.parse(event.data);
                     handleIncomingMessage(message);
@@ -314,50 +369,81 @@ const MessagesApp = (() => {
                 }
             };
 
-            state.ws.onopen = () => {
-                state.wsReady = true;
-                flushPendingMessages();
-            };
-
-            state.ws.onclose = () => {
+            state.ws.onclose = (event) => {
+                console.log('WebSocket closed:', event.code, event.reason);
                 state.wsReady = false;
                 if (state.reconnectTimer) return;
+                
                 state.reconnectTimer = setTimeout(() => {
                     state.reconnectTimer = null;
+                    console.log('Reconnecting WebSocket...');
                     initWebSocket();
-                }, 2000);
+                }, 3000);
             };
 
             state.ws.onerror = (error) => {
-                console.error('WebSocket ошибка', error);
+                console.error('WebSocket error:', error);
                 state.wsReady = false;
-                state.ws.close();
             };
+
         } catch (error) {
-            console.error(error);
+            console.error('WebSocket initialization error:', error);
+            if (!state.reconnectTimer) {
+                state.reconnectTimer = setTimeout(() => {
+                    state.reconnectTimer = null;
+                    initWebSocket();
+                }, 5000);
+            }
         }
     }
 
     function handleIncomingMessage(message) {
-        if (!message?.chat_id) return;
+        if (!message?.chat_id || !message?.text) return;
+        const messageId = message.message_id || 
+                         `${message.chat_id}_${message.sender_id}_${message.created_at}_${message.text.substring(0, 20)}`;
+        if (state.messageIds.has(messageId)) {
+            console.log('Duplicate message ignored:', messageId);
+            return;
+        }
+        
+        state.messageIds.add(messageId);
 
         const existingMessages = state.messagesCache.get(message.chat_id) || [];
+        if (!message.isTemp) {
+            const isDuplicate = existingMessages.some(existing => 
+                !existing.isTemp && // Не проверяем временные сообщения
+                existing.text === message.text && 
+                existing.sender_id === message.sender_id &&
+                Math.abs(new Date(existing.created_at) - new Date(message.created_at)) < 1000
+            );
+            
+            if (isDuplicate) {
+                console.log('Duplicate message found in cache, skipping');
+                return;
+            }
+            const tempMessages = existingMessages.filter(m => m.isTemp && m.text === message.text);
+            tempMessages.forEach(tempMsg => {
+                const tempId = `temp_${tempMsg.chat_id}_${tempMsg.created_at}_${tempMsg.text}`;
+                state.messageIds.delete(tempId);
+            });
+            state.messagesCache.set(message.chat_id, existingMessages.filter(m => !m.isTemp || m.text !== message.text));
+        }
         existingMessages.push(message);
         state.messagesCache.set(message.chat_id, existingMessages);
-
-        const chat = state.chats.find((c) => c.chat_id === message.chat_id);
-        if (chat) {
-            chat.last_message = message.text;
-            chat.last_message_time = message.created_at;
-            state.chats = [
-                chat,
-                ...state.chats.filter((c) => c.chat_id !== message.chat_id),
-            ];
-            renderChats();
+        if (!message.isTemp) {
+            const chat = state.chats.find((c) => c.chat_id === message.chat_id);
+            if (chat) {
+                chat.last_message = message.text;
+                chat.last_message_time = message.created_at;
+                state.chats = [
+                    chat,
+                    ...state.chats.filter((c) => c.chat_id !== message.chat_id),
+                ];
+                renderChats();
+            }
         }
-
         if (state.selectedChatId === message.chat_id) {
-            renderMessages(message.chat_id);
+            throttleRenderMessages(message.chat_id);
         }
     }
 
@@ -381,28 +467,62 @@ const MessagesApp = (() => {
         state.pendingMessages.push(payload);
     }
 
-    function sendMessage() {
-        const input = document.getElementById('chatMessageInput');
-        const text = input.value.trim();
-        if (!text || !state.selectedChatId) {
-            return;
-        }
+function sendMessage() {
+    const input = document.getElementById('chatMessageInput');
+    const sendBtn = document.getElementById('chatSendBtn');
+    const text = input.value.trim();
+    if (!text || !state.selectedChatId) {
+        return;
+    }
+    
+    // Блокируем input и кнопку на время отправки
+    input.disabled = true;
+    sendBtn.disabled = true;
+    sendBtn.innerHTML = '⏳'; // Индикатор отправки
+    
+    if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
+        alert('Соединение с сервером сообщений отсутствует. Попробуйте позже.');
+        input.disabled = false;
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = '➤';
+        return;
+    }
 
-        const payload = {
-            chat_id: state.selectedChatId,
-            text,
-        };
+    const chatId = state.selectedChatId;
+    if (!isValidUUID(chatId)) {
+        console.error('Invalid chat ID format:', chatId);
+        alert('Ошибка: неверный формат чата');
+        input.disabled = false;
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = '➤';
+        return;
+    }
 
-        if (state.ws && state.ws.readyState === WebSocket.OPEN) {
-            state.ws.send(JSON.stringify(payload));
-        } else {
-            queueMessage(payload);
-            if (!state.ws || state.ws.readyState === WebSocket.CLOSED) {
-                initWebSocket();
-            }
-        }
-
+    try {
+        // Отправляем на сервер
+        state.ws.send(JSON.stringify({
+            chat_id: chatId,
+            text: text,
+        }));
+        
         input.value = '';
+        input.disabled = false;
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = '➤';
+        input.focus();
+        
+    } catch (error) {
+        console.error('Ошибка отправки сообщения:', error);
+        alert('Ошибка отправки сообщения');
+        input.disabled = false;
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = '➤';
+    }
+}
+
+    function isValidUUID(str) {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        return uuidRegex.test(str);
     }
 
     function formatRelativeTime(value) {
@@ -432,8 +552,28 @@ const MessagesApp = (() => {
         div.textContent = unsafe;
         return div.innerHTML;
     }
+    function destroy() {
+        if (state.ws) {
+            state.ws.close();
+        }
+        if (state.reconnectTimer) {
+            clearTimeout(state.reconnectTimer);
+        }
+        if (state.renderTimeout) {
+            clearTimeout(state.renderTimeout);
+        }
+        state.messageIds.clear();
+        state.messagesCache.clear();
+        state.messagesMeta.clear();
+    }
 
-    return { init };
+    return { 
+        init,
+        destroy
+    };
 })();
 
 document.addEventListener('DOMContentLoaded', MessagesApp.init);
+window.addEventListener('beforeunload', () => {
+    MessagesApp.destroy();
+});

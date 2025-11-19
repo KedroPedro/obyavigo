@@ -89,7 +89,7 @@ func main() {
 	mux.Handle("GET /edit-ad/{token}/", handler.AuthMiddleware(handler.GetEditAdPage()))
 	mux.Handle("GET /admin-panel/", handler.AuthMiddleware(handler.GetAdminPanelPage()))
 	mux.Handle("GET /liked-ads/", handler.AuthMiddleware(handler.GetLikedAdsPage()))
-	mux.Handle("/ws/chat/", handler.ChatWebSocketHandler())
+	mux.Handle("GET /ws/chat/", handler.ChatWebSocketHandler())
 	mux.Handle("GET /static/", handler.NoDirListing(http.StripPrefix("/static/", fs)))
 
 	go func() {
