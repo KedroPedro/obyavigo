@@ -4,7 +4,9 @@ const MessagesApp = (() => {
         selectedChatId: null,
         currentUser: null,
         ws: null,
+        wsReady: false,
         reconnectTimer: null,
+        pendingMessages: [],
         messagesCache: new Map(),
         messagesMeta: new Map(),
     };
@@ -280,6 +282,9 @@ const MessagesApp = (() => {
     }
 
     async function initWebSocket() {
+        if (state.ws && state.ws.readyState === WebSocket.CONNECTING) {
+            return;
+        }
         try {
             const tokenResponse = await fetch('/api/messenger/ws-token/');
             if (!tokenResponse.ok) {
@@ -287,7 +292,18 @@ const MessagesApp = (() => {
             }
             const { token } = await tokenResponse.json();
             const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-            state.ws = new WebSocket(`${protocol}${window.location.host}/ws/chat/?token=${token}`);
+            const wsUrl = `${protocol}${window.location.host}/ws/chat/?token=${encodeURIComponent(token)}`;
+
+            if (state.ws) {
+                try {
+                    state.ws.close();
+                } catch (closeError) {
+                    console.warn('Ошибка при закрытии предыдущего соединения WebSocket', closeError);
+                }
+            }
+
+            state.ws = new WebSocket(wsUrl);
+            state.wsReady = false;
 
             state.ws.onmessage = (event) => {
                 try {
@@ -298,7 +314,13 @@ const MessagesApp = (() => {
                 }
             };
 
+            state.ws.onopen = () => {
+                state.wsReady = true;
+                flushPendingMessages();
+            };
+
             state.ws.onclose = () => {
+                state.wsReady = false;
                 if (state.reconnectTimer) return;
                 state.reconnectTimer = setTimeout(() => {
                     state.reconnectTimer = null;
@@ -308,6 +330,7 @@ const MessagesApp = (() => {
 
             state.ws.onerror = (error) => {
                 console.error('WebSocket ошибка', error);
+                state.wsReady = false;
                 state.ws.close();
             };
         } catch (error) {
@@ -338,20 +361,47 @@ const MessagesApp = (() => {
         }
     }
 
+    function flushPendingMessages() {
+        if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
+            return;
+        }
+        while (state.pendingMessages.length > 0) {
+            const payload = state.pendingMessages.shift();
+            try {
+                state.ws.send(JSON.stringify(payload));
+            } catch (error) {
+                console.error('Ошибка отправки отложенного сообщения', error);
+                state.pendingMessages.unshift(payload);
+                break;
+            }
+        }
+    }
+
+    function queueMessage(payload) {
+        state.pendingMessages.push(payload);
+    }
+
     function sendMessage() {
         const input = document.getElementById('chatMessageInput');
         const text = input.value.trim();
         if (!text || !state.selectedChatId) {
             return;
         }
-        if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
-            alert('Соединение с сервером сообщений отсутствует. Попробуйте позже.');
-            return;
-        }
-        state.ws.send(JSON.stringify({
+
+        const payload = {
             chat_id: state.selectedChatId,
-            text: text,
-        }));
+            text,
+        };
+
+        if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+            state.ws.send(JSON.stringify(payload));
+        } else {
+            queueMessage(payload);
+            if (!state.ws || state.ws.readyState === WebSocket.CLOSED) {
+                initWebSocket();
+            }
+        }
+
         input.value = '';
     }
 
