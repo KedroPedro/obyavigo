@@ -366,29 +366,10 @@
                         </div>
 
                         <div class="chats-list" id="chatsList">
-                            {{range .Chats}}
-                            <div class="chat-item">
-                                <div class="chat-avatar">
-                                    <img src="/static/pictures/profile.png" alt="{{.Username}}">
-                                </div>
-                                <div class="chat-info">
-                                    <div class="chat-header">
-                                        <h4 class="chat-name">{{.Username}}</h4>
-                                        <span class="chat-time">{{.LastMessageTime.Format "15:04"}}</span>
-                                    </div>
-                                    <div class="chat-preview">
-                                        <p class="chat-message">{{.LastMessage}}</p>
-                                        {{if .UnreadCount}}
-                                        <span class="unread-badge">{{.UnreadCount}}</span>
-                                        {{end}}
-                                    </div>
-                                </div>
-                            </div>
-                            {{else}}
                             <div class="no-chats">
-                                <p>У вас пока нет сообщений</p>
+                                <div style="font-size: 2rem; margin-bottom: 15px;">💬</div>
+                                <p>Здесь появятся ваши чаты</p>
                             </div>
-                            {{end}}
                         </div>
                     </aside>
                     <div class="chat-main">
