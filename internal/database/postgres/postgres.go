@@ -17,6 +17,16 @@ type Postgres struct {
 	q    map[string]string
 }
 
+func uuidPointer(u uuid.UUID) *uuid.UUID {
+	val := u
+	return &val
+}
+
+func timePointer(t time.Time) *time.Time {
+	val := t
+	return &val
+}
+
 func Connect(cfg *config.Config, q map[string]string) (*Postgres, error) {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		cfg.Database.Postgres.Host,
@@ -866,20 +876,31 @@ func (p *Postgres) GetChatById(chatID uuid.UUID) (*models.Chat, error) {
 		return nil, fmt.Errorf("request 'GetChatId' not found")
 	}
 
-	var chat models.Chat
-	err := p.psql.QueryRow(
-		query,
-		chatID,
-	).Scan(
-		&chat.ChatId,
-		&chat.SellerId,
-		&chat.CustomerId,
-		&chat.ListingId,
-		&chat.CreatedAt,
+	var (
+		id         uuid.UUID
+		sellerID   uuid.UUID
+		customerID uuid.UUID
+		listingID  uuid.UUID
+		createdAt  time.Time
+	)
+	err := p.psql.QueryRow(query, chatID).Scan(
+		&id,
+		&sellerID,
+		&customerID,
+		&listingID,
+		&createdAt,
 	)
 
 	if err != nil {
 		return nil, fmt.Errorf("error while trying to get chat data: %w", err)
+	}
+
+	chat := models.Chat{
+		ChatId:     uuidPointer(id),
+		SellerId:   uuidPointer(sellerID),
+		CustomerId: uuidPointer(customerID),
+		ListingId:  uuidPointer(listingID),
+		CreatedAt:  timePointer(createdAt),
 	}
 
 	return &chat, nil
@@ -891,19 +912,26 @@ func (p *Postgres) CreateMessage(msg *models.Message) error {
 		return fmt.Errorf("request 'CreateMessage' not found")
 	}
 
+	if msg.ChatId == nil {
+		return fmt.Errorf("chat id is required for message")
+	}
+	if msg.SenderId == nil {
+		return fmt.Errorf("sender id is required for message")
+	}
+
 	var messageID uuid.UUID
 	var createdAt time.Time
 	err := p.psql.QueryRow(
 		query,
-		msg.ChatId,
-		msg.SenderId,
+		*msg.ChatId,
+		*msg.SenderId,
 		msg.Text,
 	).Scan(&messageID, &createdAt)
 	if err != nil {
 		return fmt.Errorf("error while trying to create new message: %w", err)
 	}
-	msg.Id = &messageID
-	msg.CreatedAt = &createdAt
+	msg.Id = uuidPointer(messageID)
+	msg.CreatedAt = timePointer(createdAt)
 	return nil
 }
 
@@ -923,18 +951,20 @@ func (p *Postgres) GetMessages(chatId uuid.UUID, limit, offset int) ([]models.Me
 
 	for rows.Next() {
 		var m models.Message
-		var id uuid.UUID
-		var senderID uuid.UUID
-		var createdAt time.Time
-		var chatUUID uuid.UUID
+		var (
+			id        uuid.UUID
+			senderID  uuid.UUID
+			createdAt time.Time
+			chatUUID  uuid.UUID
+		)
 
 		if err := rows.Scan(&id, &senderID, &m.Text, &createdAt, &chatUUID); err != nil {
 			return nil, err
 		}
-		m.Id = &id
-		m.SenderId = &senderID
-		m.CreatedAt = &createdAt
-		m.ChatId = &chatUUID
+		m.Id = uuidPointer(id)
+		m.SenderId = uuidPointer(senderID)
+		m.CreatedAt = timePointer(createdAt)
+		m.ChatId = uuidPointer(chatUUID)
 		messages = append(messages, m)
 	}
 	if err := rows.Err(); err != nil {

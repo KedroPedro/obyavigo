@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"cmd/obyavigo/main.go/internal/models"
@@ -110,6 +111,11 @@ func (h *Handlers) ChatWebSocketHandler() websocket.Handler {
 					break
 				}
 
+				msgJSON.Text = strings.TrimSpace(msgJSON.Text)
+				if msgJSON.Text == "" {
+					continue
+				}
+
 				chatID, err := uuid.Parse(msgJSON.ChatID)
 				if err != nil {
 					slog.Error("invalid chat id", slog.String("chat_id", msgJSON.ChatID))
@@ -120,6 +126,11 @@ func (h *Handlers) ChatWebSocketHandler() websocket.Handler {
 				if err != nil {
 					slog.Error("error while trying to get chat by id", slog.String("error", err.Error()))
 					break
+				}
+
+				if chat.ChatId == nil {
+					idCopy := chatID
+					chat.ChatId = &idCopy
 				}
 
 				if chat.CustomerId == nil || chat.SellerId == nil {
