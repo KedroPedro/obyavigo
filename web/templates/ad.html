@@ -414,7 +414,7 @@
                             <div class="ad-author" id="adAuthor">
                                 <div class="author-info">
                                     <img
-                                        src="{{if .SellerAvatarID}}/api/avatars/{{.SellerAvatarID}}/{{else}}/static/pictures/profile.png{{end}}"
+                                        src="/static/pictures/profile.png"
                                         alt="Продавец"
                                         class="author-avatar"
                                     />
@@ -436,18 +436,18 @@
                                     <div class="contact-item">
                                         <span>📞</span>
                                         <span id="phoneDisplay">
-                                            {{if .ContactPhone}}
+                                            {{if .SellerPhone}}
                                             <span
                                                 class="phone-hidden"
                                                 style="display: none"
-                                                >{{.ContactPhone}}</span
+                                                >{{.SellerPhone}}</span
                                             >
                                             <span class="phone-placeholder"
                                                 >Показать телефон</span
                                             >
                                             {{else}} Телефон не указан {{end}}
                                         </span>
-                                        {{if .ContactPhone}}
+                                        {{if .SellerPhone}}
                                         <button
                                             class="show-phone-btn"
                                             id="showPhoneBtn"
@@ -495,3 +495,52 @@
             </div>
         </footer>
 
+        <div class="modal-overlay" id="reportModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Пожаловаться на объявление</h3>
+                    <button class="modal-close" id="closeReportModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <form id="reportForm">
+                        <div class="form-group">
+                            <label for="reportType">Причина жалобы:</label>
+                            <select id="reportType" name="reportType" required>
+                                <option value="">Выберите причину</option>
+                                <option value="spam">Спам</option>
+                                <option value="fraud">Мошенничество</option>
+                                <option value="fake">Поддельный товар</option>
+                                <option value="wrong_category">Неверная категория</option>
+                                <option value="offensive">Оскорбительный контент</option>
+                                <option value="sold">Товар уже продан</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportDescription">Описание (необязательно):</label>
+                            <textarea 
+                                id="reportDescription" 
+                                name="description" 
+                                rows="4" 
+                                placeholder="Опишите подробнее причину жалобы..."
+                                maxlength="500"
+                            ></textarea>
+                            <small class="char-count">0 / 500</small>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn-cancel" id="cancelReportBtn">Отмена</button>
+                            <button type="submit" class="btn-submit">Отправить жалобу</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            window.adId = '{{.AdId}}';
+        </script>
+        <script src="/static/scripts/header.js"></script>
+        <script src="/static/scripts/ad.js"></script>
+        <script src="/static/scripts/lazy-loading.js"></script>
+    </body>
+</html>

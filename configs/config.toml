@@ -4,7 +4,7 @@ templatesDir = "./web/templates/"
 staticDir = "./web/static/"
 
 [server]
-addr = "localhost:443"
+addr = "localhost:8443"
 timeout ="5s"
 idle_timeout ="60s"
 
@@ -21,7 +21,7 @@ host = "localhost"
 port = 5432
 user = "postgres"
 password = "kedr"
-dbname = "obyavigo"
+dbname = "site"
 
 [database.mongo]
 host = "127.0.0.1"

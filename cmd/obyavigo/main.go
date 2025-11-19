@@ -106,7 +106,7 @@ func main() {
 	}
 
 	slog.Info("server is started")
-	if err := srv.ListenAndServeTLS("./localhost.crt", "./localhost.key"); err != nil {
+	if err := srv.ListenAndServeTLS("./certificate.crt", "./private.key"); err != nil {
 		slog.Error("error shutdown the server", slog.String("error", err.Error()))
 	}
 	slog.Info("server is stopped")
