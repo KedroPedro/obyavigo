@@ -9,6 +9,34 @@ class AuthManager {
       this.initAuthForms();
       this.initInputRestrictions();
       this.setupKeyboardNavigation();
+      this.initSuccessModal();
+    });
+  }
+  initSuccessModal() {
+    const modal = document.getElementById('successModal');
+    if (!modal) return;
+    
+    const closeBtn = document.getElementById('modalCloseBtn');
+    const closeCross = document.querySelector('.modal-close');
+    
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => this.closeSuccessModal());
+    }
+    
+    if (closeCross) {
+      closeCross.addEventListener('click', () => this.closeSuccessModal());
+    }
+    
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        this.closeSuccessModal();
+      }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        this.closeSuccessModal();
+      }
     });
   }
   initTheme() {
@@ -31,9 +59,7 @@ class AuthManager {
     });
   }
   initInputRestrictions() {
-    const emailInputs = document.querySelectorAll(
-      'input[type="email"], #loginEmail, #regEmail, #forgotEmail',
-    );
+    const emailInputs = document.querySelectorAll('input[type="email"], #loginEmail, #regEmail, #forgotEmail');
     emailInputs.forEach((input) => {
       input.addEventListener("keypress", (e) => {
         const char = e.key;
@@ -51,19 +77,7 @@ class AuthManager {
     });
   }
   isControlKey(e) {
-    return (
-      e.ctrlKey ||
-      e.metaKey ||
-      e.altKey ||
-      [
-        "Backspace",
-        "Delete",
-        "ArrowLeft",
-        "ArrowRight",
-        "Tab",
-        "Enter",
-      ].includes(e.key)
-    );
+    return e.ctrlKey || e.metaKey || e.altKey || ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Enter"].includes(e.key);
   }
   hasCyrillic(str) {
     return /[а-яА-ЯёЁ]/.test(str);
@@ -92,9 +106,7 @@ class AuthManager {
     return false;
   }
   isValidPassword(password) {
-    return (
-      password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password)
-    );
+    return password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password);
   }
   clearErrors(formId) {
     const form = document.getElementById(formId);
@@ -115,6 +127,7 @@ class AuthManager {
     const element = document.getElementById(elementId);
     if (element) {
       element.textContent = message;
+      element.closest('.form-group')?.querySelector('input')?.classList.add('invalid');
     }
   }
   initAuthForms() {
@@ -129,9 +142,7 @@ class AuthManager {
       loginBtn.addEventListener("click", () => this.switchToForm("login"));
     }
     if (registerBtn) {
-      registerBtn.addEventListener("click", () =>
-        this.switchToForm("register"),
-      );
+      registerBtn.addEventListener("click", () => this.switchToForm("register"));
     }
     if (forgotPasswordLink) {
       forgotPasswordLink.addEventListener("click", (e) => {
@@ -140,9 +151,7 @@ class AuthManager {
       });
     }
     if (backToLoginBtn) {
-      backToLoginBtn.addEventListener("click", () =>
-        this.switchToForm("login"),
-      );
+      backToLoginBtn.addEventListener("click", () => this.switchToForm("login"));
     }
     if (loginForm) {
       loginForm.addEventListener("submit", (e) => this.handleLogin(e));
@@ -151,9 +160,7 @@ class AuthManager {
       registerForm.addEventListener("submit", (e) => this.handleRegister(e));
     }
     if (forgotPasswordForm) {
-      forgotPasswordForm.addEventListener("submit", (e) =>
-        this.handleForgotPassword(e),
-      );
+      forgotPasswordForm.addEventListener("submit", (e) => this.handleForgotPassword(e));
     }
   }
   switchToForm(formType) {
@@ -200,10 +207,7 @@ class AuthManager {
       emailInput.classList.add("invalid");
       isValid = false;
     } else if (this.hasCyrillic(email)) {
-      this.showError(
-        "loginEmailError",
-        "Email или телефон не должен содержать русские буквы",
-      );
+      this.showError("loginEmailError", "Email или телефон не должен содержать русские буквы");
       emailInput.classList.add("invalid");
       isValid = false;
     } else if (this.isValidEmail(email)) {
@@ -220,10 +224,7 @@ class AuthManager {
       passwordInput.classList.add("invalid");
       isValid = false;
     } else if (password.length < 6) {
-      this.showError(
-        "loginPasswordError",
-        "Пароль должен быть не менее 6 символов",
-      );
+      this.showError("loginPasswordError", "Пароль должен быть не менее 6 символов");
       passwordInput.classList.add("invalid");
       isValid = false;
     } else {
@@ -249,18 +250,16 @@ class AuthManager {
       const emailInput = document.getElementById("loginEmail");
       const result = await response.json();
       if (response.ok) {
-        alert("Вход выполнен успешно");
         window.location.href = "/";
       } else if (response.status === 401) {
-        alert("Ошибка: неверный логин или пароль");
         passwordInput.classList.remove("valid");
         passwordInput.classList.add("invalid");
         emailInput.classList.remove("valid");
         emailInput.classList.add("invalid");
+        this.showError("loginPasswordError", "Неверный логин или пароль");
         passwordInput.value = "";
       } else {
-        const errorMessage =
-          result.error || result.message || "Неизвестная ошибка";
+        const errorMessage = result.error || result.message || "Неизвестная ошибка";
         alert("Ошибка: " + errorMessage);
       }
     } catch (error) {
@@ -283,10 +282,7 @@ class AuthManager {
       nameInput.classList.add("invalid");
       isValid = false;
     } else if (!this.isValidName(name)) {
-      this.showError(
-        "regNameError",
-        "Имя должно содержать только буквы, пробелы, дефисы или апострофы",
-      );
+      this.showError("regNameError", "Имя должно содержать только буквы, пробелы, дефисы или апострофы");
       nameInput.classList.add("invalid");
       isValid = false;
     } else {
@@ -314,10 +310,7 @@ class AuthManager {
       passwordInput.classList.add("invalid");
       isValid = false;
     } else if (!this.isValidPassword(password)) {
-      this.showError(
-        "regPasswordError",
-        "Пароль: минимум 8 символов, буквы и цифры",
-      );
+      this.showError("regPasswordError", "Пароль: минимум 8 символов, буквы и цифры");
       passwordInput.classList.add("invalid");
       isValid = false;
     } else {
@@ -336,10 +329,7 @@ class AuthManager {
       passwordConfirmInput.classList.add("valid");
     }
     if (!termsCheckbox || !termsCheckbox.checked) {
-      this.showError(
-        "regPasswordConfirmError",
-        "Необходимо согласиться с условиями",
-      );
+      this.showError("regPasswordConfirmError", "Необходимо согласиться с условиями");
       isValid = false;
     }
     if (isValid) {
@@ -347,37 +337,65 @@ class AuthManager {
     }
   }
   async registerUser(name, email, password) {
-    try {
-      const response = await fetch("/api/auth/register/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: name,
-          email: email,
-          password: password,
-        }),
-      });
-      const result = await response.json();
-      const emailInput = document.getElementById("regEmail");
-      if (response.ok) {
-        alert("Регистрация успешна");
-        window.location.href = "/";
-      } else if (response.status === 409) {
-        this.showError("regEmailError", "Ошибка: email уже зарегистрирован");
-        emailInput.classList.remove("valid");
-        emailInput.classList.add("invalid");
-      } else {
-        const errorMessage =
-          result.error || result.message || "Неизвестная ошибка";
-        alert("Ошибка: " + errorMessage);
-      }
-    } catch (error) {
-      console.error("Ошибка сети:", error);
-      alert("Не удалось подключиться к серверу. Проверьте соединение.");
+  try {
+    const response = await fetch("/api/auth/register/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: name,
+        email: email,
+        password: password,
+      }),
+    });
+    
+    const result = await response.json();
+    const emailInput = document.getElementById("regEmail");
+    
+    if (response.ok) {
+      document.getElementById("registerForm").reset();
+      this.clearErrors("registerForm");
+      this.showSuccessModal();
+    } else if (response.status === 409) {
+      this.showError("regEmailError", "Этот email уже зарегистрирован");
+      emailInput.classList.remove("valid");
+      emailInput.classList.add("invalid");
+    } else {
+      const errorMessage = result.error || result.message || "Ошибка при регистрации";
+      this.showError("regPasswordConfirmError", errorMessage);
+    }
+  } catch (error) {
+    console.error("Ошибка сети:", error);
+    // Показываем ошибку в отдельном поле или в последнем поле формы
+    this.showError("regPasswordConfirmError", "Не удалось подключиться к серверу. Проверьте интернет-соединение.");
+    // Дополнительно выделяем поле ввода
+    const passwordConfirmInput = document.getElementById("regPasswordConfirm");
+    if (passwordConfirmInput) {
+      passwordConfirmInput.classList.add("invalid");
     }
   }
+}
+
+showSuccessModal() {
+  const modal = document.getElementById('successModal');
+  if (!modal) {
+    console.error("Модальное окно не найдено в DOM");
+    return;
+  }
+  
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  this.switchToForm('login');
+}
+
+closeSuccessModal() {
+  const modal = document.getElementById('successModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+}
   handleForgotPassword(e) {
     e.preventDefault();
     this.clearErrors("forgotPasswordForm");
@@ -387,10 +405,7 @@ class AuthManager {
       this.showError("forgotEmailError", "Введите email");
       emailInput.classList.add("invalid");
     } else if (this.hasCyrillic(email)) {
-      this.showError(
-        "forgotEmailError",
-        "Email должен быть на английском языке",
-      );
+      this.showError("forgotEmailError", "Email должен быть на английском языке");
       emailInput.classList.add("invalid");
     } else if (!this.isValidEmail(email)) {
       this.showError("forgotEmailError", "Неверный формат email");
@@ -413,13 +428,10 @@ class AuthManager {
       const result = await response.json();
 
       if (response.ok) {
-        alert(
-          "Если email зарегистрирован, на него будет отправлена ссылка для восстановления пароля",
-        );
+        alert("Если email зарегистрирован, на него будет отправлена ссылка для восстановления пароля");
         this.switchToForm("login");
       } else {
-        const errorMessage =
-          result.error || result.message || "Неизвестная ошибка";
+        const errorMessage = result.error || result.message || "Неизвестная ошибка";
         alert("Ошибка: " + errorMessage);
       }
     } catch (error) {
