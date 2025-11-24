@@ -79,3 +79,7 @@
 {"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-19T21:35:52+03:00"}
 {"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-19T21:54:12+03:00"}
 {"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-19T21:59:01+03:00"}
+{"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T06:34:08+03:00"}
+{"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T06:35:13+03:00"}
+{"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T07:06:37+03:00"}
+{"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T07:28:05+03:00"}
