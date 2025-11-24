@@ -260,11 +260,9 @@ class AuthManager {
         passwordInput.value = "";
       } else {
         const errorMessage = result.error || result.message || "Неизвестная ошибка";
-        alert("Ошибка: " + errorMessage);
       }
     } catch (error) {
       console.error("Ошибка сети:", error);
-      alert("Не удалось подключиться к серверу. Проверьте соединение.");
     }
   }
   handleRegister(e) {
@@ -428,15 +426,12 @@ closeSuccessModal() {
       const result = await response.json();
 
       if (response.ok) {
-        alert("Если email зарегистрирован, на него будет отправлена ссылка для восстановления пароля");
         this.switchToForm("login");
       } else {
         const errorMessage = result.error || result.message || "Неизвестная ошибка";
-        alert("Ошибка: " + errorMessage);
       }
     } catch (error) {
       console.error("Ошибка сети:", error);
-      alert("Не удалось подключиться к серверу. Проверьте соединение.");
     }
   }
 }

@@ -211,7 +211,6 @@ function updateAdStatus(adId, status) {
         })
         .catch(err => {
             console.error('Error updating ad status:', err);
-            alert('Ошибка при обновлении статуса');
         });
     });
 }
@@ -279,7 +278,6 @@ function updateUserStatus(userId, status) {
         })
         .catch(err => {
             console.error('Error updating user status:', err);
-            alert('Ошибка при обновлении статуса');
         });
     });
 }
@@ -374,13 +372,11 @@ function rejectReport(reportId) {
             return res.json();
         })
         .then(() => {
-            alert('Жалоба отклонена');
             loadReports();
             loadDashboardData(); 
         })
         .catch(err => {
             console.error('Error rejecting report:', err);
-            alert('Ошибка при отклонении жалобы');
         });
     });
 }
@@ -405,13 +401,11 @@ function blockAdFromReport(reportId, adId) {
             return Promise.all(responses.map(r => r.json()));
         })
         .then(() => {
-            alert('Объявление заблокировано');
             loadReports();
             loadDashboardData();
         })
         .catch(err => {
             console.error('Error blocking ad:', err);
-            alert('Ошибка при блокировке объявления');
         });
     });
 }
@@ -441,13 +435,11 @@ function blockAdAndUserFromReport(reportId, adId, userId) {
             return Promise.all(responses.map(r => r.json()));
         })
         .then(() => {
-            alert('Объявление и пользователь заблокированы');
             loadReports();
             loadDashboardData();
         })
         .catch(err => {
             console.error('Error blocking ad and user:', err);
-            alert('Ошибка при блокировке');
         });
     });
 }
@@ -465,12 +457,10 @@ function grantModeratorRole(userId) {
             return res.json();
         })
         .then(() => {
-            alert('Роль модератора выдана успешно');
             loadUsers();
         })
         .catch(err => {
             console.error('Error granting moderator role:', err);
-            alert('Ошибка при выдаче роли');
         });
     });
 }
@@ -488,12 +478,10 @@ function grantAdminRole(userId) {
             return res.json();
         })
         .then(() => {
-            alert('Роль администратора выдана успешно');
             loadUsers();
         })
         .catch(err => {
             console.error('Error granting admin role:', err);
-            alert('Ошибка при выдаче роли');
         });
     });
 }
@@ -511,12 +499,10 @@ function demoteToUser(userId) {
             return res.json();
         })
         .then(() => {
-            alert('Пользователь понижен до обычной роли');
             loadUsers();
         })
         .catch(err => {
             console.error('Error demoting user:', err);
-            alert('Ошибка при понижении роли');
         });
     });
 }

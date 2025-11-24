@@ -61,7 +61,7 @@ function initAdPage() {
           phoneDisp.textContent = phone;
           showBtn.style.display = "none";
         })
-        .catch(() => alert("Не удалось загрузить номер телефона"));
+        .catch(() => (console.log("an error occured when trying to get phone number")));
     });
   }
 }
@@ -128,7 +128,6 @@ function toggleFavorite(adId, favBtn) {
     })
     .catch((err) => {
       console.error("Ошибка при изменении статуса избранного:", err);
-      alert("Не удалось изменить статус избранного");
     });
 }
 
@@ -192,7 +191,6 @@ function initReportButton(adId) {
     const description = reportDescription.value;
 
     if (!reportType) {
-      alert("Пожалуйста, выберите причину жалобы");
       return;
     }
 
@@ -217,12 +215,10 @@ function initReportButton(adId) {
       return r.json();
     })
     .then(() => {
-      alert("Жалоба успешно отправлена. Спасибо за обращение!");
       closeModal();
     })
     .catch((err) => {
       console.error("Ошибка при отправке жалобы:", err);
-      alert(err.message || "Произошла ошибка при отправке жалобы");
     });
   });
 }

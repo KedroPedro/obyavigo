@@ -11,7 +11,6 @@ async function loadAdData() {
   const adId = form.dataset.adId;
   
   if (!adId) {
-    alert('Ошибка: ID объявления не найден');
     window.location.href = '/profile/';
     return;
   }
@@ -47,7 +46,6 @@ async function loadAdData() {
     }
   } catch (error) {
     console.error('Error loading ad:', error);
-    alert('Ошибка при загрузке объявления');
     window.location.href = '/profile/';
   }
 }
@@ -92,16 +90,14 @@ function initFormSubmit() {
       const result = await response.json();
 
       if (response.ok) {
-        alert('Объявление успешно обновлено!');
         window.location.href = '/profile/';
       } else {
-        alert(result.message || 'Ошибка при обновлении объявления');
+        console.error(result.message || 'Ошибка при обновлении объявления');
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
       }
     } catch (error) {
       console.error('Error updating ad:', error);
-      alert('Ошибка подключения к серверу');
       submitBtn.disabled = false;
       submitBtn.textContent = originalText;
     }
@@ -211,11 +207,9 @@ async function deleteImage(imageId) {
       currentImages = currentImages.filter(id => id !== imageId);
       displayCurrentImages();
     } else {
-      alert('Ошибка при удалении изображения');
     }
   } catch (error) {
     console.error('Error deleting image:', error);
-    alert('Ошибка подключения к серверу');
   }
 }
 
@@ -248,11 +242,10 @@ function initImageUpload() {
         displayCurrentImages();
         imageInput.value = '';
       } else {
-        alert(result.message || 'Ошибка при загрузке изображений');
+        console.error(result.message || 'Ошибка при загрузке изображений');
       }
     } catch (error) {
       console.error('Error uploading images:', error);
-      alert('Ошибка подключения к серверу');
     }
   });
 }

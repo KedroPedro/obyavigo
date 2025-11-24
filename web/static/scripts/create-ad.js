@@ -204,7 +204,6 @@ function validateStep(stepNumber) {
   if (stepNumber === 1) {
     const category = document.getElementById("createAdForm").dataset.category;
     if (!category) {
-      alert("Пожалуйста, выберите категорию");
       return false;
     }
     return true;
@@ -495,14 +494,12 @@ document
       .then((data) => {
         if (data.success) {
           localStorage.removeItem("obyavigo_draft");
-          alert("Объявление успешно опубликовано");
           window.location.href = data.url || "/ads/" + data.adId;
         } else {
-          alert("Ошибка: " + (data.message || "Не удалось создать объявление"));
+          console.log("Не удалось создать объявление")
         }
       })
       .catch((error) => {
         console.error("Ошибка при создании объявления:", error);
-        alert("Ошибка подключения к серверу");
       });
   });

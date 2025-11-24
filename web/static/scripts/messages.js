@@ -122,7 +122,6 @@ const MessagesApp = (() => {
             }
         } catch (error) {
             console.error('Ошибка при создании чата', error);
-            alert(error.message || 'Не удалось открыть чат с продавцом');
         } finally {
             localStorage.removeItem('chat_ad_id');
         }
@@ -487,13 +486,11 @@ function sendMessage() {
         return;
     }
     
-    // Блокируем input и кнопку на время отправки
     input.disabled = true;
     sendBtn.disabled = true;
-    sendBtn.innerHTML = '⏳'; // Индикатор отправки
+    sendBtn.innerHTML = '⏳'; 
     
     if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
-        alert('Соединение с сервером сообщений отсутствует. Попробуйте позже.');
         input.disabled = false;
         sendBtn.disabled = false;
         sendBtn.innerHTML = '➤';
@@ -503,7 +500,6 @@ function sendMessage() {
     const chatId = state.selectedChatId;
     if (!isValidUUID(chatId)) {
         console.error('Invalid chat ID format:', chatId);
-        alert('Ошибка: неверный формат чата');
         input.disabled = false;
         sendBtn.disabled = false;
         sendBtn.innerHTML = '➤';
@@ -511,7 +507,6 @@ function sendMessage() {
     }
 
     try {
-        // Отправляем на сервер
         state.ws.send(JSON.stringify({
             chat_id: chatId,
             text: text,
@@ -525,7 +520,6 @@ function sendMessage() {
         
     } catch (error) {
         console.error('Ошибка отправки сообщения:', error);
-        alert('Ошибка отправки сообщения');
         input.disabled = false;
         sendBtn.disabled = false;
         sendBtn.innerHTML = '➤';

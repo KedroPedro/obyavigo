@@ -271,7 +271,6 @@ function initProfileForm() {
       });
       const result = await response.json();
       if (response.ok) {
-        alert("Профиль успешно обновлён");
         const profileName = document.getElementById("profileName");
         if (profileName) {
           profileName.textContent = username;
@@ -348,7 +347,6 @@ function initPasswordModal() {
       });
       const data = await response.json();
       if (response.ok) {
-        alert("Пароль успешно изменён");
         modal.style.display = "none";
         if (document.getElementById("oldPassword")) document.getElementById("oldPassword").value = "";
         document.getElementById("newPassword").value = "";
@@ -386,15 +384,13 @@ document.getElementById("deleteAccountBtn")?.addEventListener("click", async () 
         },
       });
       if (response.ok) {
-        alert("Аккаунт удалён");
         window.location.href = "/auth/";
       } else {
         const data = await response.json();
-        alert(data.message || "Ошибка при удалении аккаунта");
+        console.error(data.message || "Ошибка при удалении аккаунта");
       }
     } catch (error) {
       console.error("Ошибка при удалении аккаунта:", error);
-      alert("Ошибка подключения к серверу");
     }
   }
 });
@@ -417,7 +413,7 @@ document.getElementById("logoutBtn").onclick = async () => {
     if (response.ok) {
       window.location.href = "/auth/";
     } else {
-      alert("Ошибка выхода из аккаунта");
+      console.error("Ошибка выхода из аккаунта");
     }
   } catch (e) {
     console.error("Ошибка запроса выхода", e);
@@ -545,12 +541,11 @@ function initAvatarUpload() {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert('Пожалуйста, выберите изображение');
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('Размер файла не должен превышать 5MB');
+      console.error('Размер файла не должен превышать 5MB');
       return;
     }
 
@@ -577,11 +572,10 @@ function initAvatarUpload() {
           });
         }
       } else {
-        alert(result.message || 'Ошибка при загрузке фотографии');
+        console.error(result.message || 'Ошибка при загрузке фотографии');
       }
     } catch (error) {
       console.error('Ошибка при загрузке аватара:', error);
-      alert('Ошибка подключения к серверу');
     }
   });
 }
@@ -636,15 +630,13 @@ async function deleteAd(adId, event) {
     const data = await response.json();
 
     if (response.ok) {
-      alert('Объявление успешно удалено');
       
       userAdsLoaded = false;
       loadUserAds();
     } else {
-      alert(data.message || 'Ошибка при удалении объявления');
+      console.error(data.message || 'Ошибка при удалении объявления');
     }
   } catch (error) {
     console.error('Ошибка при удалении объявления:', error);
-    alert('Ошибка подключения к серверу');
   }
 }

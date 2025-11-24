@@ -36,7 +36,6 @@ class ResetPasswordManager {
     const urlParams = new URLSearchParams(window.location.search);
     this.token = urlParams.get("token");
     if (!this.token) {
-      alert("Неверная ссылка для восстановления пароля");
       window.location.href = "/auth/";
     }
   }
@@ -130,16 +129,14 @@ class ResetPasswordManager {
       const result = await response.json();
 
       if (response.ok) {
-        alert("Пароль успешно изменен. Теперь вы можете войти с новым паролем");
         window.location.href = "/auth/";
       } else {
         const errorMessage =
           result.error || result.message || "Неизвестная ошибка";
-        alert("Ошибка: " + errorMessage);
+        console.error("Ошибка: " + errorMessage);
       }
     } catch (error) {
       console.error("Ошибка сети:", error);
-      alert("Не удалось подключиться к серверу. Проверьте соединение.");
     }
   }
 }
