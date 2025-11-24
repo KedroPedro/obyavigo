@@ -95,3 +95,8 @@
 {"error":"error while executing get user role request: sql: no rows in result set","level":"ERROR","message":"error getting user role","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/general.go","time":"2025-11-24T09:59:29+03:00"}
 {"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T10:10:38+03:00"}
 {"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T10:11:21+03:00"}
+{"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T10:23:25+03:00"}
+{"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T10:23:32+03:00"}
+{"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T11:02:39+03:00"}
+{"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T11:03:08+03:00"}
+{"error":"EOF","level":"ERROR","message":"error when receiving message","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/messengerHandlers.go","time":"2025-11-24T11:12:26+03:00"}

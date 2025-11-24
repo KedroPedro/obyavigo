@@ -192,7 +192,7 @@ describe('MessagesApp', () => {
         const wsInstance = MockWebSocket.instances.at(-1);
         expect(wsInstance).toBeDefined();
 
-        await flushAsync(); // wait for WebSocket to open
+        await flushAsync();
 
         const input = document.getElementById('chatMessageInput');
         input.value = '   Новое сообщение   ';

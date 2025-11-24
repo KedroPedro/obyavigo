@@ -456,7 +456,6 @@ async function loadUserAds() {
             </div>
             <div class="ad-footer">
               <span class="ad-date">${new Date(ad.createdAt).toLocaleDateString('ru-RU')}</span>
-              <span class="ad-views">👁️ ${ad.viewsCount}</span>
             </div>
           </div>
           <div class="ad-actions" style="display: flex; gap: 10px; padding: 10px; border-top: 1px solid #eee;">

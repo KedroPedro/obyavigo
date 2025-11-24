@@ -629,3 +629,53 @@
 {"level":"INFO","message":"the user visited the ad page","page_id":"2874e325-f036-46e0-a31f-651ebafa7fca","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/handlers.go","time":"2025-11-24T10:11:08+03:00","user_id":"2b59bc0a-9352-4f64-9d47-a6b410390958"}
 {"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:54723: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:11:15+03:00"}
 {"level":"INFO","message":"the user visited the ad page","page_id":"2874e325-f036-46e0-a31f-651ebafa7fca","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/handlers.go","time":"2025-11-24T10:11:24+03:00","user_id":"2b59bc0a-9352-4f64-9d47-a6b410390958"}
+{"level":"INFO","message":"server is started","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/cmd/obyavigo/main.go","time":"2025-11-24T10:18:05+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:63170: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:18:07+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:60166: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:18:08+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:61289: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:18:08+03:00"}
+{"level":"INFO","message":"server is started","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/cmd/obyavigo/main.go","time":"2025-11-24T10:19:26+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:61231: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:19:28+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:63172: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:19:29+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:57084: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:19:29+03:00"}
+{"level":"INFO","message":"the user visited the ad page","page_id":"2874e325-f036-46e0-a31f-651ebafa7fca","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/handlers.go","time":"2025-11-24T10:19:29+03:00","user_id":"2b59bc0a-9352-4f64-9d47-a6b410390958"}
+{"level":"INFO","message":"server is started","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/cmd/obyavigo/main.go","time":"2025-11-24T10:20:20+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:63847: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:20:22+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:57064: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:21:55+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:60892: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:21:55+03:00"}
+{"level":"INFO","message":"server is started","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/cmd/obyavigo/main.go","time":"2025-11-24T10:22:45+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:50831: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:22:46+03:00"}
+{"level":"INFO","message":"the user visited the ad page","page_id":"2874e325-f036-46e0-a31f-651ebafa7fca","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/handlers.go","time":"2025-11-24T10:22:51+03:00","user_id":"2b59bc0a-9352-4f64-9d47-a6b410390958"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:64813: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:22:57+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:50854: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:23:26+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:61922: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:25:49+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:60984: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:25:49+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:65434: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:25:49+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:65361: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:26:21+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:65156: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:31:24+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:54287: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:31:24+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:63169: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:37:01+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:53868: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:38:14+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:53479: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:38:14+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:50522: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:38:15+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:52446: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:38:16+03:00"}
+{"avatar_id":"891ab67b-e2bb-4794-8bff-72faf5e0e169","level":"INFO","message":"avatar uploaded","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/profileHandlers.go","time":"2025-11-24T10:39:09+03:00","user_id":"e21cbfcb-a93f-4dc3-8339-b2fc084849c3"}
+{"level":"INFO","message":"the user visited the ad page","page_id":"2874e325-f036-46e0-a31f-651ebafa7fca","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/handlers.go","time":"2025-11-24T10:39:17+03:00","user_id":"e21cbfcb-a93f-4dc3-8339-b2fc084849c3"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:52998: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:58:40+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:64667: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:58:40+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:59075: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T10:58:41+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:55190: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:01:57+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:55994: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:01:58+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:64803: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:01:58+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:58902: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:02:13+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:56920: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:02:40+03:00"}
+{"avatar_id":"40a2f81d-44b4-43c4-bf37-257b1b0c799e","level":"INFO","message":"avatar uploaded","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/profileHandlers.go","time":"2025-11-24T11:03:42+03:00","user_id":"e21cbfcb-a93f-4dc3-8339-b2fc084849c3"}
+{"level":"INFO","message":"the user visited the ad page","page_id":"2874e325-f036-46e0-a31f-651ebafa7fca","source":"C:/Users/zyazy/OneDrive/Desktop/obyavigo/internal/api/handlers.go","time":"2025-11-24T11:03:57+03:00","user_id":"e21cbfcb-a93f-4dc3-8339-b2fc084849c3"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:62767: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:08:04+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:59807: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:08:05+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:60854: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:08:05+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:63462: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:12:14+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:52557: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:12:14+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:57509: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:12:21+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:64967: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:13:33+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:55161: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:13:33+03:00"}
+{"level":"INFO","message":"http: TLS handshake error from 127.0.0.1:65118: remote error: tls: unknown certificate","source":"no data","time":"2025-11-24T11:13:34+03:00"}
