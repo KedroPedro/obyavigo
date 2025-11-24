@@ -1277,6 +1277,40 @@ body.categories-open footer {
     background: var(--primary-color);
 }
 
+@media (max-width: 1024px) {
+    .header-container {
+        padding: 12px 15px;
+        gap: 10px;
+    }
+
+    .categories-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .main-menu {
+        gap: 8px;
+    }
+
+    .menu-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .hero-section {
+        padding: 60px 20px;
+    }
+
+    .advantages-section,
+    .how-it-works {
+        padding: 60px 20px;
+    }
+
+    .advantages-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     body {
         padding-top: 70px;
@@ -1284,8 +1318,12 @@ body.categories-open footer {
 
     .header-container {
         padding: var(--spacing) var(--spacing-lg);
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         gap: var(--spacing);
+    }
+
+    .header-logo {
+        height: 40px;
     }
 
     .header-logo-container {
@@ -1294,7 +1332,16 @@ body.categories-open footer {
 
     .categories-dropdown {
         flex: 1;
-        margin: 0 var(--spacing);
+        min-width: 0;
+        margin: 0 var(--spacing-sm);
+    }
+
+    .categories-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .main-menu {
@@ -1306,12 +1353,38 @@ body.categories-open footer {
         gap: var(--spacing-sm);
     }
 
+    .icon-btn {
+        padding: 6px;
+        font-size: 18px;
+    }
+
+    .profile-img {
+        width: 32px;
+        height: 32px;
+    }
+
     .mobile-menu-btn {
         display: block;
+        font-size: 20px;
+    }
+
+    .hero-section {
+        padding: 50px 15px;
     }
 
     .hero-content h1 {
         font-size: clamp(1.75rem, 4vw, 2.5rem);
+        margin-bottom: 15px;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 25px;
+    }
+
+    .cta-button {
+        padding: 12px 24px;
+        font-size: 1rem;
     }
 
     .categories-grid,
@@ -1331,6 +1404,7 @@ body.categories-open footer {
     .profile-menu {
         width: 95%;
         margin: var(--spacing);
+        padding: 20px;
     }
 
     .categories-menu {
@@ -1347,6 +1421,107 @@ body.categories-open footer {
     .categories-grid-overlay {
         grid-template-columns: 1fr;
         gap: var(--spacing);
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .footer {
+        padding: 30px 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 60px;
+    }
+
+    .header-container {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .header-logo {
+        height: 35px;
+    }
+
+    .categories-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    .categories-btn span:first-child {
+        display: none;
+    }
+
+    .user-actions {
+        gap: 6px;
+    }
+
+    .icon-btn {
+        padding: 5px;
+        font-size: 16px;
+    }
+
+    .profile-img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .hero-section {
+        padding: 40px 10px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .cta-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .advantages-section,
+    .how-it-works {
+        padding: 40px 15px;
+    }
+
+    .advantage-card,
+    .step {
+        padding: 25px 20px;
+    }
+
+    .advantage-icon {
+        font-size: 2.5rem;
+    }
+
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    .search-modal,
+    .mobile-menu,
+    .profile-menu {
+        width: 98%;
+        padding: 15px;
+    }
+
+    .chat-container,
+    .loved-container {
+        width: 95%;
+        height: 85%;
     }
 }
 
