@@ -334,7 +334,7 @@ class HeaderManager {
       item.addEventListener('click', () => {
         const adId = item.getAttribute('data-ad-id');
         if (adId) {
-          window.location.href = `/ad/${adId}/`;
+          window.location.href = `/ads/${adId}/`;
         }
       });
     });

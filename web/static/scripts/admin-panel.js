@@ -27,24 +27,65 @@ function initNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
     const tabContents = document.querySelectorAll('.tab-content');
     const pageTitle = document.getElementById('pageTitle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const mobileTabSelect = document.getElementById('mobileTabSelect');
+    const titles = {
+        users: 'Пользователи',
+        moderation: 'Модерация',
+        reports: 'Жалобы',
+        stats: 'Статистика'
+    };
+
+    const closeSidebar = () => {
+        sidebar?.classList.remove('active');
+        sidebarOverlay?.classList.remove('active');
+        document.body.classList.remove('sidebar-open');
+    };
+
+    const openSidebar = () => {
+        sidebar?.classList.add('active');
+        sidebarOverlay?.classList.add('active');
+        document.body.classList.add('sidebar-open');
+    };
+
+    const activateTab = (tabKey) => {
+        if (!tabKey) return;
+        navItems.forEach(i => i.classList.toggle('active', i.dataset.tab === tabKey));
+        tabContents.forEach(t => t.classList.toggle('active', t.id === `${tabKey}-tab`));
+        pageTitle.textContent = titles[tabKey] || 'Админ-панель';
+        if (mobileTabSelect && mobileTabSelect.value !== tabKey) {
+            mobileTabSelect.value = tabKey;
+        }
+        loadTabData(tabKey);
+        if (window.innerWidth <= 768) {
+            closeSidebar();
+        }
+    };
+
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
-            navItems.forEach(i => i.classList.remove('active'));
-            tabContents.forEach(t => t.classList.remove('active'));
-            item.classList.add('active');
-            const tabId = item.dataset.tab + '-tab';
-            document.getElementById(tabId).classList.add('active');
-            const titles = {
-                users: 'Пользователи',
-                moderation: 'Модерация',
-                reports: 'Жалобы',
-                stats: 'Статистика'
-            };
-            pageTitle.textContent = titles[item.dataset.tab];
-            loadTabData(item.dataset.tab);
+            activateTab(item.dataset.tab);
         });
     });
+
+    mobileTabSelect?.addEventListener('change', (e) => activateTab(e.target.value));
+    sidebarToggle?.addEventListener('click', openSidebar);
+    sidebarOverlay?.addEventListener('click', closeSidebar);
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            closeSidebar();
+        }
+    });
+
+    if (mobileTabSelect) {
+        const activeItem = document.querySelector('.nav-item.active');
+        if (activeItem) {
+            mobileTabSelect.value = activeItem.dataset.tab;
+        }
+    }
 }
 function loadTabData(tab) {
     switch(tab) {

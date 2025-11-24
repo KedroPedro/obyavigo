@@ -490,7 +490,7 @@
         ></div>
 
     <div class="admin-layout">
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">Obyavigo Admin</div>
             </div>
@@ -513,10 +513,29 @@
                 </a>
             </nav>
         </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 
         <main class="main-content">
             <div class="content-header">
                 <h1 class="page-title" id="pageTitle">Модерация</h1>
+                <div class="mobile-panel-controls">
+                    <button
+                        class="sidebar-toggle"
+                        id="sidebarToggle"
+                        type="button"
+                        aria-label="Открыть меню разделов"
+                        aria-controls="sidebar"
+                    >
+                        ☰ Меню разделов
+                    </button>
+                    <label for="mobileTabSelect" class="sr-only">Выберите раздел панели</label>
+                    <select id="mobileTabSelect" aria-label="Выберите раздел панели">
+                        <option value="moderation" selected>Модерация</option>
+                        <option value="users">Пользователи</option>
+                        <option value="reports">Жалобы</option>
+                        <option value="stats">Статистика</option>
+                    </select>
+                </div>
             </div>
 
             <div class="tabs-container">

@@ -347,6 +347,14 @@
                     <aside class="chats-sidebar">
                         <div class="chats-header">
                             <h2>Сообщения</h2>
+                            <button
+                                class="close-chats-sidebar"
+                                id="closeChatsDrawer"
+                                type="button"
+                                aria-label="Скрыть список чатов"
+                            >
+                                ×
+                            </button>
                         </div>
 
                         <div class="chats-search">
@@ -366,6 +374,14 @@
                         </div>
                     </aside>
                     <div class="chat-main">
+                        <button
+                            class="mobile-chats-toggle"
+                            id="openChatsDrawer"
+                            type="button"
+                            aria-label="Открыть список чатов"
+                        >
+                            💬 Список чатов
+                        </button>
                         <div class="chat-placeholder" id="chatPlaceholder">
                             <div class="placeholder-content">
                                 <div class="placeholder-icon">💬</div>
@@ -425,6 +441,11 @@
                         </div>
                     </div>
                 </div>
+                <div
+                    class="mobile-chats-overlay"
+                    id="mobileChatsOverlay"
+                    aria-hidden="true"
+                ></div>
             </div>
         </main>
 

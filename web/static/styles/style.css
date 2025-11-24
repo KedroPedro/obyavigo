@@ -142,6 +142,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+body.mobile-chats-open,
+body.sidebar-open {
+    overflow: hidden;
+}
+
 
 .main-content {
     margin-top: 80px; 
@@ -1275,6 +1280,22 @@ body.categories-open footer {
 
 [data-theme="dark"] .load-more-btn:hover {
     background: var(--primary-color);
+}
+
+[data-theme="dark"] .cta-button,
+[data-theme="dark"] .categories-btn,
+[data-theme="dark"] .load-more-btn,
+[data-theme="dark"] .mobile-nav button,
+[data-theme="dark"] .profile-links .profile-link {
+    background-image: none;
+}
+
+[data-theme="dark"] .cta-button::before,
+[data-theme="dark"] .categories-btn::before,
+[data-theme="dark"] .load-more-btn::before,
+[data-theme="dark"] .mobile-nav button::before,
+[data-theme="dark"] .profile-links .profile-link::before {
+    display: none;
 }
 
 @media (max-width: 1024px) {

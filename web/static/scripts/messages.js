@@ -28,6 +28,9 @@ const MessagesApp = (() => {
         const sendBtn = document.getElementById('chatSendBtn');
         const searchInput = document.getElementById('chatsSearch');
         const newChatBtn = document.getElementById('newChatBtn');
+        const openDrawerBtn = document.getElementById('openChatsDrawer');
+        const closeDrawerBtn = document.getElementById('closeChatsDrawer');
+        const mobileOverlay = document.getElementById('mobileChatsOverlay');
 
         messageInput?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -41,6 +44,11 @@ const MessagesApp = (() => {
         newChatBtn?.addEventListener('click', () => {
             window.location.href = '/ads/';
         });
+        openDrawerBtn?.addEventListener('click', () => toggleMobileChats(true));
+        closeDrawerBtn?.addEventListener('click', () => toggleMobileChats(false));
+        mobileOverlay?.addEventListener('click', () => toggleMobileChats(false));
+        window.addEventListener('resize', handleMobileChatLayout);
+        handleMobileChatLayout();
     }
 
     async function loadInitialData() {
@@ -204,6 +212,10 @@ const MessagesApp = (() => {
             renderMessages(chatId);
         } else {
             loadMessages(chatId);
+        }
+
+        if (window.innerWidth <= 768) {
+            toggleMobileChats(false);
         }
     }
 
@@ -565,6 +577,33 @@ function sendMessage() {
         state.messageIds.clear();
         state.messagesCache.clear();
         state.messagesMeta.clear();
+    }
+
+    function toggleMobileChats(shouldOpen) {
+        const chatsSidebar = document.querySelector('.chats-sidebar');
+        const overlay = document.getElementById('mobileChatsOverlay');
+        if (!chatsSidebar) return;
+        const isOpen = typeof shouldOpen === 'boolean'
+            ? shouldOpen
+            : !chatsSidebar.classList.contains('mobile-open');
+
+        if (isOpen && window.innerWidth > 768) {
+            return;
+        }
+
+        chatsSidebar.classList.toggle('mobile-open', isOpen);
+        overlay?.classList.toggle('visible', isOpen);
+        document.body.classList.toggle('mobile-chats-open', isOpen);
+    }
+
+    function handleMobileChatLayout() {
+        if (window.innerWidth > 768) {
+            const chatsSidebar = document.querySelector('.chats-sidebar');
+            const overlay = document.getElementById('mobileChatsOverlay');
+            chatsSidebar?.classList.remove('mobile-open');
+            overlay?.classList.remove('visible');
+            document.body.classList.remove('mobile-chats-open');
+        }
     }
 
     return { 
