@@ -577,7 +577,6 @@ function initAvatarUpload() {
             }
           });
         }
-        alert('Фотография профиля успешно обновлена');
       } else {
         alert(result.message || 'Ошибка при загрузке фотографии');
       }

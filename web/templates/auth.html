@@ -274,7 +274,15 @@
                 <span class="theme-icon" aria-hidden="true">🌙</span>
             </button>
         </div>
-
+        <div id="successModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+            <div class="modal-content">
+                <button class="modal-close" aria-label="Закрыть">&times;</button>
+                <div class="modal-icon">✓</div>
+                <h2 id="modalTitle">Регистрация прошла успешно!</h2>
+                <p>Подтвердите свой аккаунт перейдя по ссылке на вашей почте, после чего вы можете войти в свой аккаунт с использованием указанных данных.</p>
+                <button id="modalCloseBtn" class="modal-btn">ОК</button>
+            </div>
+        </div>
         <script src="/static/scripts/auth.js"></script>
     </body>
 </html>
