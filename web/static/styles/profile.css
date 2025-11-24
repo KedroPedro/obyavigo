@@ -1036,6 +1036,20 @@ h1, h2, h3, h4 {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
 }
+@media (max-width: 1024px) {
+    .profile-page {
+        gap: 25px;
+    }
+
+    .profile-sidebar {
+        width: 250px;
+    }
+
+    .ads-list {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     body {
         padding-top: 70px;
@@ -1070,10 +1084,29 @@ h1, h2, h3, h4 {
 
     .profile-page {
         flex-direction: column;
+        gap: 20px;
     }
 
     .profile-sidebar {
         width: 100%;
+    }
+
+    .profile-sidebar .profile-header {
+        padding: 15px;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .profile-name {
+        font-size: 1.2rem;
+    }
+
+    .profile-menu .menu-item {
+        padding: 12px 18px;
+        font-size: 1rem;
     }
 
     .section-header {
@@ -1082,8 +1115,149 @@ h1, h2, h3, h4 {
         gap: 15px;
     }
 
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .create-ad-btn {
+        width: 100%;
+        text-align: center;
+        padding: 12px 20px;
+    }
+
+    .profile-form {
+        max-width: 100%;
+    }
+
     .ads-list {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .settings-group {
+        padding: 20px;
+    }
+
+    .settings-group h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-sidebar .profile-header {
+        padding: 12px;
+    }
+
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 12px;
+    }
+
+    .avatar-upload-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    .profile-name {
+        font-size: 1.1rem;
+    }
+
+    .profile-email {
+        font-size: 0.9rem;
+    }
+
+    .profile-status {
+        font-size: 0.8rem;
+        padding: 3px 8px;
+    }
+
+    .profile-menu .menu-item {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .create-ad-btn {
+        padding: 10px 18px;
+        font-size: 0.95rem;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+    }
+
+    .form-group input {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    .save-btn {
+        padding: 10px 25px;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .ads-list {
+        gap: 15px;
+    }
+
+    .ad-image {
+        height: 180px;
+    }
+
+    .ad-content {
+        padding: 12px;
+    }
+
+    .ad-title {
+        font-size: 1rem;
+    }
+
+    .settings-group {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .settings-group h3 {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .change-password-btn,
+    .delete-account-btn {
+        width: 100%;
+        padding: 10px 18px;
+        font-size: 0.95rem;
+    }
+
+    .modal {
+        padding: 20px;
+        width: 95%;
+    }
+
+    .modal h3 {
+        font-size: 1.2rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        padding: 12px;
     }
 }
 

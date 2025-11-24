@@ -241,24 +241,196 @@
 }
 
 
+@media (max-width: 1024px) {
+    .liked-ads-page {
+        padding: 35px 20px;
+    }
+
+    .ads-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+}
+
 @media (max-width: 768px) {
     .liked-ads-page {
         padding: 24px 16px;
     }
 
+    .liked-ads-header {
+        margin-bottom: 30px;
+    }
+
     .liked-ads-header h1 {
         font-size: 28px;
+        margin-bottom: 12px;
+    }
+
+    .liked-ads-stats {
+        font-size: 14px;
+    }
+
+    .ads-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 16px;
+        margin-top: 25px;
     }
 
     .ad-image {
         height: 200px;
     }
 
+    .favorite-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .ad-content {
+        padding: 16px;
+    }
+
     .ad-title {
         font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .ad-description {
+        font-size: 13px;
+        margin-bottom: 12px;
     }
 
     .ad-price {
         font-size: 20px;
+    }
+
+    .ad-location,
+    .ad-category {
+        font-size: 12px;
+    }
+
+    .ad-footer {
+        font-size: 12px;
+    }
+
+    .no-ads {
+        min-height: 350px;
+    }
+
+    .no-ads-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .no-ads-content h3 {
+        font-size: 20px;
+    }
+
+    .no-ads-content p {
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        padding: 12px 28px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .liked-ads-page {
+        padding: 20px 12px;
+    }
+
+    .liked-ads-header {
+        margin-bottom: 25px;
+    }
+
+    .liked-ads-header h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .liked-ads-stats {
+        font-size: 13px;
+    }
+
+    .ads-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .ad-image {
+        height: 180px;
+    }
+
+    .favorite-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        top: 10px;
+        right: 10px;
+    }
+
+    .ad-content {
+        padding: 14px;
+    }
+
+    .ad-title {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .ad-description {
+        font-size: 12px;
+        margin-bottom: 10px;
+        -webkit-line-clamp: 2;
+    }
+
+    .ad-meta {
+        gap: 6px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+    }
+
+    .ad-price {
+        font-size: 18px;
+    }
+
+    .ad-location,
+    .ad-category {
+        font-size: 11px;
+    }
+
+    .ad-footer {
+        font-size: 11px;
+    }
+
+    .no-ads {
+        min-height: 300px;
+    }
+
+    .no-ads-content {
+        padding: 30px 15px;
+    }
+
+    .no-ads-icon {
+        font-size: 50px;
+        margin-bottom: 15px;
+    }
+
+    .no-ads-content h3 {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .no-ads-content p {
+        font-size: 13px;
+        margin-bottom: 25px;
+    }
+
+    .btn-primary {
+        padding: 10px 24px;
+        font-size: 13px;
     }
 }

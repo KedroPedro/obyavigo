@@ -285,9 +285,17 @@ body {
     transform: rotate(15deg);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 20px;
+    }
+
     .auth-card {
-        padding: 30px 20px;
+        padding: 30px 25px;
+    }
+
+    .auth-logo img {
+        height: 45px;
     }
 
     .auth-toggle-btn {
@@ -295,12 +303,104 @@ body {
         font-size: 0.95rem;
     }
 
+    .form-group input {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+
+    .auth-submit-btn {
+        padding: 14px;
+        font-size: 1rem;
+    }
+
     .form-options {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
     }
 
     .forgot-password {
-        margin-top: 8px;
+        margin-top: 0;
+    }
+
+    .theme-toggle-btn {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 15px;
+    }
+
+    .auth-card {
+        padding: 25px 20px;
+    }
+
+    .auth-logo {
+        margin-bottom: 25px;
+    }
+
+    .auth-logo img {
+        height: 40px;
+    }
+
+    .auth-toggle {
+        margin-bottom: 25px;
+    }
+
+    .auth-toggle-btn {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group input {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .form-options {
+        margin-bottom: 20px;
+    }
+
+    .auth-submit-btn {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+
+    .auth-back-btn {
+        font-size: 0.9rem;
+        margin-top: 12px;
+    }
+
+    .auth-footer {
+        margin-top: 20px;
+        padding-top: 15px;
+        font-size: 0.85rem;
+    }
+
+    .theme-toggle-btn {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .form-terms .checkbox-label {
+        font-size: 0.9rem;
+    }
+
+    .form-info {
+        font-size: 0.9rem;
+        margin-bottom: 18px;
     }
 }

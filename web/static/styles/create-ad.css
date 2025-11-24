@@ -526,9 +526,55 @@ select option {
     opacity: 0.5;
     cursor: not-allowed;
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+    .create-ad-page {
+        max-width: 100%;
+    }
+
     .create-ad-form {
-        padding: 25px;
+        padding: 35px;
+    }
+
+    .categories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+
+    .progress-steps {
+        margin-bottom: 35px;
+    }
+}
+
+@media (max-width: 768px) {
+    .create-ad-page {
+        padding: 0 15px;
+    }
+
+    .create-ad-form {
+        padding: 25px 20px;
+    }
+
+    .progress-steps {
+        margin-bottom: 30px;
+        gap: 10px;
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+
+    .step-label {
+        font-size: 0.85rem;
+    }
+
+    .form-step h2 {
+        font-size: 1.5rem;
+    }
+
+    .step-description {
+        font-size: 1rem;
+        margin-bottom: 25px;
     }
 
     .form-row {
@@ -536,17 +582,228 @@ select option {
         gap: 0;
     }
 
+    .half {
+        width: 100%;
+    }
+
     .city-input-wrapper {
         flex-direction: column;
+    }
+
+    .categories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+    }
+
+    .category-card {
+        padding: 15px 10px;
+    }
+
+    .category-icon {
+        font-size: 1.5rem;
+    }
+
+    .category-card h3 {
+        font-size: 1rem;
+    }
+
+    .subcategories-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group select,
+    textarea#adDescription {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+
+    .image-upload {
+        padding: 30px 15px;
+    }
+
+    .upload-icon {
+        font-size: 2.5rem;
+    }
+
+    .image-preview {
+        gap: 12px;
+    }
+
+    .image-preview img {
+        width: 100px;
+        height: 100px;
     }
 
     .ad-preview {
         flex-direction: column;
         text-align: center;
+        padding: 15px;
     }
 
     .preview-image-placeholder {
         margin: 0 auto;
+        width: 100px;
+        height: 100px;
+    }
+
+    .preview-content h4 {
+        font-size: 1.1rem;
+    }
+
+    .preview-price {
+        font-size: 1.1rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .submit-btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .create-ad-page {
+        padding: 0 10px;
+    }
+
+    .create-ad-form {
+        padding: 20px 15px;
+        border-radius: 15px;
+    }
+
+    .progress-steps {
+        margin-bottom: 25px;
+    }
+
+    .progress-steps::before {
+        top: 20px;
+    }
+
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .step-label {
+        font-size: 0.8rem;
+    }
+
+    .form-step h2 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+
+    .step-description {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .category-card {
+        padding: 12px 8px;
+    }
+
+    .category-icon {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+    }
+
+    .category-card h3 {
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select,
+    textarea#adDescription {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    textarea#adDescription {
+        min-height: 120px;
+    }
+
+    .image-upload {
+        padding: 25px 12px;
+    }
+
+    .upload-icon {
+        font-size: 2rem;
+        margin-bottom: 12px;
+    }
+
+    .image-upload p {
+        font-size: 0.9rem;
+    }
+
+    .image-preview {
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .image-preview img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .preview-section {
+        padding: 20px 15px;
+        margin: 25px 0;
+    }
+
+    .preview-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .ad-preview {
+        padding: 12px;
+    }
+
+    .preview-image-placeholder {
+        width: 80px;
+        height: 80px;
+        font-size: 1.5rem;
+    }
+
+    .form-actions {
+        margin-top: 20px;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .submit-btn {
+        padding: 10px;
+        font-size: 0.95rem;
     }
 }
 

@@ -416,23 +416,239 @@
     animation: pulse 1.5s infinite ease-in-out;
 }
 
+@media (max-width: 1024px) {
+    .ad-container {
+        gap: 25px;
+        padding: 25px;
+    }
+
+    .ad-gallery {
+        max-width: 100%;
+    }
+
+    .ad-main-image {
+        max-height: 400px;
+    }
+}
+
 @media (max-width: 768px) {
+    .ad-page {
+        padding: 15px 0;
+    }
+
+    .ad-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .ad-gallery {
+        width: 100%;
+    }
+
+    .ad-main-image {
+        max-height: 350px;
+        margin-bottom: 12px;
+    }
+
+    .ad-thumbnails {
+        gap: 8px;
+        padding-bottom: 12px;
+    }
+
+    .ad-thumbnail {
+        width: 70px;
+        height: 70px;
+        min-width: 70px;
+    }
+
+    .ad-content {
+        width: 100%;
+    }
+
+    .ad-price {
+        font-size: 1.8rem;
+        margin: 8px 0 15px;
+    }
+
+    .ad-meta {
+        gap: 12px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+    }
+
+    .ad-description {
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+    }
+
+    .ad-actions {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .favorite-btn,
+    .contact-btn,
+    .report-btn {
+        min-width: 100%;
+        width: 100%;
+        padding: 12px 18px;
+    }
+
+    .ad-author {
+        padding: 20px;
+    }
+
+    .author-info {
+        margin-bottom: 15px;
+    }
+
+    .author-avatar {
+        width: 50px;
+        height: 50px;
+    }
+
+    .author-name {
+        font-size: 1.1rem;
+    }
+
     .modal-content {
         width: 95%;
         margin: 20px;
+        max-height: 85vh;
     }
     
     .modal-header,
     .modal-body {
         padding: 20px;
     }
+
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
     
     .modal-actions {
         flex-direction: column;
+        gap: 10px;
     }
     
     .btn-cancel,
     .btn-submit {
         width: 100%;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ad-page {
+        padding: 10px 0;
+    }
+
+    .ad-container {
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+
+    .ad-main-image {
+        max-height: 280px;
+    }
+
+    .ad-thumbnail {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+    }
+
+    .ad-content h1 {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+    }
+
+    .ad-price {
+        font-size: 1.5rem;
+        margin: 6px 0 12px;
+    }
+
+    .ad-meta {
+        flex-direction: column;
+        gap: 8px;
+        font-size: 0.85rem;
+    }
+
+    .ad-description {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .ad-actions {
+        gap: 10px;
+    }
+
+    .favorite-btn,
+    .contact-btn,
+    .report-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .ad-author {
+        padding: 15px;
+    }
+
+    .author-avatar {
+        width: 45px;
+        height: 45px;
+    }
+
+    .author-name {
+        font-size: 1rem;
+    }
+
+    .contact-item {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .show-phone-btn {
+        padding: 4px 10px;
+        font-size: 0.85rem;
+    }
+
+    .modal-content {
+        width: 98%;
+        margin: 10px;
+        padding: 0;
+    }
+
+    .modal-header {
+        padding: 15px;
+    }
+
+    .modal-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .modal-body {
+        padding: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+
+    .form-group select,
+    .form-group textarea {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    .char-count {
+        font-size: 0.8rem;
     }
 }
