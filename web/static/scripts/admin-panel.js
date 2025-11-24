@@ -206,7 +206,6 @@ function updateAdStatus(adId, status) {
             return res.json();
         })
         .then(() => {
-            alert('Статус обновлен успешно');
             loadModeration();
             loadStats();
         })
@@ -276,7 +275,6 @@ function updateUserStatus(userId, status) {
             return res.json();
         })
         .then(() => {
-            alert('Статус пользователя обновлен успешно');
             loadUsers();
         })
         .catch(err => {
