@@ -432,18 +432,24 @@
                                     <div class="contact-item">
                                         <span>📞</span>
                                         <span id="phoneDisplay">
-                                            {{if .SellerPhone}}
+                                            {{$phone := ""}}
+                                            {{if .ContactPhone}}
+                                                {{$phone = .ContactPhone}}
+                                            {{else if .SellerPhone}}
+                                                {{$phone = .SellerPhone}}
+                                            {{end}}
+                                            {{if $phone}}
                                             <span
                                                 class="phone-hidden"
                                                 style="display: none"
-                                                >{{.SellerPhone}}</span
+                                                >{{$phone}}</span
                                             >
                                             <span class="phone-placeholder"
                                                 >Показать телефон</span
                                             >
                                             {{else}} Телефон не указан {{end}}
                                         </span>
-                                        {{if .SellerPhone}}
+                                        {{if $phone}}
                                         <button
                                             class="show-phone-btn"
                                             id="showPhoneBtn"

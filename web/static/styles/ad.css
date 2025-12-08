@@ -121,6 +121,10 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
+    text-align: left;
+    text-justify: inter-word;
+    hyphens: auto;
+    font-size: 1rem;
 }
 
 .ad-actions {

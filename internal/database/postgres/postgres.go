@@ -251,7 +251,9 @@ func (p *Postgres) GetAdInfo(adId *uuid.UUID) (*models.AdPage, error) {
 	}
 	var data models.AdPage
 	data.AdId = *adId
-	loc := make([]string, 4)
+	var sellerPhone sql.NullString
+	var country, region, city, postalCode sql.NullString
+
 	err := p.psql.QueryRow(query, adId).Scan(
 		&data.Title,
 		&data.Price,
@@ -264,14 +266,35 @@ func (p *Postgres) GetAdInfo(adId *uuid.UUID) (*models.AdPage, error) {
 		&data.SellerName,
 		&data.Online,
 		&data.UserID,
-		&loc[0],
-		&loc[1],
-		&loc[2],
-		&loc[3],
+		&country,
+		&region,
+		&city,
+		&postalCode,
 		&data.SellerAvatarID,
+		&sellerPhone,
 	)
-	data.SellerCity = strings.Join(loc, " ")
+
+	// Формируем SellerCity только из непустых значений
+	var cityParts []string
+	if country.Valid && country.String != "" {
+		cityParts = append(cityParts, country.String)
+	}
+	if region.Valid && region.String != "" {
+		cityParts = append(cityParts, region.String)
+	}
+	if city.Valid && city.String != "" {
+		cityParts = append(cityParts, city.String)
+	}
+	if postalCode.Valid && postalCode.String != "" {
+		cityParts = append(cityParts, postalCode.String)
+	}
+	data.SellerCity = strings.Join(cityParts, " ")
+
 	data.Price /= 100
+	if sellerPhone.Valid && sellerPhone.String != "" {
+		data.SellerPhone = sellerPhone.String
+	}
+
 	if err != nil {
 		return nil, fmt.Errorf("error while executing get ad info request: %w", err)
 	}

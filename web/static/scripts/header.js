@@ -285,7 +285,7 @@ class HeaderManager {
     try {
       searchSuggestions.innerHTML = '<div class="search-loading">Поиск...</div>';
       
-      const response = await fetch(`/api/ads/?q=${encodeURIComponent(query)}&limit=5`);
+      const response = await fetch(`/api/ads/?q=${encodeURIComponent(query)}&limit=3`);
       
       if (!response.ok) {
         throw new Error("Ошибка поиска");
@@ -298,7 +298,9 @@ class HeaderManager {
         return;
       }
       
-      this.displaySearchResults(result.data);
+      // Ограничиваем до 3 результатов
+      const limitedResults = result.data.slice(0, 3);
+      this.displaySearchResults(limitedResults);
     } catch (error) {
       console.error("Ошибка при поиске:", error);
       searchSuggestions.innerHTML = '<div class="search-error">Ошибка при поиске. Попробуйте позже.</div>';

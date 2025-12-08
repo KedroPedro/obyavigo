@@ -363,3 +363,55 @@ func (h *Handlers) UploadAdImagesAPI() http.Handler {
 		},
 	)
 }
+
+func (h *Handlers) GetAdPhoneAPI() http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			token := r.PathValue("token")
+			adID, err := parseUUID(token)
+			if err != nil {
+				sendToClient(w, http.StatusBadRequest, "invalid ad id")
+				return
+			}
+
+			adData, err := h.db.Psql.GetAdInfo(&adID)
+			if adData == nil || err != nil {
+				sendToClient(w, http.StatusNotFound, "ad not found")
+				return
+			}
+
+			userID, _ := userIDFromCtx(r)
+			role := "user"
+			if userID != nil {
+				role, err = h.db.Psql.GetUserRole(userID)
+				if handleError(w, err, http.StatusInternalServerError, "error while trying to get user role") {
+					return
+				}
+			}
+
+			if userID == nil || (*userID != adData.UserID && role == "user") {
+				if adData.AdStatus != "public" {
+					sendToClient(w, http.StatusNotFound, "ad not found")
+					return
+				}
+			}
+
+			// Приоритет: ContactPhone, если есть, иначе SellerPhone
+			phone := adData.ContactPhone
+			if phone == "" {
+				phone = adData.SellerPhone
+			}
+
+			if phone == "" {
+				w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+				w.WriteHeader(http.StatusOK)
+				w.Write([]byte("Телефон не указан"))
+				return
+			}
+
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(phone))
+		},
+	)
+}

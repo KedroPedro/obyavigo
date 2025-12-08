@@ -46,13 +46,15 @@ func (h *Handlers) CreateChat() http.Handler {
 			}
 
 			p, err := h.db.Psql.GetAdInfo(&req.ListingId)
-			if handleError(w, err, http.StatusNotFound, "объявление не найдено") {
-				sendJSONError(w, http.StatusForbidden, "нельзя создать чат с самим собой")
+			if err != nil {
+				sendJSONError(w, http.StatusNotFound, "объявление не найдено")
 				return
 			}
 
+			// Проверка: пользователь не может создать чат с самим собой
 			if p.UserID.String() == userID.String() {
-
+				sendJSONError(w, http.StatusForbidden, "нельзя создать чат с самим собой")
+				return
 			}
 
 			chat := &models.Chat{

@@ -57,6 +57,7 @@ func main() {
 	mux.Handle("GET /api/auth/confirm-email/{token}/", handler.ConfirmRegistrationHandler())
 	mux.Handle("GET /api/ads/", handler.AuthMiddleware(handler.GetAdsAPI()))
 	mux.Handle("GET /api/ads/{token}/", handler.AuthMiddleware(handler.GetAdByIDAPI()))
+	mux.Handle("GET /api/ads/{token}/phone", handler.AuthMiddleware(handler.GetAdPhoneAPI()))
 	mux.Handle("GET /api/user/ads/", handler.AuthMiddleware(handler.GetUserAdsAPI()))
 	mux.Handle("DELETE /api/ads/{token}/", handler.AuthMiddleware(handler.DeleteAdAPI()))
 	mux.Handle("PUT /api/ads/{token}/", handler.AuthMiddleware(handler.UpdateAdAPI()))

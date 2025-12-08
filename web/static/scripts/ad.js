@@ -55,13 +55,32 @@ function initAdPage() {
   const phoneDisp = document.getElementById("phoneDisplay");
   if (showBtn && phoneDisp) {
     showBtn.addEventListener("click", () => {
-      fetch(`/api/ads/${encodeURIComponent(adId)}/phone`)
-        .then((r) => r.text())
-        .then((phone) => {
-          phoneDisp.textContent = phone;
-          showBtn.style.display = "none";
-        })
-        .catch(() => (console.log("an error occured when trying to get phone number")));
+      const phoneHidden = phoneDisp.querySelector(".phone-hidden");
+      const phonePlaceholder = phoneDisp.querySelector(".phone-placeholder");
+      
+      if (phoneHidden && phonePlaceholder) {
+        // Показываем скрытый телефон
+        phoneHidden.style.display = "inline";
+        phonePlaceholder.style.display = "none";
+        showBtn.style.display = "none";
+      } else {
+        // Если нет скрытого телефона, загружаем с сервера
+        fetch(`/api/ads/${encodeURIComponent(adId)}/phone`)
+          .then((r) => {
+            if (!r.ok) {
+              throw new Error("Failed to fetch phone");
+            }
+            return r.text();
+          })
+          .then((phone) => {
+            phoneDisp.textContent = phone;
+            showBtn.style.display = "none";
+          })
+          .catch(() => {
+            console.log("an error occurred when trying to get phone number");
+            phoneDisp.textContent = "Ошибка загрузки телефона";
+          });
+      }
     });
   }
 }

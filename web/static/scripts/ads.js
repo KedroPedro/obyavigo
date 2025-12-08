@@ -306,7 +306,6 @@ function initLoadMore() {
       }
     } catch (error) {
       console.error("Ошибка загрузки объявлений:", error);
-      alert("Ошибка загрузки объявлений");
     } finally {
       loadMoreBtn.textContent = "Показать ещё";
       loadMoreBtn.disabled = false;

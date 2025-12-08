@@ -201,61 +201,93 @@ function initCategorySelection() {
 }
 function validateStep(stepNumber) {
   clearAllErrors();
+  let hasErrors = false;
+  
   if (stepNumber === 1) {
     const category = document.getElementById("createAdForm").dataset.category;
     if (!category) {
+      showToast("Пожалуйста, выберите категорию", "warning", 3000);
+      hasErrors = true;
       return false;
     }
     return true;
   }
+  
   if (stepNumber === 2) {
     let isValid = true;
     const title = document.getElementById("adTitle").value.trim();
     if (!title) {
       showError("titleError", "Введите заголовок");
+      showToast("Введите заголовок объявления", "error", 3000);
       isValid = false;
     } else if (title.length < 5) {
       showError("titleError", "Заголовок должен быть не менее 5 символов");
+      showToast("Заголовок должен быть не менее 5 символов", "error", 3000);
       isValid = false;
     }
+    
     const price = document.getElementById("adPrice").value;
     if (!price || price <= 0) {
       showError("priceError", "Укажите корректную цену");
+      if (isValid) showToast("Укажите корректную цену", "error", 3000);
       isValid = false;
     }
+    
     const region = document.getElementById("adRegion").value;
     if (!region) {
       showError("regionError", "Выберите регион");
+      if (isValid) showToast("Выберите регион", "error", 3000);
       isValid = false;
     }
+    
     const city = document.getElementById("adCity").value;
     if (!city) {
       showError("cityError", "Выберите город");
+      if (isValid) showToast("Выберите город", "error", 3000);
       isValid = false;
     }
+    
     const desc = document.getElementById("adDescription").value.trim();
     if (!desc) {
       showError("descriptionError", "Введите описание");
+      if (isValid) showToast("Введите описание объявления", "error", 3000);
       isValid = false;
     } else if (desc.length < 20) {
       showError(
         "descriptionError",
         "Описание должно быть не менее 20 символов",
       );
+      if (isValid) showToast("Описание должно быть не менее 20 символов", "error", 3000);
       isValid = false;
     }
+    
     const condition = document.getElementById("adCondition").value;
     if (!condition) {
       showError("conditionError", "Выберите состояние товара");
+      if (isValid) showToast("Выберите состояние товара", "error", 3000);
       isValid = false;
     }
+    
+    // Проверка наличия фотографий
+    const selectedFiles = window.getSelectedFiles ? window.getSelectedFiles() : [];
+    const imagePreview = document.getElementById("imagePreview");
+    const hasImages = (selectedFiles && selectedFiles.length > 0) || 
+                     (imagePreview && imagePreview.querySelectorAll("img").length > 0);
+    
+    if (!hasImages) {
+      showToast("Пожалуйста, добавьте хотя бы одну фотографию", "warning", 3000);
+      isValid = false;
+    }
+    
     return isValid;
   }
+  
   if (stepNumber === 3) {
     let isValid = true;
     const rules = document.getElementById("agreeRules");
     if (!rules.checked) {
       showError("rulesError", "Необходимо согласие с правилами");
+      showToast("Необходимо согласиться с правилами размещения", "warning", 3000);
       isValid = false;
     }
     return isValid;
@@ -266,44 +298,91 @@ function initImageUpload() {
   const dropZone = document.getElementById("dropZone");
   const fileInput = document.getElementById("adImages");
   const preview = document.getElementById("imagePreview");
-  dropZone.addEventListener("click", () => {
+  
+  // Проверяем, не добавлен ли уже обработчик
+  if (dropZone.dataset.initialized === "true") {
+    return;
+  }
+  dropZone.dataset.initialized = "true";
+  
+  // Обработчик клика на dropZone, но не на fileInput
+  dropZone.addEventListener("click", (e) => {
+    // Если клик был на самом fileInput, не обрабатываем
+    if (e.target === fileInput) {
+      return;
+    }
+    // Предотвращаем всплытие и вызываем click только один раз
+    e.stopPropagation();
     fileInput.click();
   });
+  
+  // Обработчик клика на .browse-link (если он есть)
+  const browseLink = dropZone.querySelector(".browse-link");
+  if (browseLink) {
+    browseLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      fileInput.click();
+    });
+  }
+  
   ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
     dropZone.addEventListener(eventName, preventDefaults, false);
   });
+  
   function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();
   }
+  
   ["dragenter", "dragover"].forEach((eventName) => {
     dropZone.addEventListener(eventName, highlight, false);
   });
+  
   ["dragleave", "drop"].forEach((eventName) => {
     dropZone.addEventListener(eventName, unhighlight, false);
   });
+  
   function highlight() {
     dropZone.classList.add("dragover");
   }
+  
   function unhighlight() {
     dropZone.classList.remove("dragover");
   }
+  
   dropZone.addEventListener("drop", handleDrop, false);
+  
   function handleDrop(e) {
     const dt = e.dataTransfer;
     const files = dt.files;
     handleFiles(files);
   }
+  
+  // Сохраняем оригинальные File объекты для отправки
+  let selectedFiles = [];
+  
   fileInput.addEventListener("change", () => {
+    // Сохраняем файлы перед обработкой
+    selectedFiles = Array.from(fileInput.files);
     handleFiles(fileInput.files);
+    // НЕ сбрасываем значение input, чтобы файлы остались доступными
   });
+  
   let uploadedImages = [];
+  
   function handleFiles(files) {
     preview.innerHTML = "";
     uploadedImages = [];
+    selectedFiles = []; // Очищаем предыдущие файлы
+    
     const validFiles = Array.from(files).slice(0, 10);
     validFiles.forEach((file) => {
       if (!file.type.match("image.*")) return;
+      
+      // Сохраняем оригинальный File объект
+      selectedFiles.push(file);
+      
       const reader = new FileReader();
       reader.onload = (e) => {
         uploadedImages.push(e.target.result);
@@ -315,6 +394,9 @@ function initImageUpload() {
       reader.readAsDataURL(file);
     });
   }
+  
+  // Экспортируем функцию для получения файлов
+  window.getSelectedFiles = () => selectedFiles;
 }
 function initRegionCitySelection() {
   const regionSelect = document.getElementById("adRegion");
@@ -440,11 +522,76 @@ function isValidBelarusPhone(phone) {
   }
   return false;
 }
+
+// Toast Notification System
+function createToastContainer() {
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+  return container;
+}
+
+function showToast(message, type = 'info', duration = 5000) {
+  const container = createToastContainer();
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  
+  const icons = {
+    success: '✅',
+    error: '❌',
+    warning: '⚠️',
+    info: 'ℹ️'
+  };
+  
+  toast.innerHTML = `
+    <span class="toast-icon">${icons[type] || icons.info}</span>
+    <span class="toast-content">${message}</span>
+    <button class="toast-close" aria-label="Закрыть">×</button>
+  `;
+  
+  container.appendChild(toast);
+  
+  const closeBtn = toast.querySelector('.toast-close');
+  const closeToast = () => {
+    toast.classList.add('slide-out');
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  };
+  
+  closeBtn.addEventListener('click', closeToast);
+  
+  if (duration > 0) {
+    setTimeout(closeToast, duration);
+  }
+  
+  return toast;
+}
+
 document
   .getElementById("createAdForm")
   .addEventListener("submit", function (e) {
     e.preventDefault();
     if (!validateStep(3)) return;
+    
+    // Проверка наличия фотографий перед отправкой
+    const selectedFiles = window.getSelectedFiles ? window.getSelectedFiles() : [];
+    if (!selectedFiles || selectedFiles.length === 0) {
+      showToast("Пожалуйста, добавьте хотя бы одну фотографию", "error", 4000);
+      return;
+    }
+    
+    const submitBtn = this.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправка...';
+    
     const formData = new FormData();
     const categorySlug = this.dataset.category;
     const categoryNameMap = {
@@ -482,10 +629,12 @@ document
       Number(document.getElementById("adPrice").value.trim()) * 100,
     );
     formData.append("condition", document.getElementById("adCondition").value);
-    const files = document.getElementById("adImages").files;
-    for (let i = 0; i < files.length; i++) {
-      formData.append("images", files[i]);
+    
+    // Используем сохраненные файлы вместо fileInput.files
+    for (let i = 0; i < selectedFiles.length; i++) {
+      formData.append("images", selectedFiles[i]);
     }
+    
     fetch("/api/create-ad/", {
       method: "POST",
       body: formData,
@@ -494,12 +643,28 @@ document
       .then((data) => {
         if (data.success) {
           localStorage.removeItem("obyavigo_draft");
-          window.location.href = data.url || "/ads/" + data.adId;
+          showToast("Объявление успешно отправлено на модерацию!", "success", 3000);
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 2000);
         } else {
-          console.log("Не удалось создать объявление")
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+          const errorMessage = data.message || "Не удалось создать объявление";
+          // Переводим сообщения об ошибках на русский
+          let russianMessage = errorMessage;
+          if (errorMessage === "no images uploaded") {
+            russianMessage = "Необходимо загрузить хотя бы одну фотографию";
+          } else if (errorMessage.includes("error")) {
+            russianMessage = "Произошла ошибка при создании объявления";
+          }
+          showToast(russianMessage, "error", 5000);
         }
       })
       .catch((error) => {
         console.error("Ошибка при создании объявления:", error);
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        showToast("Ошибка подключения к серверу. Попробуйте позже.", "error", 5000);
       });
   });

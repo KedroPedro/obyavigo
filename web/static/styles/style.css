@@ -983,6 +983,116 @@ body.categories-open footer {
     position: relative;
 }
 
+.search-suggestions {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 10px;
+    padding-right: 5px;
+}
+
+.search-suggestions::-webkit-scrollbar {
+    width: 8px;
+}
+
+.search-suggestions::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    min-height: 100px;
+    max-height: 100px;
+    overflow: hidden;
+}
+
+.search-result-item:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.search-result-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+}
+
+.search-result-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.search-result-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-result-price {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.search-result-location {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-loading,
+.search-no-results,
+.search-error {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.search-show-all {
+    padding: 15px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 10px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+}
+
 .search-input-container {
     position: relative;
     margin-bottom: 20px;
